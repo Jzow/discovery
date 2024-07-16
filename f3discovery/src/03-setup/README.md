@@ -88,10 +88,10 @@ itmdump 0.3.1
 
 ### `cargo-binutils`
 
-安装 `llvm-tools-preview`
+安装 `llvm-tools`
 
 ``` console
-rustup component add llvm-tools-preview
+rustup component add llvm-tools
 ```
 
 安装 `cargo-binutils`

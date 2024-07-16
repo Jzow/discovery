@@ -17,19 +17,35 @@ $ # ^^^        ^^^
 ```
 
 在我的例子中，micro:bit连接到总线#1被枚举为设备#65。这意味着该文件`/dev/bus/usb/001/065`*是*micro:bit。
-让我们检查它的权限：
+让我们检查这个文件的权限：
 
 ``` console
 $ ls -l /dev/bus/usb/001/065
-crw-rw-rw-. 1 root root 189, 64 Sep  5 14:27 /dev/bus/usb/001/065
+crw-rw-r--+ 1 nobody nobody 189, 64 Sep  5 14:27 /dev/bus/usb/001/065
 ```
 
-权限应该是`crw-rw-rw-`。如果不是...然后检查您的[udev规则]并尝试重新加载它们：
+权限应该是`crw-rw-r--+`，注意最后的`+`号，然后运行以下命令查看您的访问权限。
+
+``` console
+$ getfacl /dev/bus/usb/001/065
+getfacl: Removing leadin '/' from absolute path names
+# file: dev/bus/usb/001/065
+# owner: nobody
+# group: nobody
+user::rw-
+user:<YOUR-USER-NAME>:rw-
+group::rw-
+mask::rw-
+other::r-
+```
+
+您应该在上述列表中看到您的用户名带有`rw-`权限，如果不是...然后检查您的[udev规则]并尝试重新加载它们：
 
 [udev规则]: linux.md#udev-rules
 
 ``` console
-$ sudo udevadm control --reload-rules
+$ sudo udevadm control --reload
+$ sudo udevadm trigger
 ```
 
 # 全部
@@ -39,6 +55,47 @@ $ sudo udevadm control --reload-rules
 
 micro:bit的USB端口旁边至少有一个橙色LED应该亮起。此外，如果您从未在micro:bit上刷过其他程序，
 则micro:bit附带的默认程序应该开始闪烁其背面的红色LED，您可以忽略它们。
+
+现在查看一下probe-rs及其中的cargo-embed是否可以发现micro:bit，使用以下命令：
+
+``` console
+$ probe-rs list
+The following debug probes were found:
+[0]: BBC micro:bit CMSIS-DAP -- 0d28:0204:990636020005282030f57fa14252d446000000006e052820 (CMSIS-DAP)
+```
+
+如果需要更多有关micro:bit调试能力的信息，可以运行:
+
+``` console
+$ probe-rs info
+Probing target via JTAG
+
+Error identifying target using protocol JTAG: The probe does not support the JTAG protocol.
+
+Probing target via SWD
+
+ARM Chip with debug port Default:
+Debug Port: DPv1, DP Designer: ARM Ltd
+├── 0 MemoryAP
+│   └── ROM Table (Class 1), Designer: Nordic VLSI ASA
+│       ├── Cortex-M4 SCS   (Generic IP component)
+│       │   └── CPUID
+│       │       ├── IMPLEMENTER: ARM Ltd
+│       │       ├── VARIANT: 0
+│       │       ├── PARTNO: Cortex-M4
+│       │       └── REVISION: 1
+│       ├── Cortex-M3 DWT   (Generic IP component)
+│       ├── Cortex-M3 FBP   (Generic IP component)
+│       ├── Cortex-M3 ITM   (Generic IP component)
+│       ├── Cortex-M4 TPIU  (Coresight Component)
+│       └── Cortex-M4 ETM   (Coresight Component)
+└── 1 Unknown AP (Designer: Nordic VLSI ASA, Class: Undefined, Type: 0x0, Variant: 0x0, Revision: 0x0)
+
+
+Debugging RISC-V targets over SWD is not supported. For these targets, JTAG is the only supported protocol. RISC-V specific information cannot be printed.
+Debugging Xtensa targets over SWD is not supported. For these targets, JTAG is the only supported protocol. Xtensa specific information cannot be printed.
+
+```
 
 接下来，您将不得不在本书的源代码`src/03-setup`目录中进行修改`Embed.toml`。
 在该`default.general`部分中，您将找到两个已注释掉的芯片的变量：
