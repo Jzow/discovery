@@ -1,16 +1,14 @@
-# Game logic
+# 游戏逻辑
 
-First, we are going to describe the game logic. You are probably familiar with snake games, but if not, the basic idea
-is that the player guides a snake around a 2D grid. At any given time, there is some "food" at a random location on the
-grid and the goal of the game is to get the snake to "eat" as much food as possible. Each time the snake eats some food
-it grows in length. The player loses if the snake crashes into its own tail. In some variants of the game, the player
-also loses if the snake crashes into the edge of the grid, but given the small size of our grid we are going to
-implement a "wraparound" rule where, if the snake goes off one edge of the grid, it will continue from the opposite
-edge.
+首先，让我们先了解一下游戏逻辑。
+你可能已经很熟悉贪吃蛇游戏了，它的基本思想是玩家在二维网格上操纵一条蛇。
+在任何给定时间，网格的一个随机位置上有“食物”，游戏的目标是让蛇尽可能多地“吃”食物。
+蛇每次吃了食物，它的长度就会增加。如果蛇撞到自己的尾巴，玩家就会输掉游戏。
+在游戏的一些变体中，如果蛇撞到网格的边缘，玩家也会输掉游戏，但鉴于我们网格的尺寸较小，我们将实现一个“环绕”规则，即如果蛇从网格的一边出去，它将从相对的另一边回来。
 
-## The `game` module
+## `game`模块
 
-The code in this section should go in a separate file, `game.rs`, in our `src` directory.
+本节的代码应该放在我们的`src`目录中的一个单独文件`game.rs`中。
 
 ```rust
 use heapless::FnvIndexSet;
@@ -51,19 +49,17 @@ impl Coords {
 }
 ```
 
-We use a `Coords` struct to refer to a position on the grid. Because `Coords` only contains two integers, we tell the
-compiler to derive an implementation of the `Copy` trait for it, so we can pass around `Coords` structs without having
-to worry about ownership.
+我们使用`Coords`结构体来表示网格上的坐标。
+由于`Coords`只包含两个整数，我们可以让编译器为它派生`Copy`trait的实现，这样我们就可以在不用担心所有权的情况下传递`Coords`结构体。
+我们还定义了一个关联函数：`Coords::random`，它可以为我们提供一个网格上的随机位置。稍后，我们将使用它来确定为蛇放置食物的位置。
+为了实现这个函数，我们需要一个随机数的源。
 
-We define an associated function, `Coords::random`, which will give us a random position on the grid. We will use this
-later to determine where to place the snake's food. To do this, we need a source of random numbers. The nRF52833 has a
-random number generator (RNG) peripheral, documented at section 6.19 of the [spec sheet](https://infocenter.nordicsemi.com/pdf/nRF52833_PS_v1.3.pdf). The HAL gives us a simple
-interface to the RNG via the `microbit::hal::rng::Rng` struct. However, it is a blocking interface, and the time
-needed to generate one random byte of data is variable and unpredictable. We therefore define a [pseudo-random](https://en.wikipedia.org/wiki/Pseudorandom_number_generator)
-number generator (PRNG) which uses an [xorshift](https://en.wikipedia.org/wiki/Xorshift) algorithm to generate
-pseudo-random `u32` values that we can use to determine where to place food. The algorithm is basic and not
-cryptographically secure, but it is efficient, easy to implement and good enough for our humble snake game. Our `Prng`
-struct requires an initial seed value, which we get from the RNG peripheral.
+nRF52833有一个随机数生成器（RNG）外设，[说明书](https://infocenter.nordicsemi.com/pdf/nRF52833_PS_v1.3.pdf)的6.19节是它的文档。
+HAL通过`microbit::hal::rng::Rng`结构体为我们提供了一个简单的接口，用于访问RNG。
+但它是一个阻塞接口，并且生成一个随机字节所需的时间是变化，且无法预测的。
+因此，我们定义了一个[伪随机](https://en.wikipedia.org/wiki/Pseudorandom_number_generator)数生成器(PRNG)，它使用[xorshift](https://en.wikipedia.org/wiki/Xorshift)算法来生成随机的`u32`值，我们可以使用它来确定放置食物的位置。
+这个算法很基础，而且并非加密安全；但它很高效、易于实现，而且对于我们小小的贪吃蛇游戏已经足够。
+`Prng`结构体需要一个初始化种子值，我们从RNG外设获取它。
 
 ```rust
 /// A basic pseudo-random number generator.
@@ -92,8 +88,7 @@ impl Prng {
 }
 ```
 
-We also need to define a few `enum`s that help us manage the game's state: direction of movement, direction to turn, the
-current game status and the outcome of a particular "step" in the game (ie, a single movement of the snake).
+我们还需要定义一些`enum`来帮助我们管理游戏状态：移动方向、转弯方向、游戏当前状态，以及游戏特定“步骤”的结果（例如，蛇移动一次）。
 
 ```rust
 /// Define the directions the snake can move.
@@ -132,9 +127,9 @@ enum StepOutcome {
 }
 ```
 
-Next up we define a `Snake` struct, which keeps track of the coordinates occupied by the snake and its direction of
-travel. We use a queue (`heapless::spsc::Queue`) to keep track of the order of coordinates and a hash set
-(`heapless::FnvIndexSet`) to allow for quick collision detection.  The `Snake` has methods to allow it to move.
+接下来，定义一个`Snake`结构体，它保存蛇占据的所有坐标，以及行进方向。
+我们使用队列（`heapless::spsc::Queue`）来保存坐标的顺序，并用一个哈希集合（`heapless::FnvIndexSet`）来快速地进行冲撞检测。
+`Snake`也提供了方法用于移动。
 
 ```rust
 use heapless::spsc::Queue;
@@ -213,13 +208,12 @@ impl Snake {
 }
 ```
 
-The `Game` struct keeps track of the game state. It holds a `Snake` object, the current coordinates of the food, the
-speed of the game (which is used to determine the time that elapses between each movement of the snake), the status of
-the game (whether the game is ongoing or the player has won or lost) and the player's score.
+`Game`结构体保存游戏状态。
+它持有`Snake`对象，食物的当前坐标，游戏速度（决定蛇移动间隔的时间），游戏当前状态（进行、胜利或失败），以及玩家的分数。
 
-This struct contains methods to handle each step of the game, determining the snake's next move and updating the game
-state accordingly. It also contains two methods--`game_matrix` and `score_matrix`--that output 2D arrays of values
-which can be used to display the game state or the player score on the LED matrix (as we will see later).
+这个结构体包含了处理游戏步骤的方法，它们决定了蛇的下一步并据此更新游戏状态。
+此外，它还包含了两个方法：`game_matrix`和`score_matrix`。
+它们可以输出二维矩阵值，用于在LED矩阵上显示游戏状态，或玩家分数（我们晚点就可以看到）。
 
 ```rust
 /// Struct to hold game state and associated behaviour
@@ -235,8 +229,8 @@ pub(crate) struct Game {
 impl Game {
     pub(crate) fn new(rng_seed: u32) -> Self {
         let mut rng = Prng::new(rng_seed);
-        let mut tail: FnvIndexSet<Coords, 32> = FnvIndexSet::new();
-        tail.insert(Coords { row: 2, col: 1 }).unwrap();
+        //let mut tail: FnvIndexSet<Coords, 32> = FnvIndexSet::new();
+        //tail.insert(Coords { row: 2, col: 1 }).unwrap();
         let snake = Snake::new();
         let food_coords = Coords::random(&mut rng, Some(&snake.coord_set));
         Self {
@@ -395,9 +389,9 @@ impl Game {
 }
 ```
 
-## The `main` file
+## `main`文件
 
-The following code should be placed in our `main.rs` file. 
+下面是`main.rs`中的代码：
 
 ```rust
 #![no_main]
@@ -451,28 +445,21 @@ fn main() -> ! {
 }
 ```
 
-After initialising the board and its timer and RNG peripherals, we initialise a `Game` struct and a `Display` from the
-`microbit::display::blocking` module.
+初始化了电路板和它的定时器以及RNG外设后，我们初始化了一个`Game`结构体，以及一个`microbit::display::blocking`中的`Display`结构体。
 
-In our "game loop" (which runs inside of the "main loop" we place in our `main` function), we repeatedly perform the
-following steps:
+在我们的“游戏循环”（运行在`main`函数中的“主循环“内部），程序重复执行以下步骤：
 
-1. Get a 5x5 array of bytes representing the grid. The `Game::get_matrix` method takes three integer arguments (which 
-   should be between 0 and 9, inclusive) which will, eventually, represent how brightly the head, tail and food should be
-   displayed. The basic `Display` we are using at this point does not support variable brightness, so we just provide 
-   values of 9 for each (but any non-zero value would work) at this stage.
-2. Display the matrix, for an amount of time determined by the `Game::step_len_ms` method. As currently implemented,
-   this method basically provides for 1 second between steps, reducing by 200ms every time the player scores 5 points 
-   (eating 1 piece of food = 1 point), subject to a floor of 200ms.
-3. Check the game status. If it is `Ongoing` (which is its initial value), run a step of the game and update the game
-   state (including its `status` property). Otherwise, the game is over, so flash the current image three times, then
-   show the player's score (represented as a number of illuminated LEDs corresponding to the score), and exit the game
-   loop.
+1. 获取一个5x5的字节矩阵，它表示网格。
+   `Game::get_matrix`方法需要三个整形参数（它应该是0～9，包含上下限），它们分别表示蛇头、蛇尾和食物的亮度。
+   我们当前使用的基本`Display`不支持调节亮度，因此当前设为9即可（其他非零值也行）。
+2. 显示矩阵，持续时间由`Game::step_len_ms`方法决定。
+   在当前的实现中，该方法初始时提供每个步骤间1秒的间隔，玩家每获得5分（吃掉一个食物获得1分）减少200毫秒，下限为200毫秒。
+3. 检查游戏状态。
+   如果是`Ongoing`（初始值），执行游戏的一个步骤并更新游戏状态（包括其`status`属性）。
+   否则，游戏结束，闪烁当前画面三次，然后显示玩家分数（用点亮的LED数表示），最后退出游戏循环。
 
-Our main loop just runs the game loop repeatedly, resetting the game's state after each iteration.
+主循环将重复运行游戏，每次迭代后重置游戏状态。
 
-If you run this, you should see two LEDs illuminated halfway down the display (the snake's head in the middle and its
-tail to the left). You will also see another LED illuminated somewhere on the board, representing the snake's food.
-Approximately each second, the snake will move one space to the right.
+如果你运行这个程序，你应该会看到两个LED灯在显示屏的中间偏下的位置点亮（蛇的头部在中间，它的尾部在左侧）。你还会看到另一个LED灯在板子上的某个地方点亮，代表蛇的食物。大约每秒钟，蛇会向右移动一格。
 
-Next we will add an ability to control the snake's movements.
+下一节，我们将增加控制蛇移动的能力。
