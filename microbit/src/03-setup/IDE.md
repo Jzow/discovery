@@ -1,31 +1,27 @@
-# Getting the most out of your IDE
+# 充分利用您的IDE
 
-All code in this book assumes that you use a simple terminal to build your code,
-run it, and interact with it. It also makes no assumption about your text editor.
+本书中的所有代码都假定您使用一个简单的终端来构建您的代码，运行它，并与之交互。
+它也不对您的文本编辑器做任何假设。
 
-However, you may have your favourite IDEs, providing you auto-complete, type annotation,
-your preferred shortcuts and much more. This section explains how to get the most out
-of your IDE using the code obtained from this book's repo.
+然而，您可能拥有自己喜欢的IDE，它们为您提供自动完成、类型注释、您喜欢的快捷方式等等。
+本节解释了如何使用从本书的代码库中获得的代码来充分利用您的IDE。
 
-# Auto-completion, type annotation, and more
+# 自动补全，类型注解，以及更多
 
-Some IDEs fail to understand the code, because they fail to determine whether a term
-is defined in the microbit or microbit-v2 codebase. If you fail to get auto-completion to work,
-you may want to try to edit the `Cargo.toml` files you encounter through this book, and remove
-all references to the version of microbit you are not using. That is:
- in the `Cargo.toml` file you must remove the dependency and features you do not use (the part guarded by `#[cfg(feature = "vI")]` and the guard itself)
+一些IDE无法理解代码，因为它们无法确定一个术语是在microbit还是microbit-v2代码库中定义的。
+如果您无法使用自动完成功能，您可能想尝试编辑本书中遇到的`Cargo.toml`文件，并删除所有您不使用的microbit版本的引用。
+也就是说：在`Cargo.toml`文件中，您必须移除您不使用的依赖项和特性（由`#[cfg(feature = "vI")]`保护的部分及其本身）
 
-# IDE configuration
+# IDE 配置
 
-Below, we explain how to configure your IDE to get the most out of this book.
-If your IDE is not listed below, please improve this book by adding a section, so that the next
-reader can get the best experience out of it.
+下面，我们解释了如何配置您的IDE以充分利用本书。
+如果您的IDE没有列在下面，请通过添加一节来改进本书，以便下一个读者能够获得最佳体验。
 
-## How to build with IntelliJ
+## 如何在IntelliJ中构建
 
-When editing the IntelliJ build configuration, here are a few non-default values:
-* You should edit the command. When this book tells you to run `cargo embed FLAGS`,
-You'll need to replace the default value `run` by the command `embed FLAGS`,
-* You should enable "Emulate terminal in output console". Otherwise, your program will fail to print text to a terminal
-* You should ensure that the working directory is `microbit/src/N-name`, with `N-name` being the directory of the chapter you
-are reading. You can not run from the `src` directory since it contains no cargo file.
+在编辑IntelliJ构建配置时，这里有一些非默认值：
+
+* 您应该编辑命令。当本书告诉您运行`cargo embed FLAGS`时，
+您需要将默认值`run`替换为命令`embed FLAGS`，
+* 您应该启用"Emulate terminal in output console"。否则，您的程序将无法打印文本到终端
+* 您需要确保工作目录是`microbit/src/N-name`，其中`N-name`是您正在阅读的章节的目录。您不能从`src`目录运行，因为它不包含`cargo`文件。
