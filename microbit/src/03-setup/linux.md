@@ -55,21 +55,30 @@ PATH=$PATH:$HOME/local/gcc-arm-none-eabi-9-2020-q2-update/bin
 `/etc/udev/rules.d`使用如下所示的内容创建此文件。
 
 ``` console
-$ cat /etc/udev/rules.d/99-microbit.rules
+$ cat /etc/udev/rules.d/69-microbit.rules
 ```
 
 ``` text
 # CMSIS-DAP for microbit
-SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", MODE:="666"
+
+ACTION!="add|change", GOTO="microbit_rules_end"
+
+SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", TAG+="uaccess"
+
+LABEL="microbit_rules_end"
 ```
 
 然后使用以下命令重新加载udev规则：
 
 ``` console
-$ sudo udevadm control --reload-rules
+$ sudo udevadm control --reload
 ```
 
-如果您的计算机上插入了任何板，请拔下它们，然后重新插入。
+如果您的计算机上插入了任何板，请拔下它们，然后重新插入，或者运行下面的命令：
+
+``` console
+$ sudo udevadm trigger
+```
 
 现在，转到[下一节]。
 

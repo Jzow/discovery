@@ -25,5 +25,5 @@
   ([repository](https://github.com/jzow/discovery))
 * [日语](https://tomoyuki-nakabayashi.github.io/discovery/)
   ([repository](https://github.com/tomoyuki-nakabayashi/discovery))
-* [葡萄牙语 (巴西)](https://allynaell.github.io/discovery/)
-  ([repository](https://github.com/allynaell/discovery))
+* [葡萄牙语 (巴西)](https://allyssan.github.io/discovery/)
+  ([repository](https://github.com/allyssan/discovery))

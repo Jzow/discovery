@@ -25,7 +25,7 @@
 
 [`cargo-binutils`]: https://github.com/rust-embedded/cargo-binutils
 
-- [`cargo-embed`]。版本0.18.0或更高版本。
+- [`cargo-embed`]。版本0.24.0或更高版本。
 
 [`cargo-embed`]: https://probe.rs/docs/tools/cargo-embed/
 
@@ -50,7 +50,7 @@ rustc 1.53.0 (53cb7b09b 2021-06-17)
 ### `cargo-binutils`
 
 ``` console
-$ rustup component add llvm-tools-preview
+$ rustup component add llvm-tools
 
 $ cargo install cargo-binutils --vers 0.3.3
 
@@ -63,11 +63,10 @@ cargo-size 0.3.3
 为了安装cargo-embed，首先安装其[先决条件](https://probe.rs/docs/getting-started/installation/), (注意：这些说明是通用的[`probe-rs`](https://probe.rs/)嵌入式调试工具包的一部分). 然后将其与Cargo一起安装：
 
 ```console
-$ cargo install cargo-embed --vers 0.11.0
+$ cargo install probe-rs-tools --vers 0.24.0
 
 $ cargo embed --version
-cargo-embed 0.11.0
-git commit: crates.io
+cargo-embed 0.24.0 (git commit: crates.io)
 ```
 
 ### 这个存储库
