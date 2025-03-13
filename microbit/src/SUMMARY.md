@@ -6,6 +6,7 @@
     - [Windows](03-setup/windows.md)
     - [macOS](03-setup/macos.md)
     - [验证安装](03-setup/verify.md)
+    - [设置IDE](03-setup/IDE.md)
 - [满足您的硬件](04-meet-your-hardware/README.md)
     - [micro:bit v2](04-meet-your-hardware/microbit-v2.md)
     - [micro:bit v1](04-meet-your-hardware/microbit-v1.md)
@@ -47,6 +48,10 @@
     - [重力上升了？](10-punch-o-meter/gravity-is-up.md)
     - [挑战](10-punch-o-meter/the-challenge.md)
     - [我的解决方案](10-punch-o-meter/my-solution.md)
+- [贪吃蛇游戏](11-snake-game/README.md)
+    - [游戏逻辑](11-snake-game/game-logic.md)
+    - [控制](11-snake-game/controls.md)
+    - [非阻塞显示](11-snake-game/nonblocking-display.md)
 - [还有什么需要你去探索](explore.md)
 
 ---
