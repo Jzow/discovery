@@ -1,0 +1,3968 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Discovery</title>
+        <meta name="robots" content="noindex">
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="discovery"><a class="header" href="#discovery">Discovery</a></h1>
+<blockquote>
+<p>通过<a href="https://www.rust-lang.org/">Rust</a>探索微控制器的世界！</p>
+</blockquote>
+<p>这本书是关于基于微控制器的嵌入式系统的入门课程，它使用Rust作为教学语言，而不是通常的C/C++。</p>
+<h2 id="范围"><a class="header" href="#范围">范围</a></h2>
+<p>将涵盖以下主题（最终，我希望）：</p>
+<ul>
+<li>
+<p>如何编写、构建、刷新和调试"嵌入式"(Rust)程序。</p>
+</li>
+<li>
+<p>微控制器中常见的功能（"外部设备"）：数字输入和输出、脉冲宽度调制 (PWM)、模数转换器 (ADC)、串行、I2C和SPI等常见通信协议。</p>
+</li>
+<li>
+<p>多任务处理概念：协作与抢占式多任务处理、中断、调度程序等。</p>
+</li>
+<li>
+<p>控制系统概念：传感器、校准、数字滤波器、执行器、开环控制、闭环控制等。</p>
+</li>
+</ul>
+<h2 id="方法"><a class="header" href="#方法">方法</a></h2>
+<ul>
+<li>
+<p>初学者友好。无需具备微控制器或嵌入式系统方面的经验。</p>
+</li>
+<li>
+<p>动手。大量的练习将理论付诸实践。您将在这里完成大部分工作。 您将在这里完成大部分工作。</p>
+</li>
+<li>
+<p>工具居中。我们将大量使用工具来简化开发。"真正的"调试、使用GDB和日志记录将在早期引入。在这里使用LED作为调试机制是不合适的。</p>
+</li>
+</ul>
+<h2 id="非目标"><a class="header" href="#非目标">非目标</a></h2>
+<p>本书范围之外的内容：</p>
+<ul>
+<li>
+<p>教Rust。已经有很多关于该主题的材料。我们将专注于微控制器和嵌入式系统。</p>
+</li>
+<li>
+<p>是一本关于电路理论或电子学的综合性书籍。我们将仅介绍了解某些设备如何工作所需的最低要求。</p>
+</li>
+<li>
+<p>涵盖链接描述文件和引导过程等细节。例如，我们将使用现有工具帮助您将代码放到板上，但不会详细介绍这些工具的工作原理。</p>
+</li>
+</ul>
+<p>另外我们不打算将这个材料移植到其他开发板上；本书将独家使用micro:bit开发板。</p>
+<h2 id="报告问题"><a class="header" href="#报告问题">报告问题</a></h2>
+<p>这本书的源代码在<a href="https://github.com/rust-embedded/discovery">这个存储库</a>中。如果您遇到任何错字或代码问题，请在<a href="https://github.com/rust-embedded/discovery/issues">问题跟踪器</a>上报告。</p>
+<h2 id="其他嵌入式rust资源"><a class="header" href="#其他嵌入式rust资源">其他嵌入式Rust资源</a></h2>
+<p>这本Discovery书只是<a href="https://github.com/rust-embedded/wg">嵌入式工作组</a>提供的几个嵌入式Rust资源之一。完整的选择可以在<a href="https://docs.rust-embedded.org">The Embedded Rust Bookshelf</a>中找到。这包括<a href="https://docs.rust-embedded.org/faq.html">常见问题</a>列表。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="背景"><a class="header" href="#背景">背景</a></h1>
+<h2 id="什么是微控制器"><a class="header" href="#什么是微控制器">什么是微控制器？</a></h2>
+<p>微控制器是单片机上的<em>系统</em>鉴于您的计算机由几个离散组件组成：处理器、RAM、存储、以太网端口等；微控制器将所有这些类型的组件都内置到单个"芯片"或封装中。
+这使得构建具有更少部件的系统成为可能。</p>
+<h2 id="使用微控制器可以做什么"><a class="header" href="#使用微控制器可以做什么">使用微控制器可以做什么？</a></h2>
+<p>许多事！微控制器是所谓的"<em>嵌入式</em>系统".的核心部分。嵌入式系统无处不在，但您通常不会注意到它们。他们控制着洗衣服、打印文件和做饭的机器。
+嵌入式系统使您生活和工作的建筑物保持在舒适的温度下，并控制使您行驶的车辆停停走走的组件。</p>
+<p>大多数嵌入式系统无需用户干预即可运行。即使他们像洗衣机一样暴露用户界面；他们的大部分操作都是自己完成的。</p>
+<p>嵌入式系统通常用于控制 物理过程。为了使这成为可能，他们有一个或多个设备来告诉他们世界的状态("传感器")，
+以及一个或多个允许他们改变事物的设备 ("执行器")。例如，建筑气候控制系统可能具有：</p>
+<ul>
+<li>测量不同位置温度和湿度的传感器。</li>
+<li>控制风扇速度的执行器。</li>
+<li>导致热量从建筑物中添加或移除的执行器。</li>
+</ul>
+<h2 id="我什么时候应该使用微控制器"><a class="header" href="#我什么时候应该使用微控制器">我什么时候应该使用微控制器？</a></h2>
+<p>上面列出的许多嵌入式系统都可以使用运行Linux的计算机 (例如"Raspberry Pi")来实现。为什么要改用微控制器？听起来开发程序可能更难。</p>
+<p>一些原因可能包括：</p>
+<p><strong>成本。</strong> 微控制器比通用计算机便宜得多。微控制器不仅更便宜；它还需要更少的外部电气元件来操作。这使得印刷电路板 (PCB) 更小，设计和制造成本更低。</p>
+<p><strong>能量消耗。</strong> 大多数微控制器消耗的功率只是完整处理器的一小部分。对于依靠电池运行的应用程序，这会产生巨大的差异。</p>
+<p><strong>响应能力。</strong> 为了实现它们的目的，一些嵌入式系统必须始终在有限的时间间隔内做出反应（例如汽车的"防抱死"制动系统)。 如果系统错过了这种类型的<em>最后期限</em>，
+则可能会发生灾难性故障。这样的最后期限称为"硬件实时"要求。受这种期限约束的嵌入式系统称为"硬件实时系统"。通用计算机和操作系统通常具有许多共享计算机处理资源的软件组件。
+这使得在紧迫的时间限制内保证程序的执行变得更加困难。</p>
+<p><strong>可靠性。</strong> 在具有较少组件（硬件和软件）的系统中，出错的可能性较小！</p>
+<h2 id="什么时候不应该使用微控制器"><a class="header" href="#什么时候不应该使用微控制器">什么时候<em>不</em>应该使用微控制器？</a></h2>
+<p>涉及繁重计算的地方。为了保持低功耗，微控制器可用的计算资源非常有限。例如，一些微控制器甚至没有对浮点运算的硬件支持。
+在这些设备上，执行单精度数字的简单加法可能需要数百个 CPU 周期。</p>
+<h2 id="为什么使用rust而不是c"><a class="header" href="#为什么使用rust而不是c">为什么使用Rust而不是C？</a></h2>
+<p>希望我不需要在这里说服您，因为您可能熟悉Rust和C之间的语言差异。我确实想提出一点是包管理。C缺乏官方的、被广泛接受的包管理解决方案，而Rust有Cargo。
+这使得开发<em>更加</em>容易。而且，IMO，简单的包管理鼓励代码重用，因为库可以很容易地集成到应用程序中，这也是一件好事，因为库得到了更多的"战斗测试"。</p>
+<h2 id="为什么我不应该使用rust"><a class="header" href="#为什么我不应该使用rust">为什么我不应该使用Rust？</a></h2>
+<p>或者为什么我应该更喜欢C而不是Rust？</p>
+<p>C生态系统更加成熟。针对几个问题的现成解决方案已经存在。如果您需要控制对时间敏感的过程，您可以使用现有的商业实时操作系统 (RTOS) 之一来解决您的问题。
+Rust中还没有商业的生产级RTOS，因此您必须自己创建一个或尝试其中一个正在开发中的RTOS。您可以在<a href="https://github.com/rust-embedded/awesome-embedded-rust#real-time-operating-system-rtos">Awesome Embedded Rust</a>存储库中找到这些列表。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="硬件--知识要求"><a class="header" href="#硬件--知识要求">硬件 / 知识要求</a></h1>
+<p>阅读本书的主要知识要求是了解<em>一些</em>Rust。我们很难量化<em>一些</em>，但至少我可以告诉你，你不需要完全理解泛型，但你需要知道如何<em>使用</em>闭包。
+您还需要熟悉<a href="https://rust-lang-nursery.github.io/edition-guide/">2018 版</a>的语法，<code>extern crate</code>尤其是在2018版中不需要的事实。</p>
+<p>此外，要遵循本材料，您需要以下硬件：</p>
+<ul>
+<li>一个<a href="https://tech.microbit.org/hardware/">micro:bit v2</a>板，或者一个<a href="https://tech.microbit.org/hardware/1-5-revision/">micro:bit v1.5</a>板，本书将v1.5称为v1。</li>
+</ul>
+<p>(您可以从多家<a href="https://microbit.org/buy/">电子</a> <a href="https://www.mouser.com/microbit/_/N-aez3t?P=1y8um0l">供应商</a>)处购买此板.</p>
+<p align="center">
+<img title="micro:bit" src="02-requirements/../assets/microbit-v2.jpg">
+</p>
+<blockquote>
+<p><strong>注意</strong> 这是micro:bit v2的图像，v1的正面看起来略有不同</p>
+</blockquote>
+<ul>
+<li>一根micro-B USB电缆，需要使micro:bit板工作。确保数据线支持数据传输，因为某些数据线仅支持充电设备。</li>
+</ul>
+<p align="center">
+<img title="micro-B USB cable" src="02-requirements/../assets/usb-cable.jpg">
+</p>
+<blockquote>
+<p><strong>注意</strong> 您可能已经拥有这样的电缆，因为某些micro:bit套件随附此类电缆。
+一些用于为移动设备充电的USB电缆也可以工作，
+如果它们是micro-B并且具有传输数据的能力。</p>
+</blockquote>
+<blockquote>
+<p><strong>常见问题解答</strong>：等等，为什么我需要这个特定的硬件？</p>
+</blockquote>
+<p>它让我和你的生活更轻松。</p>
+<p>如果我们不必担心硬件差异，那么材料就更容易接近了。相信我这个。</p>
+<blockquote>
+<p><strong>常见问题解答</strong>：我可以使用不同的开发板遵循此材料吗？</p>
+</blockquote>
+<p>也许？这主要取决于两件事：您以前使用微控制器的经验和/或是否已经存在高级板条箱，例如<a href="https://docs.rs/nrf52-hal"><code>nrf52-hal</code></a>，您的开发板的某个地方。
+如果您打算使用其他微控制器，可以查看<a href="https://github.com/rust-embedded/awesome-embedded-rust#hal-implementation-crates">Awesome Embedded Rust HAL list</a>。</p>
+<p>使用不同的开发板，本文将失去大部分（如果不是全部）初学者友好性和"易于理解"，IMO。</p>
+<p>如果您有不同的开发板并且您不认为自己完全是初学者，那么您最好从快速入门项目模板开始。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="设置开发环境"><a class="header" href="#设置开发环境">设置开发环境</a></h1>
+<p>处理微控制器涉及多种工具，因为我们将处理与您的计算机不同的架构，并且我们必须在"远程"设备上运行和调试程序。</p>
+<h2 id="文档"><a class="header" href="#文档">文档</a></h2>
+<p>不过，工具并不是万能的。没有文档，几乎不可能使用微控制器。</p>
+<p>我们将在本书中引用所有这些文档：</p>
+<ul>
+<li><a href="https://www.st.com/resource/en/datasheet/lsm303agr.pdf">LSM303AGR</a></li>
+</ul>
+<h2 id="工具"><a class="header" href="#工具">工具</a></h2>
+<p>我们将使用下面列出的所有工具。在未指定最低版本的情况下，任何最新版本都可以使用，但我们列出了我们测试过的版本。</p>
+<ul>
+<li>
+<p>Rust 1.57.0或更新的工具链。</p>
+</li>
+<li>
+<p><code>gdb-multiarch</code>。测试版本：10.2。其他版本很可能也可以正常工作，但如果您的发行版/平台不同<code>gdb-multiarch</code>用<code>arm-none-eabi-gdb</code>，也可以解决问题。
+此外，一些普通gdb的二进制文件也具有多架构功能，您可以在子章节中找到有关此的更多信息。</p>
+</li>
+<li>
+<p><a href="https://github.com/rust-embedded/cargo-binutils"><code>cargo-binutils</code></a>。版本0.3.3或更高版本。</p>
+</li>
+</ul>
+<ul>
+<li><a href="https://probe.rs/docs/tools/cargo-embed/"><code>cargo-embed</code></a>。版本0.24.0或更高版本。</li>
+</ul>
+<ul>
+<li>
+<p><code>minicom</code>在Linux和macOS上。测试版本：2.7.1。其他版本很可能也能正常工作</p>
+</li>
+<li>
+<p><code>PuTTY</code>在Windows上。</p>
+</li>
+</ul>
+<p>接下来，按照与操作系统无关的安装说明获取一些工具：</p>
+<h3 id="rustc--cargo"><a class="header" href="#rustc--cargo"><code>rustc</code> &amp; Cargo</a></h3>
+<p>按照<a href="https://rustup.rs">https://rustup.rs</a>上的说明安装rustup。</p>
+<p>如果您已经安装了rustup，请仔细检查您是否在稳定通道上，并且您的稳定工具链是最新的。
+<code>rustc -V</code>应该返回一个比下面显示的日期新的日期：</p>
+<pre><code class="language-console">$ rustc -V
+rustc 1.53.0 (53cb7b09b 2021-06-17)
+</code></pre>
+<h3 id="cargo-binutils"><a class="header" href="#cargo-binutils"><code>cargo-binutils</code></a></h3>
+<pre><code class="language-console">$ rustup component add llvm-tools
+
+$ cargo install cargo-binutils --vers 0.3.3
+
+$ cargo size --version
+cargo-size 0.3.3
+</code></pre>
+<h3 id="cargo-embed"><a class="header" href="#cargo-embed"><code>cargo-embed</code></a></h3>
+<p>为了安装cargo-embed，首先安装其<a href="https://probe.rs/docs/getting-started/installation/">先决条件</a>, (注意：这些说明是通用的<a href="https://probe.rs/"><code>probe-rs</code></a>嵌入式调试工具包的一部分). 然后将其与Cargo一起安装：</p>
+<pre><code class="language-console">$ cargo install probe-rs-tools --vers 0.24.0
+
+$ cargo embed --version
+cargo-embed 0.24.0 (git commit: crates.io)
+</code></pre>
+<h3 id="这个存储库"><a class="header" href="#这个存储库">这个存储库</a></h3>
+<p>由于本书还包含一些在各个章节中使用的小型Rust代码库，因此您还必须下载其源代码。您可以通过以下方式之一执行此操作：</p>
+<ul>
+<li>访问<a href="https://github.com/rust-embedded/discovery/">存储库</a>，单击绿色的"Code"按钮，然后单击"Download Zip"下载。</li>
+<li>使用git从与zip方法中链接的相同存储库中克隆它（如果您知道git，您可能已经安装了它）。</li>
+</ul>
+<h3 id="操作系统特定说明"><a class="header" href="#操作系统特定说明">操作系统特定说明</a></h3>
+<p>现在按照特定于您使用的操作系统的说明进行操作：</p>
+<ul>
+<li><a href="03-setup/linux.html">Linux</a></li>
+<li><a href="03-setup/windows.html">Windows</a></li>
+<li><a href="03-setup/macos.html">macOS</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="linux"><a class="header" href="#linux">Linux</a></h1>
+<p>以下是一些 Linux 发行版的安装命令。</p>
+<h2 id="ubuntu-2004-或最新版本--debian-10-或最新版本"><a class="header" href="#ubuntu-2004-或最新版本--debian-10-或最新版本">Ubuntu 20.04 或最新版本 / Debian 10 或最新版本</a></h2>
+<blockquote>
+<p><strong>注意</strong> <code>gdb-multiarch</code>是您将用于调试ARM Cortex-M程序的GDB命令</p>
+</blockquote>
+<pre><code class="language-console">$ sudo apt-get install \
+  gdb-multiarch \
+  minicom
+</code></pre>
+<h2 id="fedora-32-或最新版本"><a class="header" href="#fedora-32-或最新版本">Fedora 32 或最新版本</a></h2>
+<blockquote>
+<p><strong>注意</strong> <code>gdb</code>是您将用于调试 ARM Cortex-M程序的GDB命令
+Cortex-M programs</p>
+</blockquote>
+<pre><code class="language-console">$ sudo dnf install \
+  gdb \
+  minicom
+</code></pre>
+<h2 id="arch-linux"><a class="header" href="#arch-linux">Arch Linux</a></h2>
+<blockquote>
+<p><strong>注意</strong> <code>arm-none-eabi-gdb</code>是您将用于调试ARM Cortex-M程序的GDB命令</p>
+</blockquote>
+<pre><code class="language-console">$ sudo pacman -S \
+  arm-none-eabi-gdb \
+  minicom
+</code></pre>
+<h2 id="其他发行版"><a class="header" href="#其他发行版">其他发行版</a></h2>
+<blockquote>
+<p><strong>注意</strong> <code>arm-none-eabi-gdb</code>是您将用于调试ARM Cortex-M程序的GDB命令</p>
+</blockquote>
+<p>对于没有<a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">ARM预构建工具链</a>软件包的发行版，
+请下载"Linux 64-bit"文件并将其<code>bin</code>目录放在您的路径中。
+这是一种方法：</p>
+<pre><code class="language-console">$ mkdir -p ~/local &amp;&amp; cd ~/local
+$ tar xjf /path/to/downloaded/file/gcc-arm-none-eabi-9-2020-q2-update-x86_64-linux.tar.bz2
+</code></pre>
+<p>然后，使用您选择的编辑器在适当的shell初始化文件(例如 <code>~/.zshrc</code> 或 <code>~/.bashrc</code>)中附加到<code>PATH</code>：</p>
+<pre><code>PATH=$PATH:$HOME/local/gcc-arm-none-eabi-9-2020-q2-update/bin
+</code></pre>
+<h2 id="udev-规则"><a class="header" href="#udev-规则">udev 规则</a></h2>
+<p>这些规则让您可以在没有root权限的情况下使用像micro:bit这样的USB设备，即<code>sudo</code>。</p>
+<p><code>/etc/udev/rules.d</code>使用如下所示的内容创建此文件。</p>
+<pre><code class="language-console">$ cat /etc/udev/rules.d/69-microbit.rules
+</code></pre>
+<pre><code class="language-text"># CMSIS-DAP for microbit
+
+ACTION!="add|change", GOTO="microbit_rules_end"
+
+SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", TAG+="uaccess"
+
+LABEL="microbit_rules_end"
+</code></pre>
+<p>然后使用以下命令重新加载udev规则：</p>
+<pre><code class="language-console">$ sudo udevadm control --reload
+</code></pre>
+<p>如果您的计算机上插入了任何板，请拔下它们，然后重新插入，或者运行下面的命令：</p>
+<pre><code class="language-console">$ sudo udevadm trigger
+</code></pre>
+<p>现在，转到<a href="03-setup/verify.html">下一节</a>。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="windows"><a class="header" href="#windows">Windows</a></h1>
+<h2 id="arm-none-eabi-gdb"><a class="header" href="#arm-none-eabi-gdb"><code>arm-none-eabi-gdb</code></a></h2>
+<p>ARM<code>.exe</code>为Windows提供安装程序。从<a href="https://developer.arm.com/open-source/gnu-toolchain/gnu-rm/downloads">从</a>下载，然后按照说明进行操作。就在安装过程完成之前
+勾选/选择"Add path to environment variable"选项。然后验证这些工具是否在您的<code>%PATH%</code>：</p>
+<pre><code class="language-console">$ arm-none-eabi-gcc -v
+(..)
+gcc version 5.4.1 20160919 (release) (..)
+</code></pre>
+<h2 id="putty"><a class="header" href="#putty">PuTTY</a></h2>
+<p><code>putty.exe</code>从<a href="http://www.chiark.greenend.org.uk/~sgtatham/putty/download.html">该站点</a>下载最新版本并将其放在您的<code>%PATH%</code>。</p>
+<p>现在，转到<a href="03-setup/verify.html">下一节</a>。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="macos"><a class="header" href="#macos">macOS</a></h1>
+<p>所有工具都可以使用<a href="http://brew.sh/">Homebrew</a>安装：</p>
+<pre><code class="language-console">$ # ARM GCC debugger
+$ brew install arm-none-eabi-gdb
+
+$ # Minicom
+$ brew install minicom
+</code></pre>
+<p>就这样！转到<a href="03-setup/verify.html">下一节</a>。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="验证安装"><a class="header" href="#验证安装">验证安装</a></h1>
+<p>让我们验证所有工具是否已正确安装。</p>
+<h2 id="仅限linux"><a class="header" href="#仅限linux">仅限Linux</a></h2>
+<h3 id="验证权限"><a class="header" href="#验证权限">验证权限</a></h3>
+<p>使用USB数据线将micro:bit连接到您的计算机。</p>
+<p>micro:bit现在应该以USB设备（文件）的形式出现在<code>/dev/bus/usb</code>。让我们看看它是如何被枚举的：</p>
+<pre><code class="language-console">$ lsusb | grep -i "NXP ARM mbed"
+Bus 001 Device 065: ID 0d28:0204 NXP ARM mbed
+$ # ^^^        ^^^
+</code></pre>
+<p>在我的例子中，micro:bit连接到总线#1被枚举为设备#65。这意味着该文件<code>/dev/bus/usb/001/065</code><em>是</em>micro:bit。
+让我们检查这个文件的权限：</p>
+<pre><code class="language-console">$ ls -l /dev/bus/usb/001/065
+crw-rw-r--+ 1 nobody nobody 189, 64 Sep  5 14:27 /dev/bus/usb/001/065
+</code></pre>
+<p>权限应该是<code>crw-rw-r--+</code>，注意最后的<code>+</code>号，然后运行以下命令查看您的访问权限。</p>
+<pre><code class="language-console">$ getfacl /dev/bus/usb/001/065
+getfacl: Removing leadin '/' from absolute path names
+# file: dev/bus/usb/001/065
+# owner: nobody
+# group: nobody
+user::rw-
+user:&lt;YOUR-USER-NAME&gt;:rw-
+group::rw-
+mask::rw-
+other::r-
+</code></pre>
+<p>您应该在上述列表中看到您的用户名带有<code>rw-</code>权限，如果不是...然后检查您的<a href="03-setup/linux.html#udev-rules">udev规则</a>并尝试重新加载它们：</p>
+<pre><code class="language-console">$ sudo udevadm control --reload
+$ sudo udevadm trigger
+</code></pre>
+<h1 id="全部"><a class="header" href="#全部">全部</a></h1>
+<h2 id="验证cargo-embed"><a class="header" href="#验证cargo-embed">验证cargo-embed</a></h2>
+<p>首先，使用USB数据线将micro:bit连接到您的计算机。</p>
+<p>micro:bit的USB端口旁边至少有一个橙色LED应该亮起。此外，如果您从未在micro:bit上刷过其他程序，
+则micro:bit附带的默认程序应该开始闪烁其背面的红色LED，您可以忽略它们。</p>
+<p>现在查看一下probe-rs及其中的cargo-embed是否可以发现micro:bit，使用以下命令：</p>
+<pre><code class="language-console">$ probe-rs list
+The following debug probes were found:
+[0]: BBC micro:bit CMSIS-DAP -- 0d28:0204:990636020005282030f57fa14252d446000000006e052820 (CMSIS-DAP)
+</code></pre>
+<p>如果需要更多有关micro:bit调试能力的信息，可以运行:</p>
+<pre><code class="language-console">$ probe-rs info
+Probing target via JTAG
+
+Error identifying target using protocol JTAG: The probe does not support the JTAG protocol.
+
+Probing target via SWD
+
+ARM Chip with debug port Default:
+Debug Port: DPv1, DP Designer: ARM Ltd
+├── 0 MemoryAP
+│   └── ROM Table (Class 1), Designer: Nordic VLSI ASA
+│       ├── Cortex-M4 SCS   (Generic IP component)
+│       │   └── CPUID
+│       │       ├── IMPLEMENTER: ARM Ltd
+│       │       ├── VARIANT: 0
+│       │       ├── PARTNO: Cortex-M4
+│       │       └── REVISION: 1
+│       ├── Cortex-M3 DWT   (Generic IP component)
+│       ├── Cortex-M3 FBP   (Generic IP component)
+│       ├── Cortex-M3 ITM   (Generic IP component)
+│       ├── Cortex-M4 TPIU  (Coresight Component)
+│       └── Cortex-M4 ETM   (Coresight Component)
+└── 1 Unknown AP (Designer: Nordic VLSI ASA, Class: Undefined, Type: 0x0, Variant: 0x0, Revision: 0x0)
+
+
+Debugging RISC-V targets over SWD is not supported. For these targets, JTAG is the only supported protocol. RISC-V specific information cannot be printed.
+Debugging Xtensa targets over SWD is not supported. For these targets, JTAG is the only supported protocol. Xtensa specific information cannot be printed.
+
+</code></pre>
+<p>接下来，您将不得不在本书的源代码<code>src/03-setup</code>目录中进行修改<code>Embed.toml</code>。
+在该<code>default.general</code>部分中，您将找到两个已注释掉的芯片的变量：</p>
+<pre><code class="language-toml">[default.general]
+# chip = "nrf52833_xxAA" # uncomment this line for micro:bit V2
+# chip = "nrf51822_xxAA" # uncomment this line for micro:bit V1
+</code></pre>
+<p>如果您使用的是micro:bit v2板，请取消注释第一行，对于v1，请取消注释第二行。</p>
+<p>接下来运行以下命令之一：</p>
+<pre><code>$ # make sure you are in src/03-setup of the books source code
+$ # If you are working with micro:bit v2
+$ rustup target add thumbv7em-none-eabihf
+$ cargo embed --target thumbv7em-none-eabihf
+
+$ # If you are working with micro:bit v1
+$ rustup target add thumbv6m-none-eabi
+$ cargo embed --target thumbv6m-none-eabi
+</code></pre>
+<p>如果一切正常，cargo-embed应该首先编译这个目录中的小示例程序，然后刷新它，
+最后打开一个漂亮的基于文本的用户界面，打印Hello World。</p>
+<p>(如果没有，请查看<a href="03-setup/../appendix/1-general-troubleshooting/index.html">一般故障排除</a>说明。)</p>
+<p>此输出来自您刚刚嵌入micro:bit的小型Rust程序。一切正常，您可以继续下一章！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="充分利用您的ide"><a class="header" href="#充分利用您的ide">充分利用您的IDE</a></h1>
+<p>本书中的所有代码都假定您使用一个简单的终端来构建您的代码，运行它，并与之交互。
+它也不对您的文本编辑器做任何假设。</p>
+<p>然而，您可能拥有自己喜欢的IDE，它们为您提供自动完成、类型注释、您喜欢的快捷方式等等。
+本节解释了如何使用从本书的代码库中获得的代码来充分利用您的IDE。</p>
+<h1 id="自动补全类型注解以及更多"><a class="header" href="#自动补全类型注解以及更多">自动补全，类型注解，以及更多</a></h1>
+<p>一些IDE无法理解代码，因为它们无法确定一个术语是在microbit还是microbit-v2代码库中定义的。
+如果您无法使用自动完成功能，您可能想尝试编辑本书中遇到的<code>Cargo.toml</code>文件，并删除所有您不使用的microbit版本的引用。
+也就是说：在<code>Cargo.toml</code>文件中，您必须移除您不使用的依赖项和特性（由<code>#[cfg(feature = "vI")]</code>保护的部分及其本身）</p>
+<h1 id="ide-配置"><a class="header" href="#ide-配置">IDE 配置</a></h1>
+<p>下面，我们解释了如何配置您的IDE以充分利用本书。
+如果您的IDE没有列在下面，请通过添加一节来改进本书，以便下一个读者能够获得最佳体验。</p>
+<h2 id="如何在intellij中构建"><a class="header" href="#如何在intellij中构建">如何在IntelliJ中构建</a></h2>
+<p>在编辑IntelliJ构建配置时，这里有一些非默认值：</p>
+<ul>
+<li>您应该编辑命令。当本书告诉您运行<code>cargo embed FLAGS</code>时，
+您需要将默认值<code>run</code>替换为命令<code>embed FLAGS</code>，</li>
+<li>您应该启用"Emulate terminal in output console"。否则，您的程序将无法打印文本到终端</li>
+<li>您需要确保工作目录是<code>microbit/src/N-name</code>，其中<code>N-name</code>是您正在阅读的章节的目录。您不能从<code>src</code>目录运行，因为它不包含<code>cargo</code>文件。</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="满足您的硬件"><a class="header" href="#满足您的硬件">满足您的硬件</a></h1>
+<p>让我们熟悉我们将使用的硬件。</p>
+<h2 id="microbit"><a class="header" href="#microbit">micro:bit</a></h2>
+<p align="center">
+<img title="micro:bit" src="04-meet-your-hardware/../assets/microbit-v2.jpg">
+</p>
+<p>以下是micro:bit板上的许多组件中的一些：</p>
+<ul>
+<li>一个<a href="https://en.wikipedia.org/wiki/Microcontroller">微控制器</a>。</li>
+<li>多个LED，最显着的是背面的LED矩阵。</li>
+<li>两个用户按钮以及一个重置按钮（USB端口旁边的那个）。</li>
+<li>一个USB端口。</li>
+<li>既是<a href="https://en.wikipedia.org/wiki/Magnetometer">磁力计</a>又是<a href="https://en.wikipedia.org/wiki/Accelerometer">加速度计</a>的传感器</li>
+</ul>
+<p>在这些组件中，最重要的是微控制器（有时简称为"MCU"，表示"微控制器单元"），它是位于带有USB端口的电路板侧面的两个黑色方块中较大的一个。
+MCU运行您的代码。您有时可能会读到"对电路板进行编程"，而实际上我们正在做的是对安装在电路板上的MCU进行编程。</p>
+<p>如果您碰巧对开发板的更详细描述感兴趣，可以查看<a href="https://tech.microbit.org/hardware/">micro:bit网站</a>。</p>
+<p>由于MCU如此重要，让我们仔细看看我们板上的那个。请注意，以下两个部分中只有一个适用于您的电路板，具体取决于您使用的是micro:bit v2 还是 v1。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="北欧nrf52833-the-nrf52-microbit-v2"><a class="header" href="#北欧nrf52833-the-nrf52-microbit-v2">北欧nRF52833 (the "nRF52", micro:bit v2)</a></h1>
+<p>我们的MCU正下方有73个微小的金属<strong>引脚</strong>（它是所谓的<a href="https://en.wikipedia.org/wiki/Flat_no-leads_package">aQFN73</a>芯片)。这些引脚连接到<strong>迹线</strong>，即充当将电路板上的组件连接在一起的电线的小"道路"。
+MCU可以动态改变引脚的电气特性。这类似于改变电流如何流过电路的电灯开关。通过启用或禁用流过特定引脚的电流，可以打开和关闭连接到该引脚（通过迹线）的LED。</p>
+<p>每个制造商使用不同的零件编号方案，但许多制造商允许您通过查看零件编号来确定有关组件的信息。
+看我们MCU的零件编号 (<code>N52833 QIAAA0 2024AL</code>，可能肉眼看不到，但它在芯片上），<code>n</code>前面的暗示我们这是
+<a href="https://www.nordicsemi.com/">Nordic Semiconductor</a>制造的零件。在他们的网站上查找零件号，我们很快就找到了<a href="https://www.nordicsemi.com/products/nrf52833">产品页面</a>。在那里我们
+了解到我们芯片的主要营销点是它是"蓝牙低功耗和2.4 GHz SoC"（SoC 是"System on a Chip"的缩写），这解释
+了产品名称中的RF，因为RF是无线电的缩写频率。如果我们搜索<a href="https://www.nordicsemi.com/products/nrf52833">产品页面</a>上链接的芯片文档我们找到了包含第10章"订购信息"的
+<a href="https://infocenter.nordicsemi.com/pdf/nRF52833_PS_v1.3.pdf">产品规格</a>，专门用于解释奇怪的芯片命名。在这里我们了解到：</p>
+<ul>
+<li><code>N52</code>是MCU的系列，表示还有其他<code>nRF52</code>MCUs</li>
+<li><code>833</code>是零件代码</li>
+<li><code>QI</code>是包代码，缩写是<code>aQFN73</code></li>
+<li><code>AA</code>是变体代码，表示MCU有多少RAM和闪存，在我们的例子中是512 KB闪存和128 KB RAM</li>
+<li><code>A0</code>是构建代码，指示硬件版本 (<code>A</code>) 以及产品配置 (<code>0</code>)</li>
+<li><code>2024AL</code>是一个跟踪代码，因此它可能在您的芯片上有所不同</li>
+</ul>
+<p>产品规格当然包含有关芯片的更多有用信息，例如它基于ARM® Cortex™-M4 32位处理器。</p>
+<h2 id="arm-cortex-m4"><a class="header" href="#arm-cortex-m4">Arm? Cortex-M4?</a></h2>
+<p>如果我们的芯片是Nordic制造的，那么Arm是谁？如果我们的芯片是nRF52833, 那么Cortex-M4是什么？</p>
+<p>您可能会惊讶地发现，虽然"基于Arm"的芯片非常受欢迎，但"Arm"商标背后的公司<a href="https://www.arm.com/">Arm Holdings</a>实际上并不生产用于购买的芯片。
+相反，他们的主要商业模式只是<em>设计</em>芯片的一部分。然后，他们会将这些设计授权给制造商，制造商反过来以物理硬件的形式实施这些设计
+（可能会进行一些自己的调整），然后可以出售。Arm在这方面的战略与英特尔等公司不同，后者既设计<em>并</em>制造芯片。</p>
+<p>Arm许可了一堆不同的设计。他们的"Cortex-M"系列设计主要用作微控制器的核心。例如，
+Cortex-M4（我们的芯片所基于的内核）专为低成本和低功耗而设计。Cortex-M7成本更高，但功能和性能更多。</p>
+<p>幸运的是，为了本书，您不需要对不同类型的处理器或Cortex设计有太多了解。但是，希望您现在对设备的术语有更多的了解。
+当您专门使用nRF51822时，您可能会发现自己正在阅读文档并使用基于Cortex-M的芯片的工具，因为nRF52833基于Cortex-M设计。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="北欧-nrf51822-the-nrf51-microbit-v1"><a class="header" href="#北欧-nrf51822-the-nrf51-microbit-v1">北欧 nRF51822 (the "nRF51", micro:bit v1)</a></h1>
+<p>我们的MCU正下方有48个微小的金属<strong>引脚</strong>（它是所谓的<a href="https://en.wikipedia.org/wiki/Flat_no-leads_package">QFN48</a>芯片)。这些引脚连接到<strong>迹线</strong>，即充当将电
+路板上的组件连接在一起的电线的小"道路"。MCU可以动态改变引脚的电气特性。这类似于改变电流如何
+流过电路的电灯开关。通过启用或禁用流过特定引脚的电流，可以打开和关闭连接到该引脚（通过迹线）的LED。</p>
+<p>每个制造商使用不同的零件编号方案，但许多制造商允许您通过查看零件编号来确定有关组件的信息。
+看我们MCU的零件编号 (<code>N51822 QFAAH3 1951LN</code>，可能肉眼看不到，但它在芯片上)，<code>n</code>前面的暗示我们这是
+<a href="https://www.nordicsemi.com/">Nordic Semiconductor</a>制造的零件。在他们的网站上查找零件号，我们很快就找到了<a href="https://www.nordicsemi.com/products/nrf51822">产品页面</a>。在那里
+我们了解到我们芯片的主要营销点是它是"蓝牙低功耗和2.4 GHz SoC"（SoC 是"System on a Chip"的缩写）
+这解释了产品名称中的RF，因为RF是无线电的缩写频率。如果我们搜索<a href="https://www.nordicsemi.com/products/nrf51822">产品页面</a>上链接的芯片文档我们找到了
+包含第10章"订购信息"的<a href="https://infocenter.nordicsemi.com/pdf/nRF51822_PS_v3.3.pdf">产品规格</a>，专门用于解释奇怪的芯片命名。在这里我们了解到：</p>
+<ul>
+<li><code>N51</code>是MCU的系列，表示还有其他<code>nRF51</code>MCUs</li>
+<li><code>822</code>是零件代码</li>
+<li><code>QF</code>是包代码，是<code>QFN48</code>的缩写</li>
+<li><code>AA</code>是变体代码，表示MCU有多少RAM和闪存，在我们的例子中是256 KB闪存和16 KB RAM</li>
+<li><code>H3</code>是构建代码，指示硬件版本 (<code>H</code>) 以及产品配置 (<code>3</code>)</li>
+<li><code>1951LN</code>是一个跟踪代码，因此它可能在您的芯片上有所不同</li>
+</ul>
+<p>产品规格当然包含有关芯片的更多有用信息，例如它基于ARM® Cortex™-M0 32位处理器。</p>
+<h3 id="arm-cortex-m0"><a class="header" href="#arm-cortex-m0">Arm? Cortex-M0?</a></h3>
+<p>如果我们的芯片是Nordic制造的，那么Arm是谁？如果我们的芯片是nRF51822, 那么Cortex-M0是什么？</p>
+<p>您可能会惊讶地发现，虽然"基于Arm"的芯片非常受欢迎，但"Arm"商标背后的公司(<a href="https://www.arm.com/">Arm Holdings</a>)实际上并不生产用于购买的芯片。
+相反，他们的主要商业模式只是<em>设计</em>芯片的一部分。然后，他们会将这些设计授权给制造商，制造商反过来以物理硬件的形式实施这些设计
+（可能会进行一些自己的调整），然后可以出售。Arm在这方面的战略与英特尔等公司不同，后者既设计<em>并</em>制造芯片。</p>
+<p>Arm许可了一堆不同的设计。他们的"Cortex-M"系列设计主要用作微控制器的核心。
+例如，Cortex-M0（我们的芯片所基于的内核）专为低成本和低功耗而设计。
+Cortex-M7成本更高，但功能和性能更多。</p>
+<p>幸运的是，为了本书，您不需要对不同类型的处理器或Cortex设计有太多了解。但是，希望您现在对设备的术语有更多的了解。
+当您专门使用nRF51822时，您可能会发现自己正在阅读文档并使用基于Cortex-M的芯片的工具，因为nRF51822基于Cortex-M设计。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="rust-embedded-术语"><a class="header" href="#rust-embedded-术语">Rust Embedded 术语</a></h1>
+<p>在深入研究micro:bit编程之前，让我们快速浏览一下对未来所有章节都非常重要的库和术语。</p>
+<h2 id="抽象层abstraction-layers"><a class="header" href="#抽象层abstraction-layers">抽象层（Abstraction layers）</a></h2>
+<p>对于任何完全受支持的微控制器/带有微控制器的板，您通常会听到以下术语用于它们的抽象级别：</p>
+<h3 id="外设访问箱-pac"><a class="header" href="#外设访问箱-pac">外设访问箱 (PAC)</a></h3>
+<p>PAC的工作是为芯片的外围设备提供一个安全的(ish)直接接口，允许您根据需要配置每一个最后一位（当然也以错误的方式）。
+通常，如果更高的层不能满足您的需求或者您正在开发它们时，您只需要处理PAC。我们（毫无疑问）要使用的PAC是用于<a href="https://crates.io/crates/nrf52833-pac">nRF52</a>
+或用于<a href="https://crates.io/crates/nrf51">nRF51</a>的PAC。</p>
+<h3 id="硬件抽象层-hal"><a class="header" href="#硬件抽象层-hal">硬件抽象层 (HAL)</a></h3>
+<p>HAL的工作是在芯片的PAC之上构建，并提供一个抽象，该抽象实际上可用于不了解该芯片所有特殊行为的人。
+通常，它们将整个外围设备抽象为单个结构，例如，这些结构可用于通过外围设备发送数据。
+我们将分别使用<a href="https://crates.io/crates/nrf52833-hal">nRF52-hal</a>或<a href="https://crates.io/crates/nrf51-hal">nRF51-hal</a>。</p>
+<h3 id="board-support-crate-历史上称为-board-support-package-或-bsp"><a class="header" href="#board-support-crate-历史上称为-board-support-package-或-bsp">Board Support Crate (历史上称为 Board Support Package, 或 BSP)</a></h3>
+<p>BSP的工作是一次性抽象出整个板子 (例如micro:bit) 。这意味着它必须提供抽象来使用微控制器以及板上可能存在的传感器、LED等。
+很多时候（尤其是使用定制板），您将只使用芯片的HAL并自己构建传感器的驱动程序或在crates.io上搜索它们。不过对我们来说幸运的是，
+micro:bit确实有一个<a href="https://crates.io/crates/microbit">BSP</a>，所以我们也将在HAL之上使用它。</p>
+<h2 id="统一图层unifying-the-layers"><a class="header" href="#统一图层unifying-the-layers">统一图层（Unifying the layers）</a></h2>
+<p>接下来我们将看看Rust Embedded world中一个非常核心的软件：<a href="https://crates.io/crates/embedded-hal"><code>embedded-hal</code></a>。顾名思义，它与我们
+了解的第二层抽象有关：HALs。背后的想法<a href="https://crates.io/crates/embedded-hal"><code>embedded-hal</code></a>是提供一组描述行为的特征，这些特征通常在
+所有 HAL 中特定外围设备的所有实现中共享。例如，人们总是希望具有能够打开或关闭引脚电源的功能。
+例如打开和关闭板上的 LED。 这允许我们为温度传感器编写驱动程序，该驱动程序可以在任何<a href="https://crates.io/crates/embedded-hal"><code>embedded-hal</code></a>
+存在特征实现的芯片上使用， 只需以仅依赖于<a href="https://crates.io/crates/embedded-hal"><code>embedded-hal</code></a>traits。以这种方式编写的驱动程序被称
+为平台无关， 幸运的是，crates.io上的大多数驱动程序实际上都是平台无关的。</p>
+<h2 id="进一步阅读"><a class="header" href="#进一步阅读">进一步阅读</a></h2>
+<p>如果您想了解有关这些抽象级别的更多信息，Franz Skarman（又名<a href="https://github.com/TheZoq2/">TheZoq2</a>）在Oxidize 2020期间举行
+了一次关于这个主题的演讲，名为<a href="https://www.youtube.com/watch?v=vLYit_HHPaY">An Overview of the Embedded Rust Ecosystem</a>。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="led轮盘"><a class="header" href="#led轮盘">LED轮盘</a></h1>
+<p>好的，让我们从构建以下应用程序开始：</p>
+<p align="center">
+<video src="../assets/roulette_fast.mp4" loop autoplay>
+</p>
+<p>我将为您提供一个高级API来实现这个应用程序，但不要担心我们稍后会做一些低级的事情。本章的主要目标是熟悉<em>闪烁</em>和调试过程。</p>
+<p>入门代码位于directory存储库<code>src</code>的目录中。在该目录中，还有更多以本书每一章命名的目录。这些目录中的大多数都是启动Cargo项目。</p>
+<p>现在，跳转到<code>src/05-led-roulette</code>目录。检查<code>src/main.rs</code>文件：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_halt as _;
+use microbit as _;
+
+#[entry]
+fn main() -&gt; ! {
+    let _y;
+    let x = 42;
+    _y = x;
+
+    // infinite loop; just so we don't leave this stack frame
+    loop {}
+}</code></pre></pre>
+<p>微控制器程序在两个方面不同于标准程序：<code>#![no_std]</code>和<code>#![no_main]</code>。</p>
+<p>该<code>no_std</code>属性表示该程序不会使用<code>std</code>假定底层操作系统的crate；该程序将改为使用<code>core</code> crate，它
+的一个子集<code>std</code>可以在裸机系统上运行（即，没有OS抽象的系统，如文件和套接字）。</p>
+<p>该<code>no_main</code>属性表示该程序不会使用标准<code>main</code>接口，该接口是为接收参数的命令行应用程序量身定制的。
+<code>main</code>我们将使用crate中的<code>entry</code>属性<a href="https://crates.io/crates/cortex-m-rt"><code>cortex-m-rt</code></a>crate来定义自定义入口点，而不是标准。在这个程
+序中，我们将入口点命名为"main"，但也可以使用任何其他名称。入口点函数必须有签名<code>fn() -&gt; !</code>；这种类型表示
+函数不能返回--这意味着程序永远不会终止。</p>
+<p>如果你是一个细心的观察者，你也会注意到Cargo项目中有一个<code>.cargo</code>目录。该目录包含一个Cargo配置文件
+(<code>.cargo/config</code>)，它调整链接过程以根据目标设备的要求调整程序的内存布局。这个修改后的链接过
+程是<code>cortex-m-rt</code>crate的要求。</p>
+<p>此外，还有一个<code>Embed.toml</code>文件</p>
+<pre><code class="language-toml">[default.general]
+# chip = "nrf52833_xxAA" # uncomment this line for micro:bit V2
+# chip = "nrf51822_xxAA" # uncomment this line for micro:bit V1
+
+[default.reset]
+halt_afterwards = true
+
+[default.rtt]
+enabled = false
+
+[default.gdb]
+enabled = true
+</code></pre>
+<p>该文件提供<code>cargo-embed</code>：</p>
+<ul>
+<li>我们正在使用nrf52833或nrf51822，您将再次必须从正在使用的芯片中删除注释，就像您在第3章中所做的那样。</li>
+<li>我们希望在闪存之后停止芯片，这样我们的程序就不会立即跳转到循环</li>
+<li>我们想禁用RTT，RTT是一种允许芯片向调试器发送文本的协议。您实际上已经看到了RTT的实际应用，它是在第3章中发送"Hello World"的协议。</li>
+<li>我们要启用GDB，这将是调试过程所必需的</li>
+</ul>
+<p>好的，让我们从构建这个程序开始。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="构建"><a class="header" href="#构建">构建</a></h1>
+<p>第一步是构建我们的"binary" crate。因为微控制器的架构与您的计算机不同，所以我们必须交叉编译。
+在Rust领域进行交叉编译就像向<code>rustc</code>或Cargo传递一个额外的<code>--target</code>标志一样简单。
+复杂的部分是弄清楚这个标志的参数：目标的<em>名称</em>。</p>
+<p>我们已经知道micro:bit v2上的微控制器内部有一个Cortex-M4F处理器，v1上的那个是Cortex-M0。
+<code>rustc</code>知道如何交叉编译到Cortex-M架构，并提供了几个不同的目标，涵盖了该架构中的不同处理器系列：</p>
+<ul>
+<li><code>thumbv6m-none-eabi</code>，适用于Cortex-M0和Cortex-M1处理器</li>
+<li><code>thumbv7m-none-eabi</code>，适用于Cortex-M3处理器</li>
+<li><code>thumbv7em-none-eabi</code>，适用于Cortex-M4和Cortex-M处理器</li>
+<li><code>thumbv7em-none-eabihf</code>，适用于Cortex-M4<strong>F</strong>和Cortex-M7<strong>F</strong>处理器</li>
+<li><code>thumbv8m.main-none-eabi</code>，适用于Cortex-M33和Cortex-M35P处理器</li>
+<li><code>thumbv8m.main-none-eabihf</code>，适用于Cortex-M33<strong>F</strong>和Cortex-M35P<strong>F</strong>处理器</li>
+</ul>
+<p>对于micro:bit v2，我们将使用<code>thumbv7em-none-eabihf</code>target，对于v1，我们将使用<code>thumbv6m-none-eabi</code>target。
+在交叉编译之前，您必须为您的目标下载标准库的预编译版本（实际上是它的简化版本）。这是使用<code>rustup</code>:</p>
+<pre><code class="language-console"># For micro:bit v2
+$ rustup target add thumbv7em-none-eabihf
+# For micro:bit v1
+$ rustup target add thumbv6m-none-eabi
+</code></pre>
+<p>您只需执行上述步骤一次；每当您更新工具链时，<code>rustup</code>都会重新安装新的(<code>rust-std</code>组件)。
+因此如果您在<a href="05-led-roulette/../03-setup/verify.html#verifying-cargo-embed">验证步骤</a>时已经添加了必要的target，则可以跳过此步骤。</p>
+<p>有了<code>rust-std</code>组件，您现在可以使用Cargo交叉编译程序：</p>
+<pre><code class="language-console"># make sure you are in the `src/05-led-roulette` directory
+
+# For micro:bit v2
+$ cargo build --features v2 --target thumbv7em-none-eabihf
+   Compiling semver-parser v0.7.0
+   Compiling typenum v1.12.0
+   Compiling cortex-m v0.6.3
+   (...)
+   Compiling microbit-v2 v0.10.1
+    Finished dev [unoptimized + debuginfo] target(s) in 33.67s
+
+# For micro:bit v1
+$ cargo build --features v1 --target thumbv6m-none-eabi
+   Compiling fixed v1.2.0
+   Compiling syn v1.0.39
+   Compiling cortex-m v0.6.3
+   (...)
+   Compiling microbit v0.10.1
+	Finished dev [unoptimized + debuginfo] target(s) in 22.73s
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：一定要编译这个crate<em>而不进行</em>优化。上面提供的Cargo.toml文件和构建命令将确保优化关闭。</p>
+</blockquote>
+<p>好的，现在我们已经生成了一个可执行文件。这个可执行文件不会闪烁任何LED，它只是一个简化版本，我
+们将在本章后面进行构建。作为健全性检查，让我们验证生成的可执行文件实际上是ARM二进制文件：</p>
+<pre><code class="language-console"># For micro:bit v2
+# equivalent to `readelf -h target/thumbv7em-none-eabihf/debug/led-roulette`
+$ cargo readobj --features v2 --target thumbv7em-none-eabihf --bin led-roulette -- --file-headers
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0x117
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          793112 (bytes into file)
+  Flags:                             0x5000400
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         4
+  Size of section headers:           40 (bytes)
+  Number of section headers:         21
+  Section header string table index: 19
+
+# For micro:bit v1
+# equivalent to `readelf -h target/thumbv6m-none-eabi/debug/led-roulette`
+$ cargo readobj --features v1 --target thumbv6m-none-eabi --bin led-roulette -- --file-headers
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+ELF Header:
+  Magic:   7f 45 4c 46 01 01 01 00 00 00 00 00 00 00 00 00
+  Class:                             ELF32
+  Data:                              2's complement, little endian
+  Version:                           1 (current)
+  OS/ABI:                            UNIX - System V
+  ABI Version:                       0
+  Type:                              EXEC (Executable file)
+  Machine:                           ARM
+  Version:                           0x1
+  Entry point address:               0xC1
+  Start of program headers:          52 (bytes into file)
+  Start of section headers:          693196 (bytes into file)
+  Flags:                             0x5000200
+  Size of this header:               52 (bytes)
+  Size of program headers:           32 (bytes)
+  Number of program headers:         4
+  Size of section headers:           40 (bytes)
+  Number of section headers:         22
+  Section header string table index: 20
+</code></pre>
+<p>接下来，我们将把程序嵌入到我们的微控制器中。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="闪存"><a class="header" href="#闪存">闪存</a></h1>
+<p>闪存是将我们的程序移动到微控制器（永久）存储器中的过程。一旦刷写完成，每次上电时，单片机都会执行刷写的程序。</p>
+<p>在这种情况下，我们的<code>led-roulette</code>程序将是微控制器内存中<em>唯一</em>的程序。 意思是微控制器上没有其他
+任何东西在运行：没有操作系统，没有"守护进程"，什么都没有。<code>led-roulette</code>完全控制设备。</p>
+<p>由于<code>cargo embed</code>，闪存二进制文件本身非常简单。</p>
+<p>不过，在执行该命令之前，让我们看看它实际上做了什么。如果您看一下micro:bit的侧面，USB连接器朝
+上，您会注意到那里实际上有2个黑色方块 （在micro:bit v2上，有第三个也是最大的一个，它是一个扬声器），一个
+是我们已经谈过的MCU，但另一个是干什么用的？另一个芯片有3个主要用途：</p>
+<ol>
+<li>从USB连接器向我们的MCU供电</li>
+<li>为我们的MCU提供一个串口转USB桥接器（我们将在后面的章节中研究）</li>
+<li>作为程序/调试器（这是目前的相关目的）</li>
+</ol>
+<p>基本上，该芯片充当我们的计算机（通过 USB 连接到它）和MCU（通过迹线连接到它并使用 SWD 协议与
+之通信之间的桥梁。 这个桥使我们能够将新的二进制文件闪存到MCU上，通过调试器和其他东西检查它的状态。</p>
+<p>所以让我们闪存吧！</p>
+<pre><code class="language-console"># For micro:bit v2
+$ cargo embed --features v2 --target thumbv7em-none-eabihf
+  (...)
+     Erasing sectors ✔ [00:00:00] [####################################################################################################################################################]  2.00KiB/ 2.00KiB @  4.21KiB/s (eta 0s )
+ Programming pages   ✔ [00:00:00] [####################################################################################################################################################]  2.00KiB/ 2.00KiB @  2.71KiB/s (eta 0s )
+    Finished flashing in 0.608s
+
+# For micro:bit v1
+$ cargo embed --features v1 --target thumbv6m-none-eabi
+  (...)
+     Erasing sectors ✔ [00:00:00] [####################################################################################################################################################]  2.00KiB/ 2.00KiB @  4.14KiB/s (eta 0s )
+ Programming pages   ✔ [00:00:00] [####################################################################################################################################################]  2.00KiB/ 2.00KiB @  2.69KiB/s (eta 0s )
+    Finished flashing in 0.614s
+</code></pre>
+<p>您会注意到<code>cargo-embed</code>在输出最后一行后会出现块，这是有意的，您不应该关闭它，因为我们需要在此
+状态下进行下一步：调试它！此外， 您会注意到<code>cargo build</code>和<code>cargo embed</code>实际上传递了相同的标志，
+这是因为<code>cargo embed</code>实际执行构建，然后将生成的二进制文件闪存到芯片上，因此如果您以后想要闪存，可以
+在将来省去<code>cargo build</code>步骤。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="调试"><a class="header" href="#调试">调试</a></h1>
+<h2 id="这是怎么工作的"><a class="header" href="#这是怎么工作的">这是怎么工作的？</a></h2>
+<p>在调试我们的小程序之前，让我们花点时间快速了解这里实际发生的情况。在上一章中，我们已经讨论了
+开发板上第二个芯片的用途以及它如何与我们的计算机通信， 但我们如何实际使用它呢？</p>
+<p><code>Embed.toml</code>中的option<code>default.gdb.enabled = true</code>使<code>cargo-embed</code>在闪烁后打开了一个所谓的"GDB stub"，
+这是我们的GDB可以连接到的服务器，并向其发送"在地址X设置断点"等命令。然后，服务器可以自行决定如何处理该命令。
+在<code>cargo-embed</code>GDB stub 的情况下，它将通过USB将命令转发到板上进行调试指针，然后为我们实际与MCU通信。</p>
+<h2 id="让我们调试"><a class="header" href="#让我们调试">让我们调试！</a></h2>
+<p>由于<code>cargo-embed</code>阻塞了我们当前的shell，我们可以简单地打开一个新的shell，然后cd回到我们的项目
+目录。 一旦我们到达那里，我们首先必须像这样在gdb中打开二进制文件：</p>
+<pre><code class="language-shell"># For micro:bit v2
+$ gdb target/thumbv7em-none-eabihf/debug/led-roulette
+
+# For micro:bit v1
+$ gdb target/thumbv6m-none-eabi/debug/led-roulette
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：根据您安装的GDB，您将不得不使用不同的命令来启动它，如果您忘记了它是哪一个，请查看<a href="05-led-roulette/../03-setup/index.html#tools">第三章</a>。</p>
+</blockquote>
+<blockquote>
+<p><strong>注意</strong>：如果<code>cargo-embed</code>在这里打印很多警告，请不要担心。到目前为止，它还没有完全实现GDB
+协议，因此可能无法识别GDB发送给它的所有命令，只要它不崩溃，就可以了。</p>
+</blockquote>
+<p>接下来我们必须连接到GDB stub。它在<code>localhost:1337</code>默认情况下运行，因此为了连接到它运行以下命令：</p>
+<pre><code class="language-shell">(gdb) target remote :1337
+Remote debugging using :1337
+0x00000116 in nrf52833_pac::{{impl}}::fmt (self=0xd472e165, f=0x3c195ff7) at /home/nix/.cargo/registry/src/github.com-1ecc6299db9ec823/nrf52833-pac-0.9.0/src/lib.rs:157
+157     #[derive(Copy, Clone, Debug)]
+</code></pre>
+<p>接下来我们要做的是进入程序的主要功能。我们将首先在此处设置断点并继续执行程序，直到遇到断点：</p>
+<pre><code>(gdb) break main
+Breakpoint 1 at 0x104: file src/05-led-roulette/src/main.rs, line 9.
+Note: automatically using hardware breakpoints for read-only addresses.
+(gdb) continue
+Continuing.
+
+Breakpoint 1, led_roulette::__cortex_m_rt_main_trampoline () at src/05-led-roulette/src/main.rs:9
+9       #[entry]
+</code></pre>
+<p>断点可用于停止程序的正常流程。该<code>continue</code>命令将让程序自由运行，<em>直到</em>它到达断点。在这种情况下，
+直到它到达<code>main</code>函数，因为那里有一个断点。</p>
+<p>请注意，GDB输出显示"断点1"。请记住，我们的处理器只能使用有限数量的这些断点，因此最好注意这些消息。
+如果您碰巧用完了断点， 您可以使用<code>info break</code>列出所有当前的断点，并使用<code>delete &lt;breakpoint-num&gt;</code>删除所需的断点。</p>
+<p>为了获得更好的调试体验，我们将使用GDB的文本用户界面 (TUI)。要进入该模式，请在GDB shell上输入以下命令：</p>
+<pre><code>(gdb) layout src
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：向Windows用户致歉。GNU ARM Embedded Toolchain附带的GDB不支持这种TUI模式<code>:-(</code>。</p>
+</blockquote>
+<p><img src="05-led-roulette/../assets/gdb-layout-src.png" alt="GDB session" title="GDB TUI" /></p>
+<p>GDB的break命令不仅适用于函数名，它还可以在某些行号处中断。如果我们想跳过第13行，我们可以简单地做：</p>
+<pre><code>(gdb) break 13
+Breakpoint 2 at 0x110: file src/05-led-roulette/src/main.rs, line 13.
+(gdb) continue
+Continuing.
+
+Breakpoint 2, led_roulette::__cortex_m_rt_main () at src/05-led-roulette/src/main.rs:13
+(gdb)
+</code></pre>
+<p>您可以随时使用以下命令离开TUI模式：</p>
+<pre><code>(gdb) tui disable
+</code></pre>
+<p>我们现在正在<code>_y = x</code>语句"上"; 该语句尚未执行。这意味着<code>x</code>被初始化，但<code>_y</code>未被初始化。让我们使用<code>print</code>命令检查这些堆栈/局部变量：</p>
+<pre><code>(gdb) print x
+$1 = 42
+(gdb) print &amp;x
+$2 = (*mut i32) 0x20003fe8
+(gdb)
+</code></pre>
+<p>正如预期的那样，<code>x</code>包含值<code>42</code>。命令<code>print &amp;x</code>打印变量<code>x</code>的地址。这里有趣的一点是GDB输出显示了引
+<code>i32*</code>，一个指向<code>i32</code>值的指针。</p>
+<p>如果我们想逐行继续执行程序，我们可以使用<code>next</code>命令来做到这一点，所以让我们继续执行<code>loop {}</code>语句：</p>
+<pre><code>(gdb) next
+16          loop {}
+</code></pre>
+<p><code>_y</code>现在应该被初始化。</p>
+<pre><code>(gdb) print _y
+$5 = 42
+</code></pre>
+<p>您也可以使用<code>info locals</code>命令，而不是逐个打印局部变量：</p>
+<pre><code>(gdb) info locals
+x = 42
+_y = 42
+(gdb)
+</code></pre>
+<p>如果我们在<code>loop {}</code>语句的顶部再次使用<code>next</code>，我们将陷入困境，因为程序永远不会传递该语句。
+相反，我们将使用<code>layout asm</code>命令切换到反汇编视图，并使用<code>stepi</code>一次前进一条指令。通过再次发出
+<code>layout src</code>命令，您可以随时切换回Rust源代码视图。</p>
+<blockquote>
+<p><strong>NOTE</strong>: 如果您错误地使用了<code>next</code>或<code>continue</code>命令，并且GDB卡住了，您可以通过点击<code>Ctrl+C</code>来取消卡住。</p>
+</blockquote>
+<pre><code>(gdb) layout asm
+</code></pre>
+<p><img src="05-led-roulette/../assets/gdb-layout-asm.png" alt="GDB session" title="GDB disassemble" /></p>
+<p>如果您不使用TUI模式，您可以使用该<code>disassemble /m</code>命令围绕您当前所在的行反汇编程序。</p>
+<pre><code>(gdb) disassemble /m
+Dump of assembler code for function _ZN12led_roulette18__cortex_m_rt_main17h3e25e3afbec4e196E:
+10      fn main() -&gt; ! {
+   0x0000010a &lt;+0&gt;:     sub     sp, #8
+   0x0000010c &lt;+2&gt;:     movs    r0, #42 ; 0x2a
+
+11          let _y;
+12          let x = 42;
+   0x0000010e &lt;+4&gt;:     str     r0, [sp, #0]
+
+13          _y = x;
+   0x00000110 &lt;+6&gt;:     str     r0, [sp, #4]
+
+14
+15          // infinite loop; just so we don't leave this stack frame
+16          loop {}
+=&gt; 0x00000112 &lt;+8&gt;:     b.n     0x114 &lt;_ZN12led_roulette18__cortex_m_rt_main17h3e25e3afbec4e196E+10&gt;
+   0x00000114 &lt;+10&gt;:    b.n     0x114 &lt;_ZN12led_roulette18__cortex_m_rt_main17h3e25e3afbec4e196E+10&gt;
+
+End of assembler dump.
+</code></pre>
+<p>看到左侧的箭头<code>=&gt;</code>了吗？它显示处理器下一步将执行的指令。</p>
+<p>如果不在TUI模式下，在每个<code>stepi</code>命令上，GDB将打印语句和处理器下一步将执行的指令的行号。</p>
+<pre><code>(gdb) stepi
+16          loop {}
+(gdb) stepi
+16          loop {}
+</code></pre>
+<p>在我们转到更有趣的事情之前，最后一个技巧。在GDB中输入以下命令：</p>
+<pre><code>(gdb) monitor reset
+(gdb) c
+Continuing.
+
+Breakpoint 1, led_roulette::__cortex_m_rt_main_trampoline () at src/05-led-roulette/src/main.rs:9
+9       #[entry]
+(gdb)
+</code></pre>
+<p>我们现在又回到了<code>main</code>起点！</p>
+<p><code>monitor reset</code>将重置微控制器并在程序入口点停止它。以下<code>continue</code>命令将让程序自由运行，直到它
+到达具有断点的<code>main</code>函数。</p>
+<p>当您错误地跳过了程序的一部分时，这个组合非常方便，对检查感兴趣。您可以轻松地将程序的状态回滚到其最新状态开始</p>
+<blockquote>
+<p><strong>细节</strong>：此<code>reset</code>命令不清除或触摸RAM。该内存将保留上次运行时的值。不过，这不应该是一个问
+题，除非您的程序行为取决于<em>未初始化</em>变量的值，但这就是未定义行为(UB)的定义。</p>
+</blockquote>
+<p>我们完成了这个调试会话。你可以用<code>quit</code>命令结束它。</p>
+<pre><code>(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [Remote target] will be detached.
+
+Quit anyway? (y or n) y
+Detaching from program: $PWD/target/thumbv7em-none-eabihf/debug/led-roulette, Remote target
+Ending remote debugging.
+[Inferior 1 (Remote target) detached]
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：如果您不喜欢默认的GDB CLI，请查看<a href="https://github.com/cyrus-and/gdb-dashboard#gdb-dashboard">gdb-dashboard</a>。它使用Python将默认的GDB CLI转换为
+显示寄存器、源视图、程序集视图和其他内容的仪表板。</p>
+</blockquote>
+<p>如果您想了解更多关于GDB的功能，请查看<a href="05-led-roulette/../appendix/2-how-to-use-gdb/">如何使用GDB</a>部分。</p>
+<p>下一步是什么？我承诺的高级API。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="点亮"><a class="header" href="#点亮">点亮</a></h1>
+<h2 id="embedded-hal"><a class="header" href="#embedded-hal">embedded-hal</a></h2>
+<p>在本章中，我们将点亮micro:bit背面的众多LED中的一个，因为这基本上是嵌入式编程的"Hello World"。
+为了完成这项任务，我们将使用提供的特性之一<code>embedded-hal</code>，特别是<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/trait.OutputPin.html"><code>OutputPin</code></a>允许我们打开或关闭引脚的特性。</p>
+<h2 id="microbit-leds"><a class="header" href="#microbit-leds">micro:bit LEDs</a></h2>
+<p>在micro:bit的背面，您可以看到一个5x5方形的LED，通常称为LED矩阵。使用这种矩阵对齐方式，我们不
+必使用25个单独的引脚来驱动每个LED， 而只需使用10(5+5)个引脚来控制矩阵的哪一列和哪一行点亮。</p>
+<blockquote>
+<p><strong>注意</strong>：micro:bit v1团队的实现方式略有不同。他们的<a href="https://tech.microbit.org/hardware/schematic/">原理图页面</a>说它实际上是作为3x9矩阵实现的，但有几列根本没有使用。</p>
+</blockquote>
+<p>通常，为了确定我们必须控制哪些特定引脚以点亮特定 LED，我们现在必须分别读取<a href="https://github.com/microbit-foundation/microbit-v2-hardware/blob/main/V2.00/MicroBit_V2.0.0_S_schematic.PDF">micro:bit v2 原理图</a>或<a href="https://github.com/bbcmicrobit/hardware/blob/master/V1.5/SCH_BBC-Microbit_V1.5.PDF">micro:bit v1 原理图</a>。
+幸运的是，我们可以使用前面提到的micro:bit BSP，它将所有这些都很好地抽象出来。</p>
+<h2 id="居然亮了"><a class="header" href="#居然亮了">居然亮了！</a></h2>
+<p>点亮矩阵中的LED所需的代码实际上非常简单，但需要一些设置。首先看一下，然后我们可以一步一步地进行：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_halt as _;
+use microbit::board::Board;
+use microbit::hal::prelude::*;
+
+#[entry]
+fn main() -&gt; ! {
+    let mut board = Board::take().unwrap();
+
+    board.display_pins.col1.set_low().unwrap();
+    board.display_pins.row1.set_high().unwrap();
+
+    loop {}
+}</code></pre></pre>
+<p>main函数的前几行只是做一些我们之前已经看过的基本导入和设置。但是，main函数看起来与我们现在看到的完全不同。</p>
+<p>第一行与大多数用Rust编写的HAL在内部如何工作有关。如前所述，它们建立在拥有（在Rust意义上）芯片的所有外围设备的PAC Crate之上。
+<code>let mut board = Board::take().unwrap();</code>基本上从PAC中获取所有这些外围设备并将它们绑定到一个变量。
+在这种特定情况下，我们不仅使用HAL，而且使用整个BSP，因此这也获得了板上其他芯片的 Rust 表示的所有权。</p>
+<blockquote>
+<p><strong>注意</strong>：如果您想知道为什么我们必须在这里调用<code>unwrap()</code>，理论上可以多次调用<code>take()</code>这将导致
+外围设备由两个单独的变量表示，因此会出现许多可能的混淆行为，因为两个变量修改相同的资源。
+为了避免这种情况，PAC的实现方式是， 如果您两次尝试使用外围设备，它会出现panic。</p>
+</blockquote>
+<p>现在，我们可以通过将<code>row1</code>引脚设置为高（即打开）来点亮连接到<code>row1</code>，<code>col1</code>的LED。
+我们可以将<code>col1</code>设置为低的原因是因为LED矩阵电路的工作方式。此外，<code>embedded-hal</code>的设计方式是，硬件
+上的每个操作都可能返回错误，即使只是打开或关闭引脚。因为这在我们的情况下是极不可能的，所以我们可以只<code>unwrap()</code>结果。</p>
+<h2 id="测试"><a class="header" href="#测试">测试</a></h2>
+<p>测试我们的小程序非常简单。先把它放到<code>src/main.rs</code>。然后，我们只需再次运行最后一节中的
+<code>cargo embed</code>命令，让它像以前一样闪烁。然后打开我们的GDB并连接到GDB stub:</p>
+<pre><code>$ # Your GDB debug command from the last section
+(gdb) target remote :1337
+Remote debugging using :1337
+cortex_m_rt::Reset () at /home/nix/.cargo/registry/src/github.com-1ecc6299db9ec823/cortex-m-rt-0.6.12/src/lib.rs:489
+489     pub unsafe extern "C" fn Reset() -&gt; ! {
+(gdb)
+</code></pre>
+<p>如果我们现在让程序通过GDB<code>continue</code>命令运行，micro:bit背面的LED之一应该会亮起。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="闪烁"><a class="header" href="#闪烁">闪烁</a></h1>
+<h2 id="delaying"><a class="header" href="#delaying">Delaying</a></h2>
+<p>现在我们将简要介绍一下delay抽象，<code>embedded-hal</code>后再将其与上一章中的GPIO抽象结合起来，以最终使LED闪烁。</p>
+<p><code>embedded-hal</code>为我们提供了两个抽象来延迟我们程序的执行：<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/delay/trait.DelayUs.html"><code>DelayUs</code></a>和<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/delay/trait.DelayMs.html"><code>DelayMs</code></a>。
+除了它们的延迟函数接受不同的单位外，它们基本上都以完全相同的方式工作。</p>
+<p>在我们的MCU内部，存在几个所谓的"定时器"。他们可以为我们做各种关于时间的事情，包括简单地暂停
+我们程序的执行一段固定的时间。 例如，一个非常简单的基于延迟的程序每秒打印一些内容可能如下所示：</p>
+<pre><code class="language-rs">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
+use panic_rtt_target as _;
+use microbit::board::Board;
+use microbit::hal::timer::Timer;
+use microbit::hal::prelude::*;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let mut board = Board::take().unwrap();
+
+    let mut timer = Timer::new(board.TIMER0);
+
+    loop {
+        timer.delay_ms(1000u16);
+        rprintln!("1000 ms passed");
+    }
+}
+</code></pre>
+<p>注意，我们在这里将panic实现从<code>panic_halt</code>更改为<code>panic_rtt_target</code>。这将要求您取消注释<code>Cargo.toml</code>
+中的两个RTT行，并注释<code>panic-halt</code>，因为Rust一次只允许一个panic实现。</p>
+<p>为了真正看到打印，我们必须更改<code>Embed.toml</code>像这样：</p>
+<pre><code>[default.general]
+# chip = "nrf52833_xxAA" # uncomment this line for micro:bit V2
+# chip = "nrf51822_xxAA" # uncomment this line for micro:bit V1
+
+[default.reset]
+halt_afterwards = false
+
+[default.rtt]
+enabled = true
+
+[default.gdb]
+enabled = false
+</code></pre>
+<p>现在，在将代码放入<code>src/main.rs</code>和另一个<code>cargo embed</code> (再次使用之前使用的相同标志)
+后您应该会看到"<code>1000 ms passed</code>"每秒从MCU发送到控制台。</p>
+<h2 id="闪烁-1"><a class="header" href="#闪烁-1">闪烁</a></h2>
+<p>现在我们已经到了可以结合我们关于 GPIO 和延迟抽象的新知识的地步，以便真正使micro:bit 背面的LED闪烁。
+生成的程序实际上只是上面一个程序和上一节中打开LED的程序的混搭，如下所示：</p>
+<pre><code class="language-rs">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
+use panic_rtt_target as _;
+use microbit::board::Board;
+use microbit::hal::timer::Timer;
+use microbit::hal::prelude::*;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let mut board = Board::take().unwrap();
+
+    let mut timer = Timer::new(board.TIMER0);
+
+    board.display_pins.col1.set_low().unwrap();
+    let mut row1 = board.display_pins.row1;
+
+    loop {
+        row1.set_low().unwrap();
+        rprintln!("Dark!");
+        timer.delay_ms(1_000_u16);
+        row1.set_high().unwrap();
+        rprintln!("Light!");
+        timer.delay_ms(1_000_u16);
+    }
+}
+</code></pre>
+<p>在将代码放入<code>src/main.rs</code>和最后一个<code>cargo embed</code>（带有适当的标志）后，您应该看到我们在闪烁之前点亮的LED以及打印，
+每次LED从关闭变为打开，反之亦然。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="挑战"><a class="header" href="#挑战">挑战</a></h1>
+<p>你现在已经武装好迎接挑战了！你的任务是实现我在本章开头向你展示的应用程序。</p>
+<p>
+<video src="../assets/roulette_fast.mp4" loop autoplay>
+</p>
+<p>如果您不能确切地看到这里发生了什么，那么它的版本要慢得多：</p>
+<p>
+<video src="../assets/roulette_slow.mp4" loop autoplay>
+</p>
+<p>由于单独使用 LED 引脚非常烦人（特别是如果您必须像这里一样使用基本上所有这些引脚），
+您可以使用BSP提供的显示API。它是这样工作的：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+use microbit::{
+    board::Board,
+    display::blocking::Display,
+    hal::{prelude::*, Timer},
+};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+
+    let board = Board::take().unwrap();
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+    let light_it_all = [
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+        [1, 1, 1, 1, 1],
+    ];
+
+    loop {
+        // Show light_it_all for 1000ms
+        display.show(&amp;mut timer, light_it_all, 1000);
+        // clear the display again
+        display.clear();
+        timer.delay_ms(1000_u32);
+    }
+}</code></pre></pre>
+<p>有了这个API，您的任务基本上归结为只需计算适当的图像矩阵并将其传递到BSP。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="我的解决方案"><a class="header" href="#我的解决方案">我的解决方案</a></h1>
+<p>你想出了什么解决方案？</p>
+<p>这是我的，这可能是生成所需矩阵的最简单（但当然不是最漂亮）方法之一：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+use microbit::{
+    board::Board,
+    display::blocking::Display,
+    hal::Timer,
+};
+
+const PIXELS: [(usize, usize); 16] = [
+    (0,0), (0,1), (0,2), (0,3), (0,4), (1,4), (2,4), (3,4), (4,4),
+    (4,3), (4,2), (4,1), (4,0), (3,0), (2,0), (1,0)
+];
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+
+    let board = Board::take().unwrap();
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+    let mut leds = [
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+        [0, 0, 0, 0, 0],
+    ];
+
+    let mut last_led = (0,0);
+
+    loop {
+        for current_led in PIXELS.iter() {
+            leds[last_led.0][last_led.1] = 0;
+            leds[current_led.0][current_led.1] = 1;
+            display.show(&amp;mut timer, leds, 30);
+            last_led = *current_led;
+        }
+    }
+}</code></pre></pre>
+<p>还有一件事！检查您的解决方案在"release"模式下编译时是否也有效：</p>
+<pre><code class="language-console"># For micro:bit v2
+$ cargo embed --features v2 --target thumbv7em-none-eabihf --release
+  (...)
+
+# For micro:bit v1
+$ cargo embed --features v1 --target thumbv6m-none-eabi --release
+  (...)
+</code></pre>
+<p>如果要调试"release"模式二进制文件，则必须使用不同的 GDB 命令：</p>
+<pre><code class="language-console"># For micro:bit v2
+$ gdb target/thumbv7em-none-eabihf/release/led-roulette
+
+# For micro:bit v1
+$ gdb target/thumbv6m-none-eabi/release/led-roulette
+</code></pre>
+<p>二进制大小是我们应该时刻关注的！你的解决方案有多大？您可以使用<code>size</code>发布二进制文件上的命令进行检查：</p>
+<pre><code class="language-console"># For micro:bit v2
+$ cargo size --features v2 --target thumbv7em-none-eabihf -- -A
+    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+led-roulette  :
+section               size        addr
+.vector_table          256         0x0
+.text                26984       0x100
+.rodata               2732      0x6a68
+.data                    0  0x20000000
+.bss                  1092  0x20000000
+.uninit                  0  0x20000444
+.debug_abbrev        33941         0x0
+.debug_info         494113         0x0
+.debug_aranges       23528         0x0
+.debug_ranges       130824         0x0
+.debug_str          498781         0x0
+.debug_pubnames     143351         0x0
+.debug_pubtypes     124464         0x0
+.ARM.attributes         58         0x0
+.debug_frame         69128         0x0
+.debug_line         290580         0x0
+.debug_loc            1449         0x0
+.comment               109         0x0
+Total              1841390
+
+
+$ cargo size --features v2 --target thumbv7em-none-eabihf --release -- -A
+    Finished release [optimized + debuginfo] target(s) in 0.02s
+led-roulette  :
+section              size        addr
+.vector_table         256         0x0
+.text                6332       0x100
+.rodata               648      0x19bc
+.data                   0  0x20000000
+.bss                 1076  0x20000000
+.uninit                 0  0x20000434
+.debug_loc           9036         0x0
+.debug_abbrev        2754         0x0
+.debug_info         96460         0x0
+.debug_aranges       1120         0x0
+.debug_ranges       11520         0x0
+.debug_str          71325         0x0
+.debug_pubnames     32316         0x0
+.debug_pubtypes     29294         0x0
+.ARM.attributes        58         0x0
+.debug_frame         2108         0x0
+.debug_line         19303         0x0
+.comment              109         0x0
+Total              283715
+
+# micro:bit v1
+$ cargo size --features v1 --target thumbv6m-none-eabi -- -A
+    Finished dev [unoptimized + debuginfo] target(s) in 0.02s
+led-roulette  :
+section               size        addr
+.vector_table          168         0x0
+.text                28584        0xa8
+.rodata               2948      0x7050
+.data                    0  0x20000000
+.bss                  1092  0x20000000
+.uninit                  0  0x20000444
+.debug_abbrev        30020         0x0
+.debug_info         373392         0x0
+.debug_aranges       18344         0x0
+.debug_ranges        89656         0x0
+.debug_str          375887         0x0
+.debug_pubnames     115633         0x0
+.debug_pubtypes      86658         0x0
+.ARM.attributes         50         0x0
+.debug_frame         54144         0x0
+.debug_line         237714         0x0
+.debug_loc            1499         0x0
+.comment               109         0x0
+Total              1415898
+
+$ cargo size --features v1 --target thumbv6m-none-eabi --release -- -A
+    Finished release [optimized + debuginfo] target(s) in 0.02s
+led-roulette  :
+section              size        addr
+.vector_table         168         0x0
+.text                4848        0xa8
+.rodata               648      0x1398
+.data                   0  0x20000000
+.bss                 1076  0x20000000
+.uninit                 0  0x20000434
+.debug_loc           9705         0x0
+.debug_abbrev        3235         0x0
+.debug_info         61908         0x0
+.debug_aranges       1208         0x0
+.debug_ranges        5784         0x0
+.debug_str          57358         0x0
+.debug_pubnames     22959         0x0
+.debug_pubtypes     18891         0x0
+.ARM.attributes        50         0x0
+.debug_frame         2316         0x0
+.debug_line         18444         0x0
+.comment               19         0x0
+Total              208617
+
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：Cargo项目已经配置为使用LTO构建发布二进制文件。</p>
+</blockquote>
+<p>知道如何读取这个输出吗？该<code>text</code>部分包含程序说明。另一方面，<code>data</code>和<code>bss</code>部分包含静态分配在RAM
+中的变量（<code>static</code>变量）。如果你还记得你的micro:bit 上的微控制器规格，你应该注意到它的闪存实际上
+太小而无法包含这个二进制文件， 那么这怎么可能呢？正如我们从大小统计中看到的那样，大多数二进制
+文件实际上是由调试相关部分组成的，但是这些部分不会在任何时候刷新到微控制器， 毕竟它们与执行无关。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="串口通讯"><a class="header" href="#串口通讯">串口通讯</a></h1>
+<a href="https://en.wikipedia.org/wiki/File:Serial_port.jpg">
+<p>
+<img height="240" title="Standard serial port connector DE-9" src="https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Serial_port.jpg/800px-Serial_port.jpg">
+</p>
+</a>
+<p>
+<em>这就是我们将要使用的。我希望你的电脑有一个！</em>
+</p>
+<p>不，别担心。这种连接器DE-9很久以前在PC上已经过时了。它被通用串行总线（USB）取代。
+我们不会处理DE-9连接器本身，而是处理该电缆通常使用的通信协议。</p>
+<p>那么这个<a href="https://en.wikipedia.org/wiki/Asynchronous_serial_communication"><em>串口通讯</em></a>是什么？这是一种异步通信协议， 其中两个设备使用两条数据线（加上一个公共地线）
+<em>串行</em>交换数据，一次一位。该协议是异步的，因为这两条共享线路都不承载时钟信号。相反，双方必须就在通信发生
+<em>之前</em>沿线路发送数据的速度达成一致。该协议允许<em>双工</em>通信，因为数据可以同时从A发送到B以及从B发送到A。</p>
+<p>我们将使用此协议在微控制器和您的计算机之间交换数据。现在您可能会问自己，为什么我们没有像以前
+那样使用RTT。RTT是一种仅用于调试的协议。 您绝对无法找到实际使用RTT与生产中的其他设备进行通信
+的设备。但是，串行通信经常使用。例如，一些GPS接收器通过串行通信发送它们接收到的定位信息。</p>
+<p>您可能想问的下一个实际问题是：我们可以通过该协议以多快的速度发送数据？</p>
+<p>该协议适用于帧。每帧有一个<em>起始</em>bit，5到9bits有效载荷（数据）和1到2个<em>stop bits</em>。协议的速度称为<em>波特率</em>。
+以每秒位数 (bps) 为单位。常见的波特率有：9600、19200、38400、57600 和 115200 bps。</p>
+<p>实际回答这个问题：在1个起始bit，8个数据bits，1个stop bit和115200bps波特率的常见配置下，理论上每
+秒可以发送11,520帧。 由于每一帧都携带一个字节的数据，因此数据速率为11.52KB/s。实际上，由于通信
+较慢的一侧（微控制器）的处理时间，数据速率可能会较低。</p>
+<p>今天的计算机不支持串行通信协议。所以你不能直接将你的电脑连接到微控制器。不过幸运的是，micro:bit上的调试探针
+有一个所谓的USB转串口转换器。 这意味着转换器将位于两者之间，并为微控制器提供一个串行接口，并为您的计算机提供
+一个USB接口。微控制器会将您的计算机视为另一个串行设备，而您的计算机会将微控制器视为虚拟串行设备。</p>
+<p>现在，让我们熟悉一下您的操作系统提供的串行模块和串行通信工具。选择路线：</p>
+<ul>
+<li><a href="06-serial-communication/nix-tooling.html">*nix</a></li>
+<li><a href="06-serial-communication/windows-tooling.html">Windows</a></li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="nix-工具"><a class="header" href="#nix-工具">*nix 工具</a></h1>
+<h2 id="连接microbit板"><a class="header" href="#连接microbit板">连接micro:bit板</a></h2>
+<p>如果您将micro:bit板连接到您的计算机，您应该会看到一个新的TTY设备出现在<code>/dev</code>。</p>
+<pre><code class="language-console">$ # Linux
+$ dmesg | tail | grep -i tty
+[63712.446286] cdc_acm 1-1.7:1.1: ttyACM0: USB ACM device
+</code></pre>
+<p>这是USB&lt;-&gt;串行设备。在 Linux 上，它被命名为<code>tty*</code> (通常是<code>ttyACM*</code> 或 <code>ttyUSB*</code>)。
+在Mac OS<code>ls /dev/cu.usbmodem*</code>上将显示串行设备。</p>
+<p>但<code>ttyACM0</code>究竟是什么？当然是文件！一切都是*nix中的文件：</p>
+<pre><code>$ ls -l /dev/ttyACM0
+crw-rw----. 1 root plugdev 166, 0 Jan 21 11:56 /dev/ttyACM0
+</code></pre>
+<p>您可以通过简单地写入此文件来发送数据：</p>
+<pre><code class="language-console">$ echo 'Hello, world!' &gt; /dev/ttyACM0
+</code></pre>
+<p>每当您输入此命令时，您应该会看到micro:bit上的橙色LED，就在USB端口旁边，闪烁片刻。</p>
+<h2 id="minicom"><a class="header" href="#minicom">minicom</a></h2>
+<p>我们将使用程序<code>minicom</code>使用键盘与串行设备交互。</p>
+<p>我们必须先配置<code>minicom</code>然后才能使用它。有很多方法可以做到这一点，但我们将使用<code>.minirc.dfl</code>主目录中的文件。创建一个包含
+创建一个包含<code>~/.minirc.dfl</code>文件，包含以下内容：</p>
+<pre><code class="language-console">$ cat ~/.minirc.dfl
+pu baudrate 115200
+pu bits 8
+pu parity N
+pu stopbits 1
+pu rtscts No
+pu xonxoff No
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：确保此文件以换行符结尾！否则，<code>minicom</code>将无法读取它。</p>
+</blockquote>
+<p>该文件应该易于阅读（最后两行除外），但让我们逐行查看：</p>
+<ul>
+<li><code>pu baudrate 115200</code>。将波特率设置为115200bps。</li>
+<li><code>pu bits 8</code>。每帧8位。</li>
+<li><code>pu parity N</code>。无相同校验。</li>
+<li><code>pu stopbits 1</code>。1个stop bit。</li>
+<li><code>pu rtscts No</code>。没有硬件控制流</li>
+<li><code>pu xonxoff No</code>。没有软件控制流程。</li>
+</ul>
+<p>一旦这一切就绪，我们就可以启动<code>minicom</code>。</p>
+<pre><code class="language-console">$ # NOTE you may need to use a different device here
+$ minicom -D /dev/ttyACM0 -b 115200
+</code></pre>
+<p>这通过<code>minicom</code>在<code>/dev/ttyACM0</code>打开串行设备，并将其波特率设置为115200。将弹出基于文本的用户界面（TUI）。</p>
+<p>
+<img title="minicom" src="06-serial-communication/../assets/minicom.png">
+</p>
+<p>您现在可以使用键盘发送数据！请输入一些内容。请注意，文本UI不会回显您键入的内容。但是，如果你
+注意micro:bit顶部的黄色LED，你会注意到每当你键入某个内容时，它都会闪烁。</p>
+<h2 id="minicom命令"><a class="header" href="#minicom命令"><code>minicom</code>命令</a></h2>
+<p><code>minicom</code>通过键盘快捷键公开命令。在Linux上，快捷方式以<code>Ctrl+A</code>开头。 在Mac上，快捷键以<code>Meta</code>键开头。
+以下是一些有用的命令：</p>
+<ul>
+<li><code>Ctrl+A</code> + <code>Z</code>。Minicom 命令摘要</li>
+<li><code>Ctrl+A</code> + <code>C</code>。清除屏幕</li>
+<li><code>Ctrl+A</code> + <code>X</code>。退出并重置</li>
+<li><code>Ctrl+A</code> + <code>Q</code>。退出并重置</li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：Mac用户：在上述命令中，将<code>Ctrl+A</code>替换为<code>Meta</code>。</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="windows-工具"><a class="header" href="#windows-工具">Windows 工具</a></h1>
+<p>首先拔掉你的micro:bit。</p>
+<p>在插入micro:bit之前，在终端上运行以下命令：</p>
+<pre><code class="language-console">$ mode
+</code></pre>
+<p>它将打印连接到您的计算机的设备列表。以<code>COM</code>的名字开头的是串行设备。这是我们将要使用的设备。
+在插入串行模块<em>之前</em>请注意所有<code>COM</code><em>ports</em><code>mode</code>输出。</p>
+<p>现在，插入micro:bit并再次运行命令<code>mode</code>。如果您看到<code>COM</code>列表中出现了一个新端口，那么您就有了分
+配给micro:bit串行功能的COM端口。</p>
+<p>现在启动<code>putty</code>。将弹出一个GUI。</p>
+<p>
+<img title="PuTTY settings" src="06-serial-communication/../assets/putty-settings.png">
+</p>
+<p>在启动屏幕上，应该打开"会话"类别，选择"串行"作为"连接类型"。在"串行线路"字段中输入上一步中获得的<code>COM</code>设备，例如<code>COM3</code>。</p>
+<p>接下来，从左侧菜单中选择"连接/串行"类别。在这个新视图上，确保串行端口配置如下：</p>
+<ul>
+<li>"Speed (baud)": 115200</li>
+<li>"Data bits": 8</li>
+<li>"Stop bits": 1</li>
+<li>"Parity": None</li>
+<li>"Flow control": None</li>
+</ul>
+<p>最后，单击打开按钮。现在将显示一个控制台：</p>
+<p>
+<img title="PuTTY console" src="06-serial-communication/../assets/putty-console.png">
+</p>
+<p>如果您在此控制台上键入，micro:bit顶部的黄色LED将闪烁。每次按键应使LED闪烁一次。请注意，控制台
+不会回显您键入的内容，因此屏幕将保持空白。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="uart"><a class="header" href="#uart">UART</a></h1>
+<p>微控制器有一个称为UART的外围设备，它代表通用异步接收器/发送器。该外设可以配置为使用多种通信协议，如串行通信协议。</p>
+<p>在本章中，我们将使用串行通信在微控制器和您的计算机之间交换信息。</p>
+<blockquote>
+<p><strong>注意</strong>：在micro:bit v2上，我们将使用所谓的UARTE外设，它的行为就像一个普通的UART，
+除了HAL必须以不同的方式与之交谈。但是，这当然不是我们关心的问题。</p>
+</blockquote>
+<h2 id="安装"><a class="header" href="#安装">安装</a></h2>
+<p>与往常一样，从现在开始，您必须修改<code>Embed.toml</code>以匹配您的micro:bit版本：</p>
+<pre><code class="language-toml">[default.general]
+# chip = "nrf52833_xxAA" # uncomment this line for micro:bit V2
+# chip = "nrf51822_xxAA" # uncomment this line for micro:bit V1
+
+[default.reset]
+halt_afterwards = false
+
+[default.rtt]
+enabled = true
+
+[default.gdb]
+enabled = false
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="发送单个字节"><a class="header" href="#发送单个字节">发送单个字节</a></h1>
+<p>我们的第一个任务是通过串行连接从微控制器向计算机发送一个字节。</p>
+<p>为了做到这一点，我们将使用以下代码段（这个代码段已经在<code>07-uart/src/main.rs</code>中）：</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    nb::block!(serial.write(b'X')).unwrap();
+    nb::block!(serial.flush()).unwrap();
+
+    loop {}
+}</code></pre></pre>
+<p>这里最流行的新事物显然是<code>cfg</code>指令，它有条件地包含/排除部分代码。这主要是因为我们希望使用常规
+UART处理micro:bit v1和micro:bit v2。</p>
+<p>您还将注意到，这是我们第一次包含一些不是来自库的代码，即<code>serial_setup</code>模块。它的唯一目的是为
+UARTE提供一个很好的包装器，因此我们可以通过<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html"><code>embedded_hal::serial</code></a> traits。以与UART完全相同的
+方式使用它。 如果您愿意，您可以查看模块的具体功能，但通常不需要理解本章。</p>
+<p>除了这些区别之外，UART和UARTE的初始化过程非常相似，所以我们将只讨论UARTE初始化。UARTE使用以下代码进行初始化：</p>
+<pre><code class="language-rs">uarte::Uarte::new(
+    board.UARTE0,
+    board.uart.into(),
+    Parity::EXCLUDED,
+    Baudrate::BAUD115200,
+);
+</code></pre>
+<p>该函数拥有Rust中的UARTE外设表示(<code>board.UARTE0</code>)和板上的TX/RX引脚(<code>board.uart.into()</code>)，因此，
+在使用它们时，其他人不能干扰外置设备或我们的引脚。之后，我们将两个配置选项传递给构造函数：波特率（您应该熟悉）
+以及一个名为"对等"的选项。对等校验是一种允许串行通信线路检查其接收的数据在传输过程中是否损坏的方法。
+我们不想在这里使用它，所以我们只是排除它。然后我们将其封装在<code>UartePort</code>类型中这样我们就可以以与
+micro:bit v1的<code>serial</code>相同的方式使用它。</p>
+<p>初始化之后，我们通过新创建的uart实例发送<code>X</code>。这里的<code>block!</code>宏就是<code>nb::block!</code>宏。
+<code>nb</code>是是一个（引用其描述）"最小且可重用的非阻塞I/O层"。它允许我们编写可以在后台执行硬件操作的代码，
+同时我们可以进行其他工作（非阻塞）。然而，在这种情况下和其他许多情况下，我们对做其他工作没有兴趣，所以
+我们只是调用<code>block!</code>其将等待直到I/O操作完成并且已经成功或失败，然后正常继续执行。</p>
+<p>最后但并非最不重要的是，我们<code>flush()</code>串行端口。这是因为<code>embedded-hal::serial</code> traits的实现者可能决定缓冲输出，
+直到它接收到一定数量的要发送的字节（UARTE 实现就是这种情况）。调用<code>flush()</code>强制它写入当前拥有的字节，而不是等待更多。</p>
+<h2 id="测试-1"><a class="header" href="#测试-1">测试</a></h2>
+<p>在闪烁之前，您应该确保启动minicom/PuTTY，因为我们通过串行通信接收的数据没有备份或任何东西，
+我们必须实时查看。一旦您的串行监视器启动， 您可以像第5章中所述那样闪存程序：</p>
+<pre><code># For micro:bit v2
+$ cargo embed --features v2 --target thumbv7em-none-eabihf
+  (...)
+
+# For micro:bit v1
+$ cargo embed --features v1 --target thumbv6m-none-eabi
+</code></pre>
+<p>闪烁结束后，您应该会看到minicom/PuTTY终端上出现字符<code>X</code>，恭喜！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="发送字符串"><a class="header" href="#发送字符串">发送字符串</a></h1>
+<p>下一个任务是将整个字符串从微控制器发送到计算机。</p>
+<p>我想让你把<code>"The quick brown fox jumps over the lazy dog."</code>的字符串从微控制器发送到你的计算机。</p>
+<p>轮到你写程序了。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="简单的方法和write"><a class="header" href="#简单的方法和write">简单的方法和<code>write!</code></a></h1>
+<h2 id="简单的的方法"><a class="header" href="#简单的的方法">简单的的方法</a></h2>
+<p>您可能想出了一个类似于以下的程序：</p>
+<pre><code class="language-rs">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    for byte in b"The quick brown fox jumps over the lazy dog.\r\n".iter() {
+        nb::block!(serial.write(*byte)).unwrap();
+    }
+    nb::block!(serial.flush()).unwrap();
+
+    loop {}
+}
+</code></pre>
+<p>虽然这是一个完全有效的实现，但在某些时候，您可能希望拥有所有<code>print!</code>的所有好处！
+如参数格式等。如果您想知道如何做到这一点，请继续阅读。</p>
+<h2 id="write和corefmtwrite"><a class="header" href="#write和corefmtwrite"><code>write!</code>和<code>core::fmt::Write</code></a></h2>
+<p><code>core::fmt::Write</code> trait允许我们使用与使用<code>print!</code> 基本相同的方式实现它的任何结构在std世界。
+在这种情况下，来自<code>nrf</code>HAL的<code>Uart</code>结构确实实现了<code>core::fmt::Write</code>，因此我们可以将之前的程序重构为：</p>
+<pre><code class="language-rs">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+use core::fmt::Write;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    write!(serial, "The quick brown fox jumps over the lazy dog.\r\n").unwrap();
+    nb::block!(serial.flush()).unwrap();
+
+    loop {}
+}
+</code></pre>
+<p>如果您将这个程序闪存到您的micro:bit上，您将看到它在功能上等同于您提出的基于迭代器的程序。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="接收单个字节"><a class="header" href="#接收单个字节">接收单个字节</a></h1>
+<p>到目前为止，我们可以将数据从微控制器发送到您的计算机。是时候尝试相反的方法了：从计算机接收数据。
+幸运的是，<code>embedded-hal</code>再次让我们了解了这一点：</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    loop {
+        let byte = nb::block!(serial.read()).unwrap();
+        rprintln!("{}", byte);
+    }
+}</code></pre></pre>
+<p>与发送字节程序相比，唯一改变的部分是<code>main()</code>末尾的循环。在这里，我们使用<code>embedded-hal</code>提供的<code>read()</code>函数，
+以等待一个字节可用并读取它。然后，我们将该字节打印到RTT调试控制台中，以查看这些东西是否实际到达。</p>
+<p>请注意，如果您刷新此程序并开始在<code>minicom</code>中键入字符以将其发送给微控制器，您将只能在RTT控制台
+中看到数字，因为我们没有将收到的<code>u8</code>转换为实际<code>char</code>。由于从<code>u8</code>到<code>char</code>的转换非常简单，如果您真
+的想看到RTT控制台中的字符，我将把这个任务留给您。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="echo服务器"><a class="header" href="#echo服务器">Echo服务器</a></h1>
+<p>让我们将传输和接收合并到一个程序中，并编写一个echo服务器。echo服务器将接收到的相同文本发送回客户端。
+对于这个应用程序，微控制器将是服务器，您和您的计算机将是客户端。</p>
+<p>这应该很容易实现。（提示：逐字节执行）</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="反转字符串"><a class="header" href="#反转字符串">反转字符串</a></h1>
+<p>好的，接下来，让服务器以他们发送的文本的反向响应客户机，让服务器变得更有趣。
+每次按下ENTER键时，服务器都会响应客户端。每个服务器响应都将在新行中。</p>
+<p>这次你需要一个buffer；您可以使用<a href="https://docs.rs/heapless/latest/heapless/struct.Vec.html"><code>heapless::Vec</code></a>。以下是开始代码：</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use core::fmt::Write;
+use heapless::Vec;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    // A buffer with 32 bytes of capacity
+    let mut buffer: Vec&lt;u8, 32&gt; = Vec::new();
+
+    loop {
+        buffer.clear();
+
+        // TODO Receive a user request. Each user request ends with ENTER
+        // NOTE `buffer.push` returns a `Result`. Handle the error by responding
+        // with an error message.
+
+        // TODO Send back the reversed string
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="我的解决方案-1"><a class="header" href="#我的解决方案-1">我的解决方案</a></h1>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use core::fmt::Write;
+use heapless::Vec;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    // A buffer with 32 bytes of capacity
+    let mut buffer: Vec&lt;u8, 32&gt; = Vec::new();
+
+    loop {
+        buffer.clear();
+
+        loop {
+            // We assume that the receiving cannot fail
+            let byte = nb::block!(serial.read()).unwrap();
+
+            if buffer.push(byte).is_err() {
+                write!(serial, "error: buffer full\r\n").unwrap();
+                break;
+            }
+
+            if byte == 13 {
+                for byte in buffer.iter().rev().chain(&amp;[b'\n', b'\r']) {
+                    nb::block!(serial.write(*byte)).unwrap();
+                }
+                break;
+            }
+        }
+        nb::block!(serial.flush()).unwrap()
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="i2c"><a class="header" href="#i2c">I2C</a></h1>
+<p>我们刚刚看到了串行通信协议。它是一种广泛使用的协议，因为它非常简单，而且这种简单性使其易于在蓝牙和 USB 等其他协议之上实现。</p>
+<p>然而，它的简单性也是一个缺点。更精细的数据交换，如读取数字传感器，将需要传感器供应商在其之上提出另一种协议。</p>
+<p>(Un)幸运的是，嵌入式领域还有<em>大量</em>的其他通信协议。其中一些被广泛用于数字传感器。</p>
+<p>我们使用的micro:bit板中有两个运动传感器：一个加速度计和一个磁力计。这两个传感器都封装在一个组件中，可以通过I2C总线访问。</p>
+<p>I2C代表Inter-Integrated Circuit，是一种<em>同步串行</em>通信协议。它使用两条线来交换数据：一条数据线 (SDA) 和一条时钟线 (SCL)。
+因为使用时钟线来同步通信，所以这是一个<em>同步</em>协议。</p>
+<p>
+<img class="white_bg" height=360 title="I2C bus" src="https://upload.wikimedia.org/wikipedia/commons/0/04/I2C_controller-target.svg">
+</p>
+<p>该协议使用<em>主</em> <em>从</em>模型，其中主设备是<em>启动</em>和驱动与从设备通信的设备。多个设备，包括主设备和从设备，
+可以同时连接到同一总线。主设备可以通过首先将其<em>地址</em>广播到总线来与特定的从设备通信。该地址可以
+是7位或10位长。 一旦主设备<em>开始</em>与从设备通信，在主设备<em>停止</em>通信之前，其他设备都不能使用总线。</p>
+<p>时钟线决定了数据交换的速度，它通常以100kHz（标准模式）或400kHz（快速模式）的频率运行。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="通用协议"><a class="header" href="#通用协议">通用协议</a></h1>
+<p>I2C协议比串行通信协议更复杂，因为它必须支持多个设备之间的通信。让我们使用示例看看它是如何工作的：</p>
+<h2 id="主---从"><a class="header" href="#主---从">主 -&gt; 从</a></h2>
+<p>如果master要向slave发送数据：</p>
+<p>
+  <img class="white_bg" height=360 title="I2C bus" src="https://upload.wikimedia.org/wikipedia/commons/0/04/I2C_controller-target.svg">
+</p>
+<ol>
+<li>Controller: 广播开始</li>
+<li>C: 广播从机地址（7 位）+ R/W（第 8 位）设置为WRITE</li>
+<li>Target: 响应ACK（确认）</li>
+<li>C: 发送一个字节</li>
+<li>T: 响应ACK</li>
+<li>重复步骤4和5零次或多次</li>
+<li>C: 广播停止或（广播重启并返回（2））</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：从机地址可以是10位而不是7位长。其他一切都不会改变。</p>
+</blockquote>
+<h2 id="主---从-1"><a class="header" href="#主---从-1">主 &lt;- 从</a></h2>
+<p>如果master要从slave读取数据：</p>
+<p>
+<img class="white_bg" height=360 title="I2C bus" src="https://upload.wikimedia.org/wikipedia/commons/0/04/I2C_controller-target.svg">
+</p>
+<ol>
+<li>C: 广播开始</li>
+<li>C: 广播从机地址（7 位）+ R/W（第 8 位）设置为 READ</li>
+<li>T: 以ACK响应</li>
+<li>T: 发送字节</li>
+<li>C: 以ACK响应</li>
+<li>重复步骤4和5零次或多次</li>
+<li>C: 广播停止或（广播重启并返回（2））</li>
+</ol>
+<blockquote>
+<p><strong>注意</strong>：从机地址可以是10位而不是7位长。其他一切都不会改变。</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="lsm303agr"><a class="header" href="#lsm303agr">LSM303AGR</a></h1>
+<p>micro:bit上的两个运动传感器、磁力计和加速度计都封装在一个组件中：LSM303AGR集成电路。这两个传
+感器可以通过I2C总线访问。每个传感器的行为类似于I2C从机，并且具有<em>不同</em>的地址。</p>
+<p>每个传感器都有自己的内存，用于存储感知其环境的结果。我们与这些传感器的交互主要涉及读取它们的记忆。</p>
+<p>这些传感器的存储器被建模为字节可寻址寄存器。这些传感器也可以配置；这是通过写入他们的注册表来
+完成的。 因此，在某种意义上，这些传感器与微控制器<em>内部</em>的外围设备非常相似。不同的是，它们的寄存
+器没有映射到微控制器的内存中。 相反，它们的寄存器必须通过I2C总线访问。</p>
+<p>有关LSM303AGR的主要信息来源是其<a href="https://www.st.com/resource/en/datasheet/lsm303agr.pdf">数据表</a>。通读它以了解如何读取传感器的寄存器。那部分在：</p>
+<blockquote>
+<p>第6.1.1节I2C操作 - 第38页 - LSM303AGR Data Sheet</p>
+</blockquote>
+<p>与本书相关的文档的另一部分是寄存器的描述。那部分在：</p>
+<blockquote>
+<p>第8节寄存器描述 - 第46页 - LSM303AGR Data Sheet</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="读取单个寄存器"><a class="header" href="#读取单个寄存器">读取单个寄存器</a></h1>
+<p>让我们将所有理论付诸实践！</p>
+<p>首先，我们需要知道芯片内的加速度计和磁力计的从地址，这些可以在第39页的LSM303AGR数据表中找到，它们是：</p>
+<ul>
+<li>0011001 for the accelerometer</li>
+<li>0011110 for the magnetometer</li>
+</ul>
+<blockquote>
+<p><strong>注意</strong>：请记住，这些只是地址的前7位，第8位将是决定我们是执行读取还是写入的位。</p>
+</blockquote>
+<p>接下来我们需要一个寄存器来读取。许多I2C芯片将提供某种设备标识寄存器，供其主机读取。这样做是因
+为考虑到成千上万（甚至数百万）的I2C芯片， 很可能在某一时刻，两个具有相同地址的芯片最终将被构建
+（毕竟地址"仅"7位宽）。有了这个设备ID寄存器，驱动程序可以确保它确实在与LSM303AGR通信，而不是
+与恰好具有相同地址的其他芯片通信。正如您可以在 LSM303AGR 的数据表（特别是第46页和第61页）
+中阅读的那样，它确实提供了两个寄存器， 分别称为<code>WHO_AM_I_A</code>地址<code>0x0f</code>和<code>WHO_AM_I_M</code>地址<code>0x4f</code>
+其中包含一些设备独有的位模式（A与加速度计相同，M与磁力计相同）。</p>
+<p>现在唯一缺少的是软件部分，即<code>microbit</code>我们应该为此使用/the HAL crates的哪个API。但是，如果您仔
+细阅读您正在使用的nRF芯片的数据表， 您很快就会发现它们实际上并没有I2C外设。不过对我们来说幸运的是，它们
+有与I2C兼容的TWI（双线接口）和TWIM（取决于您使用的芯片，就像UART和UART一样）。</p>
+<p>现在，如果我们将<code>microbit</code> crate中<a href="https://docs.rs/microbit-v2/0.11.0/microbit/hal/twim/index.html"><code>twi(m)</code>模块</a>的文档与我们迄今为止收集到的所有其他信息放在一起，
+我们将得到这段代码来读取和打印两个设备ID：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
+use panic_rtt_target as _;
+
+use microbit::hal::prelude::*;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::twi,
+    pac::twi0::frequency::FREQUENCY_A,
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::twim,
+    pac::twim0::frequency::FREQUENCY_A,
+};
+
+const ACCELEROMETER_ADDR: u8 = 0b0011001;
+const MAGNETOMETER_ADDR: u8 = 0b0011110;
+
+const ACCELEROMETER_ID_REG: u8 = 0x0f;
+const MAGNETOMETER_ID_REG: u8 = 0x4f;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+
+    #[cfg(feature = "v1")]
+    let mut i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let mut i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut acc = [0];
+    let mut mag = [0];
+
+    // First write the address + register onto the bus, then read the chip's responses
+    i2c.write_read(ACCELEROMETER_ADDR, &amp;[ACCELEROMETER_ID_REG], &amp;mut acc).unwrap();
+    i2c.write_read(MAGNETOMETER_ADDR, &amp;[MAGNETOMETER_ID_REG], &amp;mut mag).unwrap();
+
+    rprintln!("The accelerometer chip's id is: {:#b}", acc[0]);
+    rprintln!("The magnetometer chip's id is: {:#b}", mag[0]);
+
+    loop {}
+}</code></pre></pre>
+<p>除了初始化之外，如果您理解前面描述的I2C协议，那么这段代码应该是直截了当的。这里的初始化与UART章节中的初始化类似。
+我们将外围设备以及用于与芯片通信的引脚传递给构造器；然后是我们希望总线工作的频率，在这种情况下为100kHz（<code>K100</code>）。</p>
+<h2 id="测试-2"><a class="header" href="#测试-2">测试</a></h2>
+<p>与往常一样，您必须修改<code>Embed.toml</code>以适合您的MCU，然后可以使用：</p>
+<pre><code class="language-console"># For micro:bit v2
+$ cargo embed --features v2 --target thumbv7em-none-eabihf
+
+# For micro:bit v1
+$ cargo embed --features v1 --target thumbv6m-none-eabi
+</code></pre>
+<p>为了测试我们的小示例程序。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="使用驱动程序"><a class="header" href="#使用驱动程序">使用驱动程序</a></h1>
+<p>正如我们在第5章中已经讨论过的，<code>embedded-hal</code>提供了一些抽象，可以用来编写与硬件交互的平台无关代码。
+事实上， 我们在第7章和到目前为止在第8章中用于与硬件交互的所有方法都来自于由<code>embedded-hal</code>定义的特征。
+现在，我们将首次实际使用<code>embedded-hal</code>提供的特性。</p>
+<p>为我们的LSM303AGR为每个嵌入式Rust支持的平台（以及可能最终弹出的新平台）实现驱动程序是没有意义的。
+为了避免这种情况，可以编写使用实现<code>embedded-hal</code>特征的泛型类型的驱动程序，以提供驱动程序的平台无关版本。
+幸运的是，这已经在<a href="https://crates.io/crates/lsm303agr"><code>lsm303agr</code></a>crate中完成了。因此， 读取实际加速度计和磁强计值现在基本上是一种即插即用体验（再加上阅读一些文档）。
+事实上是<code>crates.io</code>页面已经为我们提供了读取加速度计数据所需的所有信息，但使用的是Raspberry Pi。我们只需要将它适应我们的芯片：</p>
+<pre><pre class="playground"><code class="language-rust">use linux_embedded_hal::I2cdev;
+use lsm303agr::{AccelOutputDataRate, Lsm303agr};
+
+fn main() {
+    let dev = I2cdev::new("/dev/i2c-1").unwrap();
+    let mut sensor = Lsm303agr::new_with_i2c(dev);
+    sensor.init().unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz50).unwrap();
+    loop {
+        if sensor.accel_status().unwrap().xyz_new_data {
+            let data = sensor.accel_data().unwrap();
+            println!("Acceleration: x {} y {} z {}", data.x, data.y, data.z);
+        }
+    }
+}</code></pre></pre>
+<p>因为我们已经知道如何创建实现<a href="08-i2c/read-a-single-register.html">上一页</a>中<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/blocking/i2c/index.html"><code>embedded_hal::blocking::i2c</code></a>特性的对象实例，所以这非常简单：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::twi,
+    pac::twi0::frequency::FREQUENCY_A,
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::twim,
+    pac::twim0::frequency::FREQUENCY_A,
+};
+
+use lsm303agr::{
+    AccelOutputDataRate, Lsm303agr,
+};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    // Code from documentation
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz50).unwrap();
+    loop {
+        if sensor.accel_status().unwrap().xyz_new_data {
+            let data = sensor.accel_data().unwrap();
+            // RTT instead of normal print
+            rprintln!("Acceleration: x {} y {} z {}", data.x, data.y, data.z);
+        }
+    }
+}</code></pre></pre>
+<p>就像最后一个片段一样，您应该可以这样尝试：</p>
+<pre><code class="language-console"># For micro:bit v2
+$ cargo embed --features v2 --target thumbv7em-none-eabihf
+
+# For micro:bit v1
+$ cargo embed --features v1 --target thumbv6m-none-eabi
+</code></pre>
+<p>此外，如果您（物理上）在您的micro:bit周围移动一点，您应该会看到正在打印的加速度数字发生了变化。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="挑战-1"><a class="header" href="#挑战-1">挑战</a></h1>
+<p>本章的挑战是构建一个通过上一章介绍的串行接口与外部世界通信的小型应用程序。
+它应该能够接收命令"磁力计"和"加速度计"，然后打印相应的传感器数据作为响应。
+这次将不提供模板代码，因为<a href="08-i2c/../07-uart/index.html">UART</a>和本章已经提供了您所需的所有信息。
+然而，这里有一些线索：</p>
+<ul>
+<li>您可能对<code>core::str::from_utf8</code>感兴趣，以将buffer中的字节转换为<code>&amp;str</code>，因为我们需要与<code>"magnetometer"</code>和<code>"accelerometer"</code>进行比较。</li>
+<li>您将（显然）必须阅读磁力计 API 的文档，但它或多或少等同于加速度计</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="我的解决方案-2"><a class="header" href="#我的解决方案-2">我的解决方案</a></h1>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use core::str;
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::twi,
+    pac::twi0::frequency::FREQUENCY_A,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::twim,
+    pac::twim0::frequency::FREQUENCY_A,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+use microbit::hal::prelude::*;
+use lsm303agr::{AccelOutputDataRate, MagOutputDataRate, Lsm303agr};
+use heapless::Vec;
+use nb::block;
+use core::fmt::Write;
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz50).unwrap();
+    sensor.set_mag_odr(MagOutputDataRate::Hz50).unwrap();
+    let mut sensor = sensor.into_mag_continuous().ok().unwrap();
+
+    loop {
+        let mut buffer: Vec&lt;u8, 32&gt; = Vec::new();
+
+        loop {
+            let byte = block!(serial.read()).unwrap();
+
+            if byte == 13 {
+                break;
+            }
+
+            if buffer.push(byte).is_err() {
+                write!(serial, "error: buffer full\r\n").unwrap();
+                break;
+            }
+        }
+
+        if str::from_utf8(&amp;buffer).unwrap().trim() == "accelerometer" {
+            while !sensor.accel_status().unwrap().xyz_new_data  {
+            }
+
+            let data = sensor.accel_data().unwrap();
+            write!(serial, "Accelerometer: x {} y {} z {}\r\n", data.x, data.y, data.z).unwrap();
+        } else if str::from_utf8(&amp;buffer).unwrap().trim() == "magnetometer" {
+            while !sensor.mag_status().unwrap().xyz_new_data  {
+            }
+
+            let data = sensor.mag_data().unwrap();
+            write!(serial, "Magnetometer: x {} y {} z {}\r\n", data.x, data.y, data.z).unwrap();
+        } else {
+            write!(serial, "error: command not detected\r\n").unwrap();
+        }
+    }
+}
+</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="led指南针"><a class="header" href="#led指南针">LED指南针</a></h1>
+<p>在本节中，我们将使用micro:bit上的LED实现指南针。像正确的罗盘一样，我们的LED罗盘必须以某种方式
+指向北方。它将通过打开一个外部LED来实现这一点；打开的LED应指向北方。</p>
+<p>磁场既有大小（以高斯或特斯拉为单位）也有<em>方向</em>。micro:bit上的磁力计测量外部磁场的大小和方向，
+但它会报告所述磁场沿其<em>轴</em>的<em>分解</em>。</p>
+<p>磁力计具有与其关联的三个轴。X和Y轴基本上跨越作为地板的平面。Z轴指向地板"外"，因此向上。</p>
+<p>您应该已经能够编写一个程序，在<a href="09-led-compass/../08-i2c/index.html">I2C章节</a>中的RTT控制台上连续打印磁力计数据。
+编写该程序后，找到您当前位置的北方。然后将您的micro:bit与该方向对齐，并观察传感器的测量结果如何。</p>
+<p>现在将板旋转90度，同时保持与地面平行。这次你看到的X、Y 和Z值是多少？然后再次旋转90度。你看到了什么值？</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="校准"><a class="header" href="#校准">校准</a></h1>
+<p>在使用传感器并尝试使用它开发应用程序之前要做的一件非常重要的事情是验证它的输出实际上是正确的。
+如果不是这种情况，我们需要校准传感器（或者它也可能损坏，但在这种情况下不太可能）。</p>
+<p>在我的情况下，在两个不同的micro:bit's上，没有校准的磁力计与它应该测量的值相差很大。
+因此，为了本章的目的，我们将假设必须校准传感器。</p>
+<p>校准涉及相当多的数学（矩阵），因此我们不会在这里介绍，但如果您有兴趣，本<a href="https://www.st.com/resource/en/design_tip/dt0103-compensating-for-magnetometer-installation-error-and-hardiron-effects-using-accelerometerassisted-2d-calibration-stmicroelectronics.pdf">设计说明</a>会描述该过程。</p>
+<p>幸运的是，为构建原始软件的团队已经在<a href="https://github.com/lancaster-university/codal-microbit-v2/blob/006abf5566774fbcf674c0c7df27e8a9d20013de/source/MicroBitCompassCalibrator.cpp">这里</a>的C++中实现了校准机制。</p>
+<p>您可以在<code>src/calibration.rs</code>中找到它到Rust的翻译。在默认的<code>src/main.rs</code>中演示了它的用法。
+校准工作方式如本视频所示：</p>
+<p>
+<video src="https://video.microbit.org/support/compass+calibration.mp4" loop autoplay>
+</p>
+<p>您必须上倾斜micro:bit，直到LED矩阵上的所有LED都亮起。</p>
+<p>如果您不想在开发期间每次重新启动应用程序时都玩游戏，请随意修改<code>src/main.rs</code>模板，
+以便在获得第一个静态校准后使用相同的静态校准。</p>
+<p>现在我们已经完成了传感器校准，让我们来看看实际构建这个应用程序！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="take-1"><a class="header" href="#take-1">Take 1</a></h1>
+<p>实现LED指南针的最简单方法是什么，即使它并不完美？</p>
+<p>对于初学者，我们只关心磁场的X和Y分量，因为当您查看指南针时，您总是将它保持在水平位置，因此指南针位于XY平面上。</p>
+<p>
+<img class="white_bg" title="Quadrants" src="09-led-compass/../assets/quadrants.png">
+</p>
+<p>如果我们只看X和Y分量的符号，我们就可以确定磁场属于哪个象限。在的问题当然是4个象限代表哪个方向(北、东北等)。
+为了弄清楚这一点，我们可以旋转micro:bit并观察当我们指向另一个方向时象限如何变化。</p>
+<p>经过一番实验，我们可以发现，如果我们将micro:bit指向例如东北方向，X和Y分量始终为正。
+根据这些信息，您应该能够确定其他象限代表的方向。</p>
+<p>一旦你弄清楚象限和方向之间的关系，你应该能够从下面完成模板。</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_rtt_target as _;
+use rtt_target::{rprintln, rtt_init_print};
+
+mod calibration;
+use crate::calibration::calc_calibration;
+use crate::calibration::calibrated_measurement;
+
+mod led;
+use led::Direction;
+
+use microbit::{display::blocking::Display, hal::Timer};
+
+#[cfg(feature = "v1")]
+use microbit::{hal::twi, pac::twi0::frequency::FREQUENCY_A};
+
+#[cfg(feature = "v2")]
+use microbit::{hal::twim, pac::twim0::frequency::FREQUENCY_A};
+
+use lsm303agr::{AccelOutputDataRate, Lsm303agr, MagOutputDataRate};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_mag_odr(MagOutputDataRate::Hz10).unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz10).unwrap();
+    let mut sensor = sensor.into_mag_continuous().ok().unwrap();
+
+    let calibration = calc_calibration(&amp;mut sensor, &amp;mut display, &amp;mut timer);
+    rprintln!("Calibration: {:?}", calibration);
+    rprintln!("Calibration done, entering busy loop");
+    loop {
+        while !sensor.mag_status().unwrap().xyz_new_data {}
+        let mut data = sensor.mag_data().unwrap();
+        data = calibrated_measurement(data, &amp;calibration);
+
+        let dir = match (data.x &gt; 0, data.y &gt; 0) {
+            // Quadrant ???
+            (true, true) =&gt; Direction::NorthEast,
+            // Quadrant ???
+            (false, true) =&gt; panic!("TODO"),
+            // Quadrant ???
+            (false, false) =&gt; panic!("TODO"),
+            // Quadrant ???
+            (true, false) =&gt; panic!("TODO"),
+        };
+
+        // use the led module to turn the direction into an LED arrow
+        // and the led display functions from chapter 5 to display the
+        // arrow
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="解决方案-1"><a class="header" href="#解决方案-1">解决方案 1</a></h1>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_rtt_target as _;
+use rtt_target::{rprintln, rtt_init_print};
+
+mod calibration;
+use crate::calibration::calc_calibration;
+use crate::calibration::calibrated_measurement;
+
+mod led;
+use crate::led::Direction;
+use crate::led::direction_to_led;
+
+use microbit::{display::blocking::Display, hal::Timer};
+
+#[cfg(feature = "v1")]
+use microbit::{hal::twi, pac::twi0::frequency::FREQUENCY_A};
+
+#[cfg(feature = "v2")]
+use microbit::{hal::twim, pac::twim0::frequency::FREQUENCY_A};
+
+use lsm303agr::{AccelOutputDataRate, Lsm303agr, MagOutputDataRate};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_mag_odr(MagOutputDataRate::Hz10).unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz10).unwrap();
+    let mut sensor = sensor.into_mag_continuous().ok().unwrap();
+
+    let calibration = calc_calibration(&amp;mut sensor, &amp;mut display, &amp;mut timer);
+    rprintln!("Calibration: {:?}", calibration);
+    rprintln!("Calibration done, entering busy loop");
+    loop {
+        while !sensor.mag_status().unwrap().xyz_new_data {}
+        let mut data = sensor.mag_data().unwrap();
+        data = calibrated_measurement(data, &amp;calibration);
+
+        let dir = match (data.x &gt; 0, data.y &gt; 0) {
+            // Quadrant I
+            (true, true) =&gt; Direction::NorthEast,
+            // Quadrant II
+            (false, true) =&gt; Direction::NorthWest,
+            // Quadrant III
+            (false, false) =&gt; Direction::SouthWest,
+            // Quadrant IV
+            (true, false) =&gt; Direction::SouthEast,
+        };
+
+        // use the led module to turn the direction into an LED arrow
+        // and the led display functions from chapter 5 to display the
+        // arrow
+        display.show(&amp;mut timer, direction_to_led(dir), 100);
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="take-2"><a class="header" href="#take-2">Take 2</a></h1>
+<p>这一次，我们将使用数学来获得磁场与磁力计的X轴和Y轴形成的精确角度。</p>
+<p>我们将使用该<code>atan2</code>函数。此函数返回<code>-PI</code>到<code>PI</code>范围内的角度。下图显示了如何测量该角度：</p>
+<p>
+<img class="white_bg" title="atan2" src="https://upload.wikimedia.org/wikipedia/commons/0/03/Atan2_60.svg">
+</p>
+<p>尽管未在此图中明确显示，但X轴指向右侧，Y轴指向上方。</p>
+<p>这是启动代码。<code>theta</code>,（以弧度为单位）已经计算出来。您需要根据<code>theta</code>的值选择要打开的LED。</p>
+<pre><code class="language-rs">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_rtt_target as _;
+use rtt_target::{rprintln, rtt_init_print};
+
+mod calibration;
+use crate::calibration::calc_calibration;
+use crate::calibration::calibrated_measurement;
+
+mod led;
+use crate::led::Direction;
+use crate::led::direction_to_led;
+
+// You'll find this useful ;-)
+use core::f32::consts::PI;
+use libm::atan2f;
+
+use microbit::{display::blocking::Display, hal::Timer};
+
+#[cfg(feature = "v1")]
+use microbit::{hal::twi, pac::twi0::frequency::FREQUENCY_A};
+
+#[cfg(feature = "v2")]
+use microbit::{hal::twim, pac::twim0::frequency::FREQUENCY_A};
+
+use lsm303agr::{AccelOutputDataRate, Lsm303agr, MagOutputDataRate};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_mag_odr(MagOutputDataRate::Hz10).unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz10).unwrap();
+    let mut sensor = sensor.into_mag_continuous().ok().unwrap();
+
+    let calibration = calc_calibration(&amp;mut sensor, &amp;mut display, &amp;mut timer);
+    rprintln!("Calibration: {:?}", calibration);
+    rprintln!("Calibration done, entering busy loop");
+    loop {
+        while !sensor.mag_status().unwrap().xyz_new_data {}
+        let mut data = sensor.mag_data().unwrap();
+        data = calibrated_measurement(data, &amp;calibration);
+
+        // use libm's atan2f since this isn't in core yet
+        let theta = atan2f(data.y as f32, data.x as f32);
+
+        // Figure out the direction based on theta
+        let dir = Direction::NorthEast;
+
+        display.show(&amp;mut timer, direction_to_led(dir), 100);
+    }
+}
+</code></pre>
+<p>建议/提示：</p>
+<ul>
+<li>一整圈旋转等于360度。</li>
+<li><code>PI</code>弧度相当于180度。</li>
+<li>如果<code>theta</code>为零，指的是哪个方向？</li>
+<li>如果<code>theta</code>非常接近于零，指向哪个方向？</li>
+<li>如果<code>theta</code>持续增加，改变方向的值是什么？</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="解决方案-2"><a class="header" href="#解决方案-2">解决方案 2</a></h1>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_rtt_target as _;
+use rtt_target::{rprintln, rtt_init_print};
+
+mod calibration;
+use crate::calibration::calc_calibration;
+use crate::calibration::calibrated_measurement;
+
+mod led;
+use crate::led::Direction;
+use crate::led::direction_to_led;
+
+// You'll find this useful ;-)
+use core::f32::consts::PI;
+use libm::atan2f;
+
+use microbit::{display::blocking::Display, hal::Timer};
+
+#[cfg(feature = "v1")]
+use microbit::{hal::twi, pac::twi0::frequency::FREQUENCY_A};
+
+#[cfg(feature = "v2")]
+use microbit::{hal::twim, pac::twim0::frequency::FREQUENCY_A};
+
+use lsm303agr::{AccelOutputDataRate, Lsm303agr, MagOutputDataRate};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_mag_odr(MagOutputDataRate::Hz10).unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz10).unwrap();
+    let mut sensor = sensor.into_mag_continuous().ok().unwrap();
+
+    let calibration = calc_calibration(&amp;mut sensor, &amp;mut display, &amp;mut timer);
+    rprintln!("Calibration: {:?}", calibration);
+    rprintln!("Calibration done, entering busy loop");
+    loop {
+        while !sensor.mag_status().unwrap().xyz_new_data {}
+        let mut data = sensor.mag_data().unwrap();
+        data = calibrated_measurement(data, &amp;calibration);
+
+        // use libm's atan2f since this isn't in core yet
+        let theta = atan2f(data.y as f32, data.x as f32);
+
+        // Figure out the direction based on theta
+        let dir = if theta &lt; -7. * PI / 8. {
+            Direction::West
+        } else if theta &lt; -5. * PI / 8. {
+            Direction::SouthWest
+        } else if theta &lt; -3. * PI / 8. {
+            Direction::South
+        } else if theta &lt; -PI / 8. {
+            Direction::SouthEast
+        } else if theta &lt; PI / 8. {
+            Direction::East
+        } else if theta &lt; 3. * PI / 8. {
+            Direction::NorthEast
+        } else if theta &lt; 5. * PI / 8. {
+            Direction::North
+        } else if theta &lt; 7. * PI / 8. {
+            Direction::NorthWest
+        } else {
+            Direction::West
+        };
+
+        display.show(&amp;mut timer, direction_to_led(dir), 100);
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="大小"><a class="header" href="#大小">大小</a></h1>
+<p>我们一直在研究磁场的方向，但它的实际大小是多少？根据关于<a href="https://docs.rs/lsm303agr/0.2.2/lsm303agr/struct.Lsm303agr.html#method.mag_data"><code>mag_data()</code></a>函数的文档，我们得到的
+<code>x</code> <code>y</code> <code>z</code>值是纳米级的。这意味着我们唯一需要计算的，就是我们的<code>x</code> <code>y</code> <code>z</code>值所描述的三维矢量的大小，
+才能得到纳米级磁场的大小。正如你在学校所记得的，这很简单：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>// core doesn't have this function yet so we use libm, just like with
+// atan2f from before.
+use libm::sqrtf;
+let magnitude = sqrtf(x * x + y * y + z * z);
+<span class="boring">}</span></code></pre></pre>
+<p>将所有这些放在一个程序中：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use panic_rtt_target as _;
+use rtt_target::{rprintln, rtt_init_print};
+
+mod calibration;
+use crate::calibration::calc_calibration;
+use crate::calibration::calibrated_measurement;
+
+use libm::sqrtf;
+
+use microbit::{display::blocking::Display, hal::Timer};
+
+#[cfg(feature = "v1")]
+use microbit::{hal::twi, pac::twi0::frequency::FREQUENCY_A};
+
+#[cfg(feature = "v2")]
+use microbit::{hal::twim, pac::twim0::frequency::FREQUENCY_A};
+
+use lsm303agr::{AccelOutputDataRate, Lsm303agr, MagOutputDataRate};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut timer = Timer::new(board.TIMER0);
+    let mut display = Display::new(board.display_pins);
+
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_mag_odr(MagOutputDataRate::Hz10).unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz10).unwrap();
+    let mut sensor = sensor.into_mag_continuous().ok().unwrap();
+
+    let calibration = calc_calibration(&amp;mut sensor, &amp;mut display, &amp;mut timer);
+    rprintln!("Calibration: {:?}", calibration);
+    rprintln!("Calibration done, entering busy loop");
+    loop {
+        while !sensor.mag_status().unwrap().xyz_new_data {}
+        let mut data = sensor.mag_data().unwrap();
+        data = calibrated_measurement(data, &amp;calibration);
+        let x = data.x as f32;
+        let y = data.y as f32;
+        let z = data.z as f32;
+        let magnitude = sqrtf(x * x + y * y + z * z);
+        rprintln!("{} nT, {} mG", magnitude, magnitude/100.0);
+    }
+}</code></pre></pre>
+<p>该程序将报告磁场的大小 (强度) ，单位为纳米特斯拉 (<code>nT</code>) 和毫米高斯 (<code>mG</code>)。地球磁场的大小在
+<code>250 mG</code> 到 <code>650 mG</code>之间（大小取决于你的地理位置）， 所以你应该看到一个在这个范围内或接近这个范围
+的值——我看到大约<code>340 mG</code>。</p>
+<p>一些问题：</p>
+<p>如果不移动开发板，您看到了什么值？你总是看到相同的值吗？</p>
+<p>如果旋转开发板，大小是否会改变？应该改变吗？</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="冲压式流量计"><a class="header" href="#冲压式流量计">冲压式流量计</a></h1>
+<p>在本节中，我们将使用板上的加速度计。</p>
+<p>这次我们在建什么？冲压式流量计！我们将测量你出拳的力量。实际上，你能达到的最大加速度，因为加速度是
+加速度计测量的。强度和加速度是成比例的，所以这是一个很好的近似值。</p>
+<p>正如我们在前几章中已经知道的，加速度计内置于LSM303AGR封装中。
+就像磁强计一样，它可以通过I2C总线访问。它也具有与磁强计相同的坐标系。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="重力上升了"><a class="header" href="#重力上升了">重力上升了?</a></h1>
+<p>我们要做的第一件事是什么？</p>
+<p>进行健全性检查！</p>
+<p>您应该已经能够编写一个程序，在<a href="10-punch-o-meter/../08-i2c/index.html">I2C章节</a>中的RTT控制台上连续打印加速度计数据。
+即使将电路板与地板平行且LED面朝下，您是否观察到一些有趣的事情？</p>
+<p>你应该看到这样的情况，X和Y值都非常接近于0，而Z值大约为1000。这很奇怪，因为电路板没有移动，但其加速度不是零。
+发生什么事？这一定与重力有关，对吧？ 因为重力加速度是<code>1 g</code> (加速度计上的<code>1 g</code> = 1000)。
+但是重力会向下拉动物体，因此沿Z轴的加速度应该是负的而不是正的。</p>
+<p>程序是否使Z轴向后？不，您可以测试旋转板以将重力与X轴或Y轴对齐，但加速度计测量的加速度始终指向上。</p>
+<p>这里发生的是加速度计正在测量电路板的<em>适当加速度</em> ，而不是您正在观察的加速度。这个适当的加速度是从自由落体的观察者看到的板的加速度。
+自由落体的观察者以<code>1g</code>的加速度向地心移动；从它的角度来看，电路板实际上以<code>1g</code>的加速度向上移动（远离地球中心）。
+这就是为什么适当的加速度指向上。这也意味着，如果板处于自由下落状态，加速度计将报告正确的零加速度。请不要在家里尝试。</p>
+<p>是的，物理很难。让我们继续。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="挑战-2"><a class="header" href="#挑战-2">挑战</a></h1>
+<p>为了简单起见，我们将在板保持水平的情况下仅测量X轴上的加速度。这样，我们就不必处理减去我们之前
+观察到的<em>虚拟</em>的<code>1g</code>，这将是困难的，因为<code>1g</code>可能有X，Y，Z分量，这取决于电路板的方向。</p>
+<p>冲压式流量计必须做到以下几点：</p>
+<ul>
+<li>默认情况下，应用程序不会"观察"电路板的加速度。</li>
+<li>当检测到显著的X加速度（即加速度超过某个阈值）时，应用程序应开始新的测量。</li>
+<li>在测量间隔期间，应用程序应跟踪观察到的最大加速度。</li>
+<li>测量间隔结束后，应用程序必须报告观察到的最大加速度。您可以使用<code>rprintln!</code>宏报告该值。</li>
+</ul>
+<p>试一试，让我知道你打得有多用力 <code>;-)</code>.</p>
+<blockquote>
+<p><strong>注意</strong>：有两个额外的API应该对我们尚未讨论的任务有用。 首先是<a href="https://docs.rs/lsm303agr/0.2.2/lsm303agr/struct.Lsm303agr.html#method.set_accel_scale"><code>set_accel_scale</code></a>，您需要测量高g值。
+其次是<code>embedded_hal</code>的<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/timer/trait.CountDown.html"><code>Countdown</code></a> trait。如果您决定使用它来保持测量间隔，则必须在<a href="https://docs.rs/nb/1.0.0/nb/type.Result.html"><code>nb::Result</code></a>
+类型上进行模式匹配，而不是使用我们在前几章中看到的<code>block!</code>宏。</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="我的解决方案-3"><a class="header" href="#我的解决方案-3">我的解决方案</a></h1>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::{rtt_init_print, rprintln};
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::twi,
+    pac::twi0::frequency::FREQUENCY_A,
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::twim,
+    pac::twim0::frequency::FREQUENCY_A,
+};
+
+use lsm303agr::{
+    AccelScale, AccelOutputDataRate, Lsm303agr,
+};
+
+use microbit::hal::timer::Timer;
+use microbit::hal::prelude::*;
+use nb::Error;
+
+#[entry]
+fn main() -&gt; ! {
+    const THRESHOLD: f32 = 0.5;
+
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let i2c = { twi::Twi::new(board.TWI0, board.i2c.into(), FREQUENCY_A::K100) };
+
+    #[cfg(feature = "v2")]
+    let i2c = { twim::Twim::new(board.TWIM0, board.i2c_internal.into(), FREQUENCY_A::K100) };
+
+    let mut countdown = Timer::new(board.TIMER0);
+    let mut delay = Timer::new(board.TIMER1);
+    let mut sensor = Lsm303agr::new_with_i2c(i2c);
+    sensor.init().unwrap();
+    sensor.set_accel_odr(AccelOutputDataRate::Hz50).unwrap();
+    // Allow the sensor to measure up to 16 G since human punches
+    // can actually be quite fast
+    sensor.set_accel_scale(AccelScale::G16).unwrap();
+
+    let mut max_g = 0.;
+    let mut measuring = false;
+
+    loop {
+        while !sensor.accel_status().unwrap().xyz_new_data {}
+        // x acceleration in g
+        let g_x = sensor.accel_data().unwrap().x as f32 / 1000.0;
+
+        if measuring {
+            // Check the status of our contdown
+            match countdown.wait() {
+                // countdown isn't done yet
+                Err(Error::WouldBlock) =&gt; {
+                    if g_x &gt; max_g {
+                        max_g = g_x;
+                    }
+                },
+                // Countdown is done
+                Ok(_) =&gt; {
+                    // Report max value
+                    rprintln!("Max acceleration: {}g", max_g);
+
+                    // Reset
+                    max_g = 0.;
+                    measuring = false;
+                },
+                // Since the nrf52 and nrf51 HAL have Void as an error type
+                // this path cannot occur, as Void is an empty type
+                Err(Error::Other(_)) =&gt; {
+                    unreachable!()
+                }
+            }
+        } else {
+            // If acceleration goes above a threshold, we start measuring
+            if g_x &gt; THRESHOLD {
+                rprintln!("START!");
+
+                measuring = true;
+                max_g = g_x;
+                // The documentation notes that the timer works at a frequency
+                // of 1 Mhz, so in order to wait for 1 second we have to
+                // set it to 1_000_000 ticks.
+                countdown.start(1_000_000_u32);
+            }
+        }
+        delay.delay_ms(20_u8);
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="贪吃蛇游戏"><a class="header" href="#贪吃蛇游戏">贪吃蛇游戏</a></h1>
+<p>在本章，我们将实现一个基本的<a href="https://en.wikipedia.org/wiki/Snake_(video_game_genre)">贪吃蛇</a>游戏，它可以在micro:bit v2上游玩。
+5x5 LED矩阵作为屏幕，两个按钮作为控制。
+为了实现它，我们将基于本书前面章节中的概念进行开发，也会学习一些新的外设和概念。</p>
+<p>本章的特别之处，在于我们会使用硬件中断的概念，来实现程序同时和多个外设交互。
+在嵌入式环境中，中断是实现并发的常用手段。
+在开始之前，我建议您阅读<a href="https://xxchang.github.io/book/concurrency/index.html">Embedded Rust Book</a>，它对对嵌入式环境下的并发做了很好的介绍。</p>
+<blockquote>
+<p><strong>NOTE</strong> 本章是为micro:bit v2编写的，不适用于v1。
+但也欢迎您将代码移植到v1。</p>
+</blockquote>
+<blockquote>
+<p><strong>NOTE</strong> 在本章中，我们将使用之前章节中使用的库的更新版本。
+我们将使用 <code>microbit</code>库的0.13.0版本（之前的章节使用的是0.12.0）。
+0.13.0版本修复了一些无阻塞显示的代码中的bug，这些代码是我们会使用的。We are also going to use
+我们也将使用<code>heapless</code>库的0.8.0版本library（之前章节中使用的是0.7.10），
+以便我们可以使用其中某些实现了Rust的<code>core::Hash</code> trait的结构体。</p>
+</blockquote>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="游戏逻辑"><a class="header" href="#游戏逻辑">游戏逻辑</a></h1>
+<p>首先，让我们先了解一下游戏逻辑。
+你可能已经很熟悉贪吃蛇游戏了，它的基本思想是玩家在二维网格上操纵一条蛇。
+在任何给定时间，网格的一个随机位置上有“食物”，游戏的目标是让蛇尽可能多地“吃”食物。
+蛇每次吃了食物，它的长度就会增加。如果蛇撞到自己的尾巴，玩家就会输掉游戏。
+在游戏的一些变体中，如果蛇撞到网格的边缘，玩家也会输掉游戏，但鉴于我们网格的尺寸较小，我们将实现一个“环绕”规则，即如果蛇从网格的一边出去，它将从相对的另一边回来。</p>
+<h2 id="game模块"><a class="header" href="#game模块"><code>game</code>模块</a></h2>
+<p>本节的代码应该放在我们的<code>src</code>目录中的一个单独文件<code>game.rs</code>中。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use heapless::FnvIndexSet;
+
+/// A single point on the grid.
+#[derive(Debug, Copy, Clone, Eq, PartialEq, Hash)]
+struct Coords {
+   // Signed ints to allow negative values (handy when checking if we have gone
+   // off the top or left of the grid)
+   row: i8,
+   col: i8
+}
+
+impl Coords {
+   /// Get random coordinates within a grid. `exclude` is an optional set of
+   /// coordinates which should be excluded from the output.
+   fn random(
+      rng: &amp;mut Prng,  // We define the Prng struct below
+      exclude: Option&lt;&amp;FnvIndexSet&lt;Coords, 32&gt;&gt;
+   ) -&gt; Self {
+      let mut coords = Coords {
+         row: ((rng.random_u32() as usize) % 5) as i8,
+         col: ((rng.random_u32() as usize) % 5) as i8
+      };
+      while exclude.is_some_and(|exc| exc.contains(&amp;coords)) {
+         coords = Coords {
+            row: ((rng.random_u32() as usize) % 5) as i8,
+            col: ((rng.random_u32() as usize) % 5) as i8
+         }
+      }
+      coords
+   }
+
+   /// Whether the point is outside the bounds of the grid.
+   fn is_out_of_bounds(&amp;self) -&gt; bool {
+      self.row &lt; 0 || self.row &gt;= 5 || self.col &lt; 0 || self.col &gt;= 5
+   }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>我们使用<code>Coords</code>结构体来表示网格上的坐标。
+由于<code>Coords</code>只包含两个整数，我们可以让编译器为它派生<code>Copy</code>trait的实现，这样我们就可以在不用担心所有权的情况下传递<code>Coords</code>结构体。
+我们还定义了一个关联函数：<code>Coords::random</code>，它可以为我们提供一个网格上的随机位置。稍后，我们将使用它来确定为蛇放置食物的位置。
+为了实现这个函数，我们需要一个随机数的源。</p>
+<p>nRF52833有一个随机数生成器（RNG）外设，<a href="https://infocenter.nordicsemi.com/pdf/nRF52833_PS_v1.3.pdf">说明书</a>的6.19节是它的文档。
+HAL通过<code>microbit::hal::rng::Rng</code>结构体为我们提供了一个简单的接口，用于访问RNG。
+但它是一个阻塞接口，并且生成一个随机字节所需的时间是变化，且无法预测的。
+因此，我们定义了一个<a href="https://en.wikipedia.org/wiki/Pseudorandom_number_generator">伪随机</a>数生成器(PRNG)，它使用<a href="https://en.wikipedia.org/wiki/Xorshift">xorshift</a>算法来生成随机的<code>u32</code>值，我们可以使用它来确定放置食物的位置。
+这个算法很基础，而且并非加密安全；但它很高效、易于实现，而且对于我们小小的贪吃蛇游戏已经足够。
+<code>Prng</code>结构体需要一个初始化种子值，我们从RNG外设获取它。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// A basic pseudo-random number generator.
+struct Prng {
+    value: u32
+}
+
+impl Prng {
+    fn new(seed: u32) -&gt; Self {
+        Self {value: seed}
+    }
+
+    /// Basic xorshift PRNG function: see https://en.wikipedia.org/wiki/Xorshift
+    fn xorshift32(mut input: u32) -&gt; u32 {
+        input ^= input &lt;&lt; 13;
+        input ^= input &gt;&gt; 17;
+        input ^= input &lt;&lt; 5;
+        input
+    }
+
+    /// Return a pseudo-random u32.
+    fn random_u32(&amp;mut self) -&gt; u32 {
+        self.value = Self::xorshift32(self.value);
+        self.value
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>我们还需要定义一些<code>enum</code>来帮助我们管理游戏状态：移动方向、转弯方向、游戏当前状态，以及游戏特定“步骤”的结果（例如，蛇移动一次）。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Define the directions the snake can move.
+enum Direction {
+    Up,
+    Down,
+    Left,
+    Right
+}
+
+/// What direction the snake should turn.
+#[derive(Debug, Copy, Clone)]
+pub enum Turn {
+    Left,
+    Right,
+    None
+}
+
+/// The current status of the game.
+pub enum GameStatus {
+    Won,
+    Lost,
+    Ongoing
+}
+
+/// The outcome of a single move/step.
+enum StepOutcome {
+    /// Grid full (player wins)
+    Full(Coords),
+    /// Snake has collided with itself (player loses)
+    Collision(Coords),
+    /// Snake has eaten some food
+    Eat(Coords),
+    /// Snake has moved (and nothing else has happened)
+    Move(Coords)
+}
+<span class="boring">}</span></code></pre></pre>
+<p>接下来，定义一个<code>Snake</code>结构体，它保存蛇占据的所有坐标，以及行进方向。
+我们使用队列（<code>heapless::spsc::Queue</code>）来保存坐标的顺序，并用一个哈希集合（<code>heapless::FnvIndexSet</code>）来快速地进行冲撞检测。
+<code>Snake</code>也提供了方法用于移动。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use heapless::spsc::Queue;
+
+// ...
+
+struct Snake {
+    /// Coordinates of the snake's head.
+    head: Coords,
+    /// Queue of coordinates of the rest of the snake's body. The end of the tail is
+    /// at the front.
+    tail: Queue&lt;Coords, 32&gt;,
+    /// A set containing all coordinates currently occupied by the snake (for fast
+    /// collision checking).
+    coord_set: FnvIndexSet&lt;Coords, 32&gt;,
+    /// The direction the snake is currently moving in.
+    direction: Direction
+}
+
+impl Snake {
+    fn new() -&gt; Self {
+        let head = Coords { row: 2, col: 2 };
+        let initial_tail = Coords { row: 2, col: 1 };
+        let mut tail = Queue::new();
+        tail.enqueue(initial_tail).unwrap();
+        let mut coord_set: FnvIndexSet&lt;Coords, 32&gt; = FnvIndexSet::new();
+        coord_set.insert(head).unwrap();
+        coord_set.insert(initial_tail).unwrap();
+        Self {
+            head,
+            tail,
+            coord_set,
+            direction: Direction::Right,
+        }
+    }
+
+    /// Move the snake onto the tile at the given coordinates. If `extend` is false,
+    /// the snake's tail vacates the rearmost tile.
+    fn move_snake(&amp;mut self, coords: Coords, extend: bool) {
+        // Location of head becomes front of tail
+        self.tail.enqueue(self.head).unwrap();
+        // Head moves to new coords
+        self.head = coords;
+        self.coord_set.insert(coords).unwrap();
+        if !extend {
+            let back = self.tail.dequeue().unwrap();
+            self.coord_set.remove(&amp;back);
+        }
+    }
+
+    fn turn_right(&amp;mut self) {
+        self.direction = match self.direction {
+            Direction::Up =&gt; Direction::Right,
+            Direction::Down =&gt; Direction::Left,
+            Direction::Left =&gt; Direction::Up,
+            Direction::Right =&gt; Direction::Down
+        }
+    }
+
+    fn turn_left(&amp;mut self) {
+        self.direction = match self.direction {
+            Direction::Up =&gt; Direction::Left,
+            Direction::Down =&gt; Direction::Right,
+            Direction::Left =&gt; Direction::Down,
+            Direction::Right =&gt; Direction::Up
+        }
+    }
+
+    fn turn(&amp;mut self, direction: Turn) {
+        match direction {
+            Turn::Left =&gt; self.turn_left(),
+            Turn::Right =&gt; self.turn_right(),
+            Turn::None =&gt; ()
+        }
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>Game</code>结构体保存游戏状态。
+它持有<code>Snake</code>对象，食物的当前坐标，游戏速度（决定蛇移动间隔的时间），游戏当前状态（进行、胜利或失败），以及玩家的分数。</p>
+<p>这个结构体包含了处理游戏步骤的方法，它们决定了蛇的下一步并据此更新游戏状态。
+此外，它还包含了两个方法：<code>game_matrix</code>和<code>score_matrix</code>。
+它们可以输出二维矩阵值，用于在LED矩阵上显示游戏状态，或玩家分数（我们晚点就可以看到）。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Struct to hold game state and associated behaviour
+pub(crate) struct Game {
+    rng: Prng,
+    snake: Snake,
+    food_coords: Coords,
+    speed: u8,
+    pub(crate) status: GameStatus,
+    score: u8
+}
+
+impl Game {
+    pub(crate) fn new(rng_seed: u32) -&gt; Self {
+        let mut rng = Prng::new(rng_seed);
+        //let mut tail: FnvIndexSet&lt;Coords, 32&gt; = FnvIndexSet::new();
+        //tail.insert(Coords { row: 2, col: 1 }).unwrap();
+        let snake = Snake::new();
+        let food_coords = Coords::random(&amp;mut rng, Some(&amp;snake.coord_set));
+        Self {
+            rng,
+            snake,
+            food_coords,
+            speed: 1,
+            status: GameStatus::Ongoing,
+            score: 0
+        }
+    }
+
+    /// Reset the game state to start a new game.
+    pub(crate) fn reset(&amp;mut self) {
+        self.snake = Snake::new();
+        self.place_food();
+        self.speed = 1;
+        self.status = GameStatus::Ongoing;
+        self.score = 0;
+    }
+
+    /// Randomly place food on the grid.
+    fn place_food(&amp;mut self) -&gt; Coords {
+        let coords = Coords::random(&amp;mut self.rng, Some(&amp;self.snake.coord_set));
+        self.food_coords = coords;
+        coords
+    }
+
+    /// "Wrap around" out of bounds coordinates (eg, coordinates that are off to the
+    /// left of the grid will appear in the rightmost column). Assumes that
+    /// coordinates are out of bounds in one dimension only.
+    fn wraparound(&amp;self, coords: Coords) -&gt; Coords {
+        if coords.row &lt; 0 {
+            Coords { row: 4, ..coords }
+        } else if coords.row &gt;= 5 {
+            Coords { row: 0, ..coords }
+        } else if coords.col &lt; 0 {
+            Coords { col: 4, ..coords }
+        } else {
+            Coords { col: 0, ..coords }
+        }
+    }
+
+    /// Determine the next tile that the snake will move on to (without actually
+    /// moving the snake).
+    fn get_next_move(&amp;self) -&gt; Coords {
+        let head = &amp;self.snake.head;
+        let next_move = match self.snake.direction {
+            Direction::Up =&gt; Coords { row: head.row - 1, col: head.col },
+            Direction::Down =&gt; Coords { row: head.row + 1, col: head.col },
+            Direction::Left =&gt; Coords { row: head.row, col: head.col - 1 },
+            Direction::Right =&gt; Coords { row: head.row, col: head.col + 1 },
+        };
+        if next_move.is_out_of_bounds() {
+            self.wraparound(next_move)
+        } else {
+            next_move
+        }
+    }
+
+    /// Assess the snake's next move and return the outcome. Doesn't actually update
+    /// the game state.
+    fn get_step_outcome(&amp;self) -&gt; StepOutcome {
+        let next_move = self.get_next_move();
+        if self.snake.coord_set.contains(&amp;next_move) {
+            // We haven't moved the snake yet, so if the next move is at the end of
+            // the tail, there won't actually be any collision (as the tail will have
+            // moved by the time the head moves onto the tile)
+            if next_move != *self.snake.tail.peek().unwrap() {
+                StepOutcome::Collision(next_move)
+            } else {
+                StepOutcome::Move(next_move)
+            }
+        } else if next_move == self.food_coords {
+            if self.snake.tail.len() == 23 {
+                StepOutcome::Full(next_move)
+            } else {
+                StepOutcome::Eat(next_move)
+            }
+        } else {
+            StepOutcome::Move(next_move)
+        }
+    }
+
+    /// Handle the outcome of a step, updating the game's internal state.
+    fn handle_step_outcome(&amp;mut self, outcome: StepOutcome) {
+        self.status = match outcome {
+            StepOutcome::Collision(_) =&gt; GameStatus::Lost,
+            StepOutcome::Full(_) =&gt; GameStatus::Won,
+            StepOutcome::Eat(c) =&gt; {
+                self.snake.move_snake(c, true);
+                self.place_food();
+                self.score += 1;
+                if self.score % 5 == 0 {
+                    self.speed += 1
+                }
+                GameStatus::Ongoing
+            },
+            StepOutcome::Move(c) =&gt; {
+                self.snake.move_snake(c, false);
+                GameStatus::Ongoing
+            }
+        }
+    }
+
+    pub(crate) fn step(&amp;mut self, turn: Turn) {
+        self.snake.turn(turn);
+        let outcome = self.get_step_outcome();
+        self.handle_step_outcome(outcome);
+    }
+
+    /// Calculate the length of time to wait between game steps, in milliseconds.
+    /// Generally this will get lower as the player's score increases, but need to
+    /// be careful it cannot result in a value below zero.
+    pub(crate) fn step_len_ms(&amp;self) -&gt; u32 {
+        let result = 1000 - (200 * ((self.speed as i32) - 1));
+        if result &lt; 200 {
+            200u32
+        } else {
+            result as u32
+        }
+    }
+
+    /// Return an array representing the game state, which can be used to display the
+    /// state on the microbit's LED matrix. Each `_brightness` parameter should be a
+    /// value between 0 and 9.
+    pub(crate) fn game_matrix(
+        &amp;self,
+        head_brightness: u8,
+        tail_brightness: u8,
+        food_brightness: u8
+    ) -&gt; [[u8; 5]; 5] {
+        let mut values = [[0u8; 5]; 5];
+        values[self.snake.head.row as usize][self.snake.head.col as usize] = head_brightness;
+        for t in &amp;self.snake.tail {
+            values[t.row as usize][t.col as usize] = tail_brightness
+        }
+        values[self.food_coords.row as usize][self.food_coords.col as usize] = food_brightness;
+        values
+    }
+
+    /// Return an array representing the game score, which can be used to display the
+    /// score on the microbit's LED matrix (by illuminating the equivalent number of
+    /// LEDs, going left-&gt;right and top-&gt;bottom).
+    pub(crate) fn score_matrix(&amp;self) -&gt; [[u8; 5]; 5] {
+        let mut values = [[0u8; 5]; 5];
+        let full_rows = (self.score as usize) / 5;
+        for r in 0..full_rows {
+            values[r] = [1; 5];
+        }
+        for c in 0..(self.score as usize) % 5 {
+            values[full_rows][c] = 1;
+        }
+        values
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<h2 id="main文件"><a class="header" href="#main文件"><code>main</code>文件</a></h2>
+<p>下面是<code>main.rs</code>中的代码：</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+mod game;
+
+use cortex_m_rt::entry;
+use microbit::{
+   Board,
+   hal::{prelude::*, Rng, Timer},
+   display::blocking::Display
+};
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+use crate::game::{Game, GameStatus, Turn};
+
+#[entry]
+fn main() -&gt; ! {
+   rtt_init_print!();
+   let mut board = Board::take().unwrap();
+   let mut timer = Timer::new(board.TIMER0);
+   let mut rng = Rng::new(board.RNG);
+   let mut game = Game::new(rng.random_u32());
+   let mut display = Display::new(board.display_pins);
+
+   loop {
+      loop {  // Game loop
+         let image = game.game_matrix(9, 9, 9);
+         // The brightness values are meaningless at the moment as we haven't yet
+         // implemented a display capable of displaying different brightnesses
+         display.show(&amp;mut timer, image, game.step_len_ms());
+         match game.status {
+            GameStatus::Ongoing =&gt; game.step(Turn::None), // Placeholder as we
+                                                          // haven't implemented
+                                                          // controls yet
+            _ =&gt; {
+               for _ in 0..3 {
+                  display.clear();
+                  timer.delay_ms(200u32);
+                  display.show(&amp;mut timer, image, 200);
+               }
+               display.clear();
+               display.show(&amp;mut timer, game.score_matrix(), 1000);
+               break
+            }
+         }
+      }
+      game.reset();
+   }
+}</code></pre></pre>
+<p>初始化了电路板和它的定时器以及RNG外设后，我们初始化了一个<code>Game</code>结构体，以及一个<code>microbit::display::blocking</code>中的<code>Display</code>结构体。</p>
+<p>在我们的“游戏循环”（运行在<code>main</code>函数中的“主循环“内部），程序重复执行以下步骤：</p>
+<ol>
+<li>获取一个5x5的字节矩阵，它表示网格。
+<code>Game::get_matrix</code>方法需要三个整形参数（它应该是0～9，包含上下限），它们分别表示蛇头、蛇尾和食物的亮度。
+我们当前使用的基本<code>Display</code>不支持调节亮度，因此当前设为9即可（其他非零值也行）。</li>
+<li>显示矩阵，持续时间由<code>Game::step_len_ms</code>方法决定。
+在当前的实现中，该方法初始时提供每个步骤间1秒的间隔，玩家每获得5分（吃掉一个食物获得1分）减少200毫秒，下限为200毫秒。</li>
+<li>检查游戏状态。
+如果是<code>Ongoing</code>（初始值），执行游戏的一个步骤并更新游戏状态（包括其<code>status</code>属性）。
+否则，游戏结束，闪烁当前画面三次，然后显示玩家分数（用点亮的LED数表示），最后退出游戏循环。</li>
+</ol>
+<p>主循环将重复运行游戏，每次迭代后重置游戏状态。</p>
+<p>如果你运行这个程序，你应该会看到两个LED灯在显示屏的中间偏下的位置点亮（蛇的头部在中间，它的尾部在左侧）。你还会看到另一个LED灯在板子上的某个地方点亮，代表蛇的食物。大约每秒钟，蛇会向右移动一格。</p>
+<p>下一节，我们将增加控制蛇移动的能力。</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="控制"><a class="header" href="#控制">控制</a></h1>
+<p>游戏的主角（蛇）由micro:bit正面的两个按钮控制。
+按钮A让蛇左转，按钮B让蛇右转。</p>
+<p>我们使用<code>microbit::pac::interrupt</code>宏，并发地处理按键的按下。
+中断由micro:bit的GPIOTE（<strong>G</strong>eneral <strong>P</strong>urpose <strong>I</strong>nput/<strong>O</strong>utput <strong>T</strong>asks and <strong>E</strong>vents）外设产生。</p>
+<h2 id="controls模块"><a class="header" href="#controls模块"><code>controls</code>模块</a></h2>
+<p>本节的代码放在一个<code>src</code>目录下<code>controls.rs</code>文件中。</p>
+<p>我们需要跟踪两个全局的可变状态：<code>GPIOTE</code>外设的引用，以及记录下一个要转的方向。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use core::cell::RefCell;
+use cortex_m::interrupt::Mutex;
+use microbit::hal::gpiote::Gpiote;
+use crate::game::Turn;
+
+// ...
+
+static GPIO: Mutex&lt;RefCell&lt;Option&lt;Gpiote&gt;&gt;&gt; = Mutex::new(RefCell::new(None));
+static TURN: Mutex&lt;RefCell&lt;Turn&gt;&gt; = Mutex::new(RefCell::new(Turn::None));
+<span class="boring">}</span></code></pre></pre>
+<p>用<code>RefCell</code>包裹数据，可以允许其内部可变。
+关于<code>RefCell</code>，可以阅读<a href="https://doc.rust-lang.org/std/cell/struct.RefCell.html">这个文档</a>，以及<a href="https://doc.rust-lang.org/book/ch15-05-interior-mutability.html">the Rust Book</a>的相应章节。
+<code>RefCell</code>又被<code>cortex_m::interrupt::Mutex</code>包裹，让它可以安全访问。
+<code>cortex_m</code> crate提供的互斥锁使用了一个叫<a href="https://zh.wikipedia.org/wiki/%E8%87%A8%E7%95%8C%E5%8D%80%E6%AE%B5">临界区段</a>的概念。
+互斥锁中的数据只能在传递给<code>cortex_m::interrupt:free</code>的函数或闭包中访问，这保证了函数或闭包中的代码本身不会被中断。</p>
+<p>首先，初始化按钮：</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use cortex_m::interrupt::free;
+use microbit::{
+    board::Buttons,
+    pac::{self, GPIOTE}
+};
+
+// ...
+
+/// Initialise the buttons and enable interrupts.
+pub(crate) fn init_buttons(board_gpiote: GPIOTE, board_buttons: Buttons) {
+    let gpiote = Gpiote::new(board_gpiote);
+
+    let channel0 = gpiote.channel0();
+    channel0
+        .input_pin(&amp;board_buttons.button_a.degrade())
+        .hi_to_lo()
+        .enable_interrupt();
+    channel0.reset_events();
+
+    let channel1 = gpiote.channel1();
+    channel1
+        .input_pin(&amp;board_buttons.button_b.degrade())
+        .hi_to_lo()
+        .enable_interrupt();
+    channel1.reset_events();
+
+    free(move |cs| {
+        *GPIO.borrow(cs).borrow_mut() = Some(gpiote);
+
+        unsafe {
+            pac::NVIC::unmask(pac::Interrupt::GPIOTE);
+        }
+        pac::NVIC::unpend(pac::Interrupt::GPIOTE);
+    });
+}
+<span class="boring">}</span></code></pre></pre>
+<p>nRF52上的<code>GPIOTE</code>外设有8个"通道"，每个通道都可以连接到一个<code>GPIO</code>引脚，并配置为响应某些事件，包括上升沿（从低到高的信号转换）和下降沿（高到低的信号）。
+一个按钮是一个<code>GPIO</code>引脚，当未按下时信号高，按下时信号低。
+因此，按钮按下是一个下降沿。</p>
+<p>我们将<code>channel0</code>连接到<code>button_a</code>，<code>channel1</code>连接到<code>button_b</code>，并分别让它们在下降沿（<code>hi_to_lo</code>）时产生事件。
+我们在<code>GPIO</code>互斥锁中保存了一个<code>GPIOTE</code>外设的引用。
+接着，<code>unmask</code> <code>GPIOTE</code>中断，让它们可以被硬件传播，并调用 unpend 来清除所有待处理状态的中断（这些中断可能在未被取消屏蔽之前就已经产生了）。</p>
+<p>接下来，我们编写处理中断的代码。
+我们使用<code>microbit::pac</code>提供的<code>interrupt</code>宏（对于v2而言，它是从<code>nrf52833_hal</code> crate重新导出的）。
+我们定义一个与我们要处理的中断（可以从[这里]找到所有中断(https://docs.rs/nrf52833-hal/latest/nrf52833_hal/pac/enum.Interrupt.html)）同名的函数，并用#[interrupt]注解它。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use microbit::pac::interrupt;
+
+// ...
+
+#[interrupt]
+fn GPIOTE() {
+    free(|cs| {
+        if let Some(gpiote) = GPIO.borrow(cs).borrow().as_ref() {
+            let a_pressed = gpiote.channel0().is_event_triggered();
+            let b_pressed = gpiote.channel1().is_event_triggered();
+
+            let turn = match (a_pressed, b_pressed) {
+                (true, false) =&gt; Turn::Left,
+                (false, true) =&gt; Turn::Right,
+                _ =&gt; Turn::None
+            };
+
+            gpiote.channel0().reset_events();
+            gpiote.channel1().reset_events();
+
+            *TURN.borrow(cs).borrow_mut() = turn;
+        }
+    });
+}
+<span class="boring">}</span></code></pre></pre>
+<p>当产生<code>GPIOTE</code>中断时，我们检查每个按钮是否被按下。如果只有按钮A被按下，我们记录蛇应该向左转。如果只有按钮B被按下，我们记录蛇应该向右转。
+在任何其他情况下，我们记录蛇不应该转弯。
+相关的转向存储在<code>TURN</code>互斥锁中。
+所有这些操作都发生在一个<code>free</code>块中，以确保我们在处理这个中断时不会被再次中断。</p>
+<p>最后，我们暴露一个简单的函数来获取下一个转向。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>/// Get the next turn (i.e., the turn corresponding to the most recently pressed button).
+pub fn get_turn(reset: bool) -&gt; Turn {
+    free(|cs| {
+        let turn = *TURN.borrow(cs).borrow();
+        if reset {
+            *TURN.borrow(cs).borrow_mut() = Turn::None
+        }
+        turn
+    })
+}
+<span class="boring">}</span></code></pre></pre>
+<p>这个函数简单地返回<code>TURN</code>互斥锁的当前值。
+它接收一个布尔类型的参数：<code>reset</code>。
+如果<code>reset</code>为<code>true</code>，则<code>TURN</code>的值会被重置，也就是置为<code>Turn::None</code>。</p>
+<h2 id="更新main文件"><a class="header" href="#更新main文件">更新<code>main</code>文件</a></h2>
+<p>回到我们的<code>main</code>函数，我们需要在main循环之前添加对<code>init_buttons</code>的调用，并在游戏循环中，将<code>game.step</code>方法的占位符<code>Turn::None</code>参数替换为由<code>get_turn</code>返回的值。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+mod game;
+mod control;
+
+use cortex_m_rt::entry;
+use microbit::{
+    Board,
+    hal::{prelude::*, Rng, Timer},
+    display::blocking::Display
+};
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+use crate::game::{Game, GameStatus};
+use crate::control::{init_buttons, get_turn};
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let mut board = Board::take().unwrap();
+    let mut timer = Timer::new(board.TIMER0);
+    let mut rng = Rng::new(board.RNG);
+    let mut game = Game::new(rng.random_u32());
+
+    let mut display = Display::new(board.display_pins);
+
+    init_buttons(board.GPIOTE, board.buttons);
+
+    loop {  // Main loop
+        loop {  // Game loop
+            let image = game.game_matrix(9, 9, 9);
+            // The brightness values are meaningless at the moment as we haven't yet
+            // implemented a display capable of displaying different brightnesses
+            display.show(&amp;mut timer, image, game.step_len_ms());
+            match game.status {
+                GameStatus::Ongoing =&gt; game.step(get_turn(true)),
+                _ =&gt; {
+                    for _ in 0..3 {
+                        display.clear();
+                        timer.delay_ms(200u32);
+                        display.show(&amp;mut timer, image, 200);
+                    }
+                    display.clear();
+                    display.show(&amp;mut timer, game.score_matrix(), 1000);
+                    break
+                }
+            }
+        }
+        game.reset();
+    }
+}</code></pre></pre>
+<p>现在我们可以使用micro:bit的按钮来控制蛇了！</p>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="使用非阻塞显示"><a class="header" href="#使用非阻塞显示">使用非阻塞显示</a></h1>
+<p>我们现在有一个基本功能齐全的贪吃蛇游戏。
+但你可能发现，当蛇变长一些时，很难区分蛇和食物，以及判断蛇的行进方向，因为所有LED的亮度都是一样的。
+让我们来解决这个问题。</p>
+<p><code>microbit</code>库提供了两种不同的LED矩阵接口：一种是我们一直在使用的、基本的、阻塞式接口，另一种是非阻塞接口，它允许你自定义每个LED的亮度。
+在硬件层面上，每个LED要么是“开”的，要么是“关”的，但<code>microbit::display::nonblocking</code>模块通过快速开关LED来模拟每个LED的十个亮度级别。</p>
+<p>与非阻塞接口交互的代码非常简单，并且会遵循与我们用于与按钮交互的代码类似的结构。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use core::cell::RefCell;
+use cortex_m::interrupt::{free, Mutex};
+use microbit::display::nonblocking::Display;
+use microbit::gpio::DisplayPins;
+use microbit::pac;
+use microbit::pac::TIMER1;
+
+static DISPLAY: Mutex&lt;RefCell&lt;Option&lt;Display&lt;TIMER1&gt;&gt;&gt;&gt; = Mutex::new(RefCell::new(None));
+
+pub(crate) fn init_display(board_timer: TIMER1, board_display: DisplayPins) {
+    let display = Display::new(board_timer, board_display);
+
+    free(move |cs| {
+        *DISPLAY.borrow(cs).borrow_mut() = Some(display);
+    });
+    unsafe {
+        pac::NVIC::unmask(pac::Interrupt::TIMER1)
+    }
+}
+<span class="boring">}</span></code></pre></pre>
+<p>首先，我们初始化一个代表LED显示的<code>microbit::display::nonblocking::Display</code>结构体，将其传递给板子的<code>TIMER1</code>和<code>DisplayPins</code>外设。
+然后我们将显示存储在一个互斥锁中。
+最后，我们取消<code>TIMER1</code>中断的屏蔽。</p>
+<p>然后我们定义了几个便利函数，允许我们轻松地设置（或取消设置）要显示的图像。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use tiny_led_matrix::Render;
+
+// ...
+
+/// Display an image.
+pub(crate) fn display_image(image: &amp;impl Render) {
+    free(|cs| {
+        if let Some(display) = DISPLAY.borrow(cs).borrow_mut().as_mut() {
+            display.show(image);
+        }
+    })
+}
+
+/// Clear the display (turn off all LEDs).
+pub(crate) fn clear_display() {
+    free(|cs| {
+        if let Some(display) = DISPLAY.borrow(cs).borrow_mut().as_mut() {
+            display.clear();
+        }
+    })
+}
+<span class="boring">}</span></code></pre></pre>
+<p><code>display_image</code>函数接收一张图像，并指示显示屏显示它。
+就像它调用的<code>Display::show</code>方法一样，这个函数接收一个实现了<code>tiny_led_matrix::Render</code>特性的结构体。
+这个特性确保了结构体包含了<code>Display</code>在LED矩阵上渲染它所需的数据和方法。
+<code>microbit::display::nonblocking</code>模块提供的<code>Render</code>的两种实现是<code>BitImage</code>和<code>GreyscaleImage</code>。
+在<code>BitImage</code>中，每个“像素”（或LED）要么被点亮，要么没有（就像我们使用阻塞式接口时一样），而在<code>GreyscaleImage</code>中，每个“像素”可以有不同的亮度。</p>
+<p><code>clear_display</code>函数正如其名，做的就是清除显示。</p>
+<p>最后，我们使用<code>interrupt</code>宏来定义<code>TIMER1</code>中断的处理程序。
+这个中断每秒触发多次，这就是允许<code>Display</code>快速循环不同LED的开和关，以产生不同亮度级别的错觉。
+我们处理程序代码所做的就是调用<code>Display::handle_display_event</code>方法，它处理这个。</p>
+<pre><pre class="playground"><code class="language-rust"><span class="boring">#![allow(unused)]
+</span><span class="boring">fn main() {
+</span>use microbit::pac::interrupt;
+
+// ...
+
+#[interrupt]
+fn TIMER1() {
+    free(|cs| {
+        if let Some(display) = DISPLAY.borrow(cs).borrow_mut().as_mut() {
+            display.handle_display_event();
+        }
+    })
+}
+<span class="boring">}</span></code></pre></pre>
+<p>现在我们只需要更新我们的<code>main</code>函数，调用<code>init_display</code>并使用我们定义的新函数与我们的新显示交互。</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+mod game;
+mod control;
+mod display;
+
+use cortex_m_rt::entry;
+use microbit::{
+    Board,
+    hal::{prelude::*, Rng, Timer},
+    display::nonblocking::{BitImage, GreyscaleImage}
+};
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+use crate::control::{get_turn, init_buttons};
+use crate::display::{clear_display, display_image, init_display};
+use crate::game::{Game, GameStatus};
+
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let mut board = Board::take().unwrap();
+    let mut timer = Timer::new(board.TIMER0).into_periodic();
+    let mut rng = Rng::new(board.RNG);
+    let mut game = Game::new(rng.random_u32());
+
+    init_buttons(board.GPIOTE, board.buttons);
+    init_display(board.TIMER1, board.display_pins);
+
+
+    loop {
+        loop {  // Game loop
+            let image = GreyscaleImage::new(&amp;game.game_matrix(6, 3, 9));
+            display_image(&amp;image);
+            timer.delay_ms(game.step_len_ms());
+            match game.status {
+                GameStatus::Ongoing =&gt; game.step(get_turn(true)),
+                _ =&gt; {
+                    for _ in 0..3 {
+                        clear_display();
+                        timer.delay_ms(200u32);
+                        display_image(&amp;image);
+                        timer.delay_ms(200u32);
+                    }
+                    clear_display();
+                    display_image(&amp;BitImage::new(&amp;game.score_matrix()));
+                    timer.delay_ms(2000u32);
+                    break
+                }
+            }
+        }
+        game.reset();
+    }
+}</code></pre></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="还有什么需要你去探索"><a class="header" href="#还有什么需要你去探索">还有什么需要你去探索</a></h1>
+<p>我们仅仅触及了表面！还有很多东西留给你去探索。</p>
+<blockquote>
+<p><strong>注意：</strong> 如果您正在阅读本文，并且希望帮助在发现书中添加以下任何项目的示例或练习，或任何其他相关嵌入主题，我们很乐意得到您的帮助！</p>
+<p>如果您想提供帮助，但需要帮助或指导如何为本书提供帮助，请<a href="https://github.com/rust-embedded/discovery/issues/new">打开一个issue</a>，或者打开一个添加信息的Pull Request！</p>
+</blockquote>
+<h2 id="关于嵌入式软件的主题"><a class="header" href="#关于嵌入式软件的主题">关于嵌入式软件的主题</a></h2>
+<p>这些主题讨论了编写嵌入式软件的策略。虽然许多问题可以用不同的方式解决，但这些部分讨论了一些策略，以及它们何时有意义（或不意义）。</p>
+<h3 id="多任务处理"><a class="header" href="#多任务处理">多任务处理</a></h3>
+<p>我们大部分的程序都执行一个任务。在一个没有操作系统，因此没有线程的系统中，我们如何实现多任务处理？
+有两种主要的多任务处理方法：抢先多任务处理和合作多任务处理。</p>
+<p>在抢占式多任务处理中，当前正在执行的任务可以在任何时间点被另一个任务抢占 (中断) 。抢占时，第一个任务将被挂起， 处理器将改为执行第二个任务。 在某个时候，第一个任务将被恢复。微控制器以中断的形式为抢占提供硬件支持。 微控制器以中断的形式，为抢占提供硬件支持。 在第11章，构建贪吃蛇游戏时，就引入过中断。</p>
+<p>在抢占式多任务处理中，当前正在执行的任务可以在任何时间点被另一个任务<em>抢占</em> (中断) 。抢占时，第一个任务将被挂起，
+处理器将改为执行第二个任务。 在某个时候，第一个任务将被恢复。微控制器以<em>中断</em>的形式为抢占提供硬件支持。</p>
+<p>在协作多任务处理中，正在执行的任务将一直运行到<em>挂起点</em>。当处理器到达该挂起点时，它将停止执行当前任务，转而执行另一个任务。
+在某个时刻，第一个任务将恢复。这两种多任务处理方法之间的主要区别在于，在协作多任务处理中，
+在<em>已知</em>暂停点<em>产生</em>执行控制，而不是在其执行的任何点被强制抢占。</p>
+<h3 id="睡眠"><a class="header" href="#睡眠">睡眠</a></h3>
+<p>我们所有的程序都在不断地轮询外围设备，看看是否有什么需要做的。然而，有时什么也做不了！在这些时候，微控制器应该"睡眠"。</p>
+<p>当处理器休眠时，它停止执行指令，这节省了电源。节省电源几乎总是一个好主意，因此您的微控制器应该尽可能多地睡眠。
+但是，它如何知道何时必须醒来才能执行某些操作？"中断" (见下文了解具体是什么)
+是唤醒微控制器的事件之一，但也有其他事件，<code>wfi</code>和<code>wfe</code>是使处理器"睡眠"的指令。</p>
+<h2 id="与微控制器功能相关的主题"><a class="header" href="#与微控制器功能相关的主题">与微控制器功能相关的主题</a></h2>
+<p>微控制器（如我们的nRF52/nRF51）具有许多功能。然而，许多共享类似的功能，可用于解决各种不同的问题。</p>
+<p>这些主题讨论了其中的一些功能，以及如何在嵌入式开发中有效使用这些功能。</p>
+<h3 id="直接内存访问dma"><a class="header" href="#直接内存访问dma">直接内存访问（DMA）</a></h3>
+<p>该外设是一种<em>异步</em><code>memcpy</code>。如果您正在使用micro:bit v2，您实际上已经使用了它，HAL可以通过UART和TWIM外围设备为您完成这项工作。
+DMA外围设备可用于执行数据的批量传输。从RAM到RAM，从外设（如UART）到RAM，或从RAM到外设。你可以安排DMA传输，比如
+从UART读取256字节到这个缓冲区， 让它在后台运行，然后轮询一些寄存器，看看它是否已经完成，这样你就可以在传输过程中做其他事情。
+有关如何实现的更多信息， 请参阅UART一章中的<code>serial_setup</code>模块。如果这还不够，您甚至可以尝试深入研究<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>的代码。</p>
+<h3 id="中断"><a class="header" href="#中断">中断</a></h3>
+<p>为了与现实世界进行交互，微控制器通常需要在某种事件发生时<em>立即</em>做出响应。</p>
+<p>微控制器具有被中断的能力，这意味着当某个事件发生时，它将停止当前正在执行的任何操作，以响应该事件。
+当我们想要在按下按钮时停止电机，或者在计时器完成倒计时时测量传感器时，这非常有用。</p>
+<p>虽然这些中断可能非常有用，但它们也可能有点难以正确使用。我们希望确保我们对事件做出快速反应，同时也允许其他工作继续进行。</p>
+<p>在Rust中，我们对中断进行建模，类似于桌面Rust程序中的线程概念。这意味着，在主应用程序
+和作为处理中断事件的一部分执行的代码之间共享数据时， 我们还必须考虑<code>Send</code>和<code>Sync</code>的Rust概念。</p>
+<h3 id="脉宽调制pwm"><a class="header" href="#脉宽调制pwm">脉宽调制（PWM）</a></h3>
+<p>简而言之，PWM是在"接通时间"和"断开时间"之间保持一定比例（"占空比"）的同时，周期性地接通和断开某个部件。
+当在具有足够高频率的LED上使用时， 这可用于调暗LED。低占空比，例如10%的开启时间和90%的关闭时间，将使LED非常暗淡，而高占空比
+（例如90%的开启和10%的关闭） 将使LED更亮（几乎就像它完全通电一样）。</p>
+<p>一般而言，PWM可用于控制向某些电气设备提供多少功率。通过微控制器和电机之间的适当（电力）电子
+设备，PWM可用于控制给电机的功率大小， 从而可用于控制其扭矩和速度。然后你可以添加一个角位置传
+感器，你得到了一个闭环控制器，可以控制电机在不同负载下的位置。</p>
+<p>PWM已经在<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/trait.Pwm.html"><code>embedded-hal</code> <code>Pwm</code> trait</a>中抽象出来，您将在<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>中再次找到它的实现。</p>
+<h3 id="数字输入"><a class="header" href="#数字输入">数字输入</a></h3>
+<p>我们使用微控制器引脚作为数字输出，驱动LED。
+编写贪吃蛇游戏时，我们也尝试了将这些引脚作为数字输入。
+作为数字输入，这些引脚可以读取开关（开/关）或按钮（按下/未按下）的二进制状态。</p>
+<p>同样，数字输入在<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/trait.InputPin.html"><code>embedded-hal</code> <code>InputPin</code> trait</a>中被抽象，当然<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>也有一个实现。</p>
+<p>(<em>阻流板</em>读取开关/按钮二进制状态并不像听起来那么简单;-) )</p>
+<h3 id="模数转换器adc"><a class="header" href="#模数转换器adc">模数转换器（ADC）</a></h3>
+<p>那里有很多数字传感器。您可以使用I2C和SPI等协议来读取它们。但模拟传感器也存在！这些传感器只输出与它们感测的幅度成比例的电压电平。</p>
+<p>ADC外围设备可用于将"模拟"电压电平（例如1.25伏）转换为"数字"数字，例如
+<code>[0, 65535]</code>范围，处理器可在其计算中使用。</p>
+<p>同样，<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/adc/index.html"><code>embedded-hal</code> <code>adc</code> module</a>以及<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>为您提供了支持。</p>
+<h3 id="数模转换器dac"><a class="header" href="#数模转换器dac">数模转换器（DAC）</a></h3>
+<p>正如您所预期的，DAC与ADC完全相反。您可以将一些数字值写入寄存器，以在某个"模拟"引脚上产生
+<code>[0, 3.3V]</code>范围内的电压（假设电源为<code>3.3V</code>）。当这个"模拟"引脚连接到一些适当的电子设备，
+并且寄存器以恒定的、快速的速率（频率）写入时，使用正确的值，您可以产生声音甚至音乐！</p>
+<h3 id="实时时钟rtc"><a class="header" href="#实时时钟rtc">实时时钟（RTC）</a></h3>
+<p>该外设可用于以"人类格式"跟踪时间。秒、分钟、小时、天、月和年。该外围设备处理从"滴答声"到这些人性化时间单位的转换。
+它甚至可以为您处理闰年和夏令时！</p>
+<h3 id="其他通信协议"><a class="header" href="#其他通信协议">其他通信协议</a></h3>
+<ul>
+<li>SPI，在<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/spi/index.html"><code>embedded-hal</code> <code>spi</code> module</a>中抽象并由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>。</li>
+<li>I2S，目前没有在<code>embedded-hal</code>中抽象，但由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+<li>在以太网中，确实存在一个名为<a href="https://github.com/smoltcp-rs/smoltcp"><code>smoltcp</code></a>的小型TCP/IP堆栈，它是为一些芯片实现的，但micro:bit上的那些芯片没有以太网外设。</li>
+<li>USB，这方面有一些实验工作，例如使用<a href="https://github.com/mvirkkunen/usb-device"><code>usb-device</code></a> crate。</li>
+<li>蓝牙，确实存在一个不完整的BLE堆栈，名为<a href="https://github.com/jonas-schievink/rubble"><code>rubble</code></a>，它支持nrf芯片。</li>
+<li>SMBUS，目前既不是在嵌入式<code>embedded-hal</code>也不是由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+<li>CAN，目前既不是在嵌入式<code>embedded-hal</code>也不是由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+<li>IrDA，目前既不是在嵌入式<code>embedded-hal</code>也不是由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+</ul>
+<p>不同的应用程序使用不同的通信协议。面向用户的应用程序通常具有USB连接器，因为USB是PC和智能手机中普遍存在的协议。
+而在汽车里，你会发现很多CAN"总线"。一些数字传感器使用SPI，其他使用I2C，其他则使用SMBUS。</p>
+<p>如果您碰巧对开发<code>embedded-hal</code>的抽象或外围设备的实现感兴趣，请不要害羞地在HAL存储库中打开问题。
+或者， 您也可以加入<a href="https://matrix.to/#/#rust-embedded:matrix.org">Rust Embedded matrix channel</a>，并与大多数从上面构建这些东西的人联系。</p>
+<h2 id="一般嵌入式相关主题"><a class="header" href="#一般嵌入式相关主题">一般嵌入式相关主题</a></h2>
+<p>这些主题涵盖并非特定于我们的设备或设备上的硬件的项目。相反，他们讨论了可用于嵌入式系统的有用技术。</p>
+<h3 id="陀螺仪"><a class="header" href="#陀螺仪">陀螺仪</a></h3>
+<p>作为我们的Punch-o-meter练习的一部分，我们使用加速度计测量三个维度的加速度变化。
+但是还有其他的运动传感器，比如陀螺仪，它可以让我们测量三个维度上"自旋"的变化。</p>
+<p>这在尝试构建某些系统时非常有用，例如想要避免翻倒的机器人。
+此外，来自陀螺仪等传感器的数据也可以使用一种称为传感器融合的技术与来自加速度计的数据相结合（有关更多信息，请参见下文）。</p>
+<h3 id="伺服电机和步进电机"><a class="header" href="#伺服电机和步进电机">伺服电机和步进电机</a></h3>
+<p>虽然一些电机主要用于向一个方向或另一个方向旋转，例如向前或向后驾驶遥控汽车，但有时更精确地测量电机如何旋转是有用的。</p>
+<p>我们的微控制器可用于驱动伺服或步进电机，从而可以更精确地控制电机转动的圈数，甚至可以将
+电机定位在一个特定的位置，例如，如果我们想移动指向特定方向的时钟。</p>
+<h3 id="传感器融合"><a class="header" href="#传感器融合">传感器融合</a></h3>
+<p>micro:bit含两个运动传感器：加速度计和磁力计。靠它们自己测量：（适当的）加速度和（地球的）磁场。
+但是这些量级可以"融合"成更有用的东西：对电路板方向的"稳健"测量。鲁棒意味着比单个传感器具有更少的测量误差。</p>
+<p>这种从不同来源获得更可靠数据的想法被称为传感器融合。</p>
+<hr />
+<p>那么下一步该去哪里呢？有几种选择：</p>
+<ul>
+<li>您可以查看<a href="https://github.com/nrf-rs/microbit/"><code>microbit</code></a>板支持箱中的示例。所有这些示例都适用于您拥有的micro:bit板。</li>
+</ul>
+<ul>
+<li>你可以加入<a href="https://matrix.to/#/#rust-embedded:matrix.org">Rust Embedded matrix channel</a>，那里有很多为嵌入式软件做出贡献或工作的人。
+包括例如编写<code>microbit</code> BSP，<code>nrf52-hal</code>，<code>embedded-hal</code>等的人。</li>
+</ul>
+<ul>
+<li>如果您正在寻找 Rust Embedded 中可用内容的一般概述，请查看<a href="https://github.com/rust-embedded/awesome-embedded-rust/">Awesome Rust Embedded</a>列表</li>
+</ul>
+<ul>
+<li>您可以查看<a href="https://rtic.rs">Real-Time Interrupt-driven Concurrency</a>。一个非常高效的抢占式多任务框架，支持任务优先级和无死锁执行。</li>
+</ul>
+<ul>
+<li>您可以查看该<a href="https://github.com/rust-embedded/embedded-hal"><code>embedded-hal</code></a>项目的更多抽象，甚至可以尝试基于它编写自己的平台无关驱动程序。</li>
+</ul>
+<ul>
+<li>您可以尝试在不同的开发板上运行Rust。最简单的入门方法是使用<a href="https://docs.rs/cortex-m-quickstart/0.3.1/cortex_m_quickstart/"><code>cortex-m-quickstart</code></a>Cargo项目模板。</li>
+</ul>
+<ul>
+<li>你可以试试这个<a href="https://mobile.twitter.com/japaricious/status/962770003325005824">运动传感器演示</a>。有关实现和源代码的详细信息，请参阅<a href="http://blog.japaric.io/wd-1-2-l3gd20-lsm303dlhc-madgwick/">博客文章</a>。</li>
+</ul>
+<ul>
+<li>您可以查看这篇<a href="http://blog.japaric.io/brave-new-io/">博客文章</a>，它描述了Rust-type系统如何防止I/O配置中的错误。</li>
+</ul>
+<ul>
+<li>您可以查看<a href="http://blog.japaric.io">japaric's blog</a>，了解有关使用Rust进行嵌入式开发的各种主题。</li>
+</ul>
+<ul>
+<li>您可以加入<a href="https://github.com/rust-lang-nursery/embedded-wg/issues/39">Weekly driver initiative</a> ，帮助我们在<code>embedded-hal</code>特性的基础上编写通用驱动程序，适用于各种平台（ARM Cortex-M、AVR、MSP430、RISCV等）</li>
+</ul>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="一般故障排除"><a class="header" href="#一般故障排除">一般故障排除</a></h1>
+<h2 id="cargo-embed问题"><a class="header" href="#cargo-embed问题"><code>cargo-embed</code>问题</a></h2>
+<p>大多数<code>cargo-embed</code>问题要么与未正确安装<code>udev</code>规则（在Linux上）有关，要么与在嵌入中选择了错误的芯片配置有关。
+<code>Embed.toml</code>确保你两个都是对的。</p>
+<p>如果上述方法不适用于您，您可以在<a href="https://github.com/rust-embedded/discovery/issues"><code>discovery</code> issue tracker</a>打开问题。
+或者，您也可以访问<a href="https://matrix.to/#/#rust-embedded:matrix.org">Rust Embedded matrix channel</a>或者<a href="https://matrix.to/#/#probe-rs:matrix.org">probe-rs matrix channel</a>并在那里寻求帮助。</p>
+<h2 id="cargo-问题"><a class="header" href="#cargo-问题">Cargo 问题</a></h2>
+<h3 id="找不到corecrate"><a class="header" href="#找不到corecrate">"找不到<code>core</code>crate"</a></h3>
+<h4 id="症状"><a class="header" href="#症状">症状</a></h4>
+<pre><code>   Compiling volatile-register v0.1.2
+   Compiling rlibc v1.0.0
+   Compiling r0 v0.1.0
+error[E0463]: can't find crate for `core`
+
+error: aborting due to previous error
+
+error[E0463]: can't find crate for `core`
+
+error: aborting due to previous error
+
+error[E0463]: can't find crate for `core`
+
+error: aborting due to previous error
+
+Build failed, waiting for other jobs to finish...
+Build failed, waiting for other jobs to finish...
+error: Could not compile `r0`.
+
+To learn more, run the command again with --verbose.
+</code></pre>
+<h4 id="原因"><a class="header" href="#原因">原因</a></h4>
+<p>您忘记为微控制器安装正确的目标(对于v2，<code>thumbv7em-none-eabihf</code>，对于v1<code>thumbv6m-none-eabi</code>)。</p>
+<h4 id="修复"><a class="header" href="#修复">修复</a></h4>
+<p>安装正确的目标。</p>
+<pre><code class="language-console"># micro:bit v2
+$ rustup target add thumbv7em-none-eabihf
+
+# micro:bit v1
+$ rustup target add thumbv6m-none-eabi
+</code></pre>
+<div style="break-before: page; page-break-before: always;"></div><h1 id="如何使用gdb"><a class="header" href="#如何使用gdb">如何使用GDB</a></h1>
+<p>下面是一些有用的GDB命令，可以帮助我们调试程序。这假设您已将<a href="appendix/2-how-to-use-gdb/../../05-led-roulette/flash-it.html">程序闪存</a>
+到微控制器上，并将GDB连接到<code>cargo-embed</code>会话。</p>
+<h2 id="常规调试"><a class="header" href="#常规调试">常规调试</a></h2>
+<blockquote>
+<p><strong>注意</strong>：您在下面看到的许多命令可以使用简短的形式执行。例如，<code>continue</code>可以简单地用作<code>c</code>，
+或<code>break $location</code>可以用作<code>b $location</code>。一旦你对下面的命令有了经验，试着看看在GDB无法识别它们之前你可以让这些命令运行多短！</p>
+</blockquote>
+<h3 id="处理断点"><a class="header" href="#处理断点">处理断点</a></h3>
+<ul>
+<li><code>break $location</code>：在代码中的某个位置设置断点。<code>$location</code>的值可以包括：
+<ul>
+<li><code>break *main</code> - 函数<code>main</code>的确切地址上的break</li>
+<li><code>break *0x080012f2</code> - 在准确的内存位置<code>0x080012f2</code>上中断</li>
+<li><code>break 123</code> - 在当前显示文件的第123行中断</li>
+<li><code>break main.rs:123</code> - 在文件<code>main.rs</code>的第123行中断</li>
+</ul>
+</li>
+<li><code>info break</code>: 显示当前断点</li>
+<li><code>delete</code>: 删除所有断点
+<ul>
+<li><code>delete $n</code>:  删除断点<code>$n</code> (<code>n</code>是一个数字。例如：<code>delete $2</code>)</li>
+</ul>
+</li>
+<li><code>clear</code>: 删除下一条指令的断点
+<ul>
+<li><code>clear main.rs:$function</code>: 删除<code>main.rs</code>中<code>$function</code>条目处的断点</li>
+<li><code>clear main.rs:123</code>:  删除<code>main.rs</code>第123行上的断点</li>
+</ul>
+</li>
+<li><code>enable</code>: 启用所有设置的断点
+<ul>
+<li><code>enable $n</code>: 启用断点<code>$n</code></li>
+</ul>
+</li>
+<li><code>disable</code>: 禁用所有设置的断点
+<ul>
+<li><code>disable $n</code>: 禁用断点<code>$n</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="控制执行"><a class="header" href="#控制执行">控制执行</a></h3>
+<ul>
+<li><code>continue</code>: 开始或继续执行程序</li>
+<li><code>next</code>: 执行程序的下一行
+<ul>
+<li><code>next $n</code>: 重复<code>next</code> <code>$n</code>多次</li>
+</ul>
+</li>
+<li><code>nexti</code>: 与<code>next</code>相同，但使用机器指令</li>
+<li><code>step</code>: 执行下一行，如果下一行包含对另一个函数的调用，则进入该代码
+<ul>
+<li><code>step $n</code>: 重复<code>step</code> <code>$n</code>多次</li>
+</ul>
+</li>
+<li><code>stepi</code>:  与<code>step</code>相同，但使用机器指令</li>
+<li><code>jump $location</code>: 在指定位置继续执行：
+<ul>
+<li><code>jump 123</code>: 在第123行继续执行</li>
+<li><code>jump 0x080012f2</code>: 在地址0x08001f2恢复执行</li>
+</ul>
+</li>
+</ul>
+<h3 id="打印信息"><a class="header" href="#打印信息">打印信息</a></h3>
+<ul>
+<li><code>print /$f $data</code> - 打印变量<code>$data</code>包含的值。可选地，使用<code>$f</code>格式化输出，包括：
+<pre><code class="language-txt">x: 十六进制
+d: 有符号十进制
+u: 无符号十进制
+o: 八进制
+t: 二进制
+a: 地址
+c: 字符
+f: 浮点
+</code></pre>
+<ul>
+<li><code>print /t 0xA</code>: 将十六进制值<code>0xA</code>打印为二进制(0b1010)</li>
+</ul>
+</li>
+<li><code>x /$n$u$f $address</code>: 检查<code>$address</code>处的内存。可选，<code>$n</code>定义要显示的单位数，
+<code>$u</code> 单位大小(字节、半字、字等), <code>$f</code>以上定义任何的<code>print</code>格式
+<ul>
+<li><code>x /5i 0x080012c4</code>: 打印5条机器指令，起始地址为<code>0x080012c4</code></li>
+<li><code>x/4xb $pc</code>: 从<code>$pc</code>当前指向的位置开始打印4字节内存</li>
+</ul>
+</li>
+<li><code>disassemble $location</code>
+<ul>
+<li><code>disassemble /r main</code>: 反汇编函数<code>main</code>，使用<code>/r</code>显示组成每个指令的字节</li>
+</ul>
+</li>
+</ul>
+<h3 id="查看符号表"><a class="header" href="#查看符号表">查看符号表</a></h3>
+<ul>
+<li><code>info functions $regex</code>: 打印与<code>$regex</code>匹配的函数的名称和数据类型，省略<code>$regex</code>以打印所有函数
+<ul>
+<li><code>info functions main</code>: 打印包含单词<code>main</code>的已定义函数的名称和类型</li>
+</ul>
+</li>
+<li><code>info address $symbol</code>: 打印<code>$symbol</code>存储在内存中的位置
+<ul>
+<li><code>info address GPIOC</code>: 打印变量<code>GPIOC</code>的内存地址</li>
+</ul>
+</li>
+<li><code>info variables $regex</code>: 打印与<code>$regex</code>匹配的全局变量的名称和类型，省略<code>$regex</code>打印所有全局变量</li>
+<li><code>ptype $data</code>:  打印有关<code>$data</code>的更多详细信息
+<ul>
+<li><code>ptype cp</code>: 打印变量<code>cp</code>的详细类型信息</li>
+</ul>
+</li>
+</ul>
+<h3 id="浏览程序堆栈"><a class="header" href="#浏览程序堆栈">浏览程序堆栈</a></h3>
+<ul>
+<li><code>backtrace $n</code>: 打印<code>$n</code>帧的跟踪，或省略<code>$n</code>以打印所有帧
+<ul>
+<li><code>backtrace 2</code>: 前2帧的打印跟踪</li>
+</ul>
+</li>
+<li><code>frame $n</code>: 选择编号或地址为<code>$n</code>的帧，忽略<code>$n</code>以显示当前帧</li>
+<li><code>up $n</code>: 选择帧<code>$n</code>帧向上</li>
+<li><code>down $n</code>: S选择帧<code>$n</code>帧向下</li>
+<li><code>info frame $address</code>: 在<code>$address</code>处描述帧，忽略当前选定帧的<code>$address</code></li>
+<li><code>info args</code>: 打印所选帧的参数</li>
+<li><code>info registers $r</code>: 打印选定帧中寄存器<code>$r</code>的值，忽略所有寄存器<code>$r</code>
+<ul>
+<li><code>info registers $sp</code>: 打印当前帧中堆栈指针寄存器<code>$sp</code>的值</li>
+</ul>
+</li>
+</ul>
+<h3 id="cargo-embed远程控制"><a class="header" href="#cargo-embed远程控制"><code>cargo-embed</code>远程控制</a></h3>
+<ul>
+<li><code>monitor reset</code>: 重置CPU，重新开始执行</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+        <script>
+        window.addEventListener('load', function() {
+            window.setTimeout(window.print, 100);
+        });
+        </script>
+
+    </div>
+    </body>
+</html>

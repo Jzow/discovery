@@ -1,0 +1,301 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>验证安装 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="验证安装"><a class="header" href="#验证安装">验证安装</a></h1>
+<p>让我们验证所有工具是否已正确安装。</p>
+<h2 id="仅限linux"><a class="header" href="#仅限linux">仅限Linux</a></h2>
+<h3 id="验证权限"><a class="header" href="#验证权限">验证权限</a></h3>
+<p>使用USB数据线将micro:bit连接到您的计算机。</p>
+<p>micro:bit现在应该以USB设备（文件）的形式出现在<code>/dev/bus/usb</code>。让我们看看它是如何被枚举的：</p>
+<pre><code class="language-console">$ lsusb | grep -i "NXP ARM mbed"
+Bus 001 Device 065: ID 0d28:0204 NXP ARM mbed
+$ # ^^^        ^^^
+</code></pre>
+<p>在我的例子中，micro:bit连接到总线#1被枚举为设备#65。这意味着该文件<code>/dev/bus/usb/001/065</code><em>是</em>micro:bit。
+让我们检查这个文件的权限：</p>
+<pre><code class="language-console">$ ls -l /dev/bus/usb/001/065
+crw-rw-r--+ 1 nobody nobody 189, 64 Sep  5 14:27 /dev/bus/usb/001/065
+</code></pre>
+<p>权限应该是<code>crw-rw-r--+</code>，注意最后的<code>+</code>号，然后运行以下命令查看您的访问权限。</p>
+<pre><code class="language-console">$ getfacl /dev/bus/usb/001/065
+getfacl: Removing leadin '/' from absolute path names
+# file: dev/bus/usb/001/065
+# owner: nobody
+# group: nobody
+user::rw-
+user:&lt;YOUR-USER-NAME&gt;:rw-
+group::rw-
+mask::rw-
+other::r-
+</code></pre>
+<p>您应该在上述列表中看到您的用户名带有<code>rw-</code>权限，如果不是...然后检查您的<a href="linux.html#udev-rules">udev规则</a>并尝试重新加载它们：</p>
+<pre><code class="language-console">$ sudo udevadm control --reload
+$ sudo udevadm trigger
+</code></pre>
+<h1 id="全部"><a class="header" href="#全部">全部</a></h1>
+<h2 id="验证cargo-embed"><a class="header" href="#验证cargo-embed">验证cargo-embed</a></h2>
+<p>首先，使用USB数据线将micro:bit连接到您的计算机。</p>
+<p>micro:bit的USB端口旁边至少有一个橙色LED应该亮起。此外，如果您从未在micro:bit上刷过其他程序，
+则micro:bit附带的默认程序应该开始闪烁其背面的红色LED，您可以忽略它们。</p>
+<p>现在查看一下probe-rs及其中的cargo-embed是否可以发现micro:bit，使用以下命令：</p>
+<pre><code class="language-console">$ probe-rs list
+The following debug probes were found:
+[0]: BBC micro:bit CMSIS-DAP -- 0d28:0204:990636020005282030f57fa14252d446000000006e052820 (CMSIS-DAP)
+</code></pre>
+<p>如果需要更多有关micro:bit调试能力的信息，可以运行:</p>
+<pre><code class="language-console">$ probe-rs info
+Probing target via JTAG
+
+Error identifying target using protocol JTAG: The probe does not support the JTAG protocol.
+
+Probing target via SWD
+
+ARM Chip with debug port Default:
+Debug Port: DPv1, DP Designer: ARM Ltd
+├── 0 MemoryAP
+│   └── ROM Table (Class 1), Designer: Nordic VLSI ASA
+│       ├── Cortex-M4 SCS   (Generic IP component)
+│       │   └── CPUID
+│       │       ├── IMPLEMENTER: ARM Ltd
+│       │       ├── VARIANT: 0
+│       │       ├── PARTNO: Cortex-M4
+│       │       └── REVISION: 1
+│       ├── Cortex-M3 DWT   (Generic IP component)
+│       ├── Cortex-M3 FBP   (Generic IP component)
+│       ├── Cortex-M3 ITM   (Generic IP component)
+│       ├── Cortex-M4 TPIU  (Coresight Component)
+│       └── Cortex-M4 ETM   (Coresight Component)
+└── 1 Unknown AP (Designer: Nordic VLSI ASA, Class: Undefined, Type: 0x0, Variant: 0x0, Revision: 0x0)
+
+
+Debugging RISC-V targets over SWD is not supported. For these targets, JTAG is the only supported protocol. RISC-V specific information cannot be printed.
+Debugging Xtensa targets over SWD is not supported. For these targets, JTAG is the only supported protocol. Xtensa specific information cannot be printed.
+
+</code></pre>
+<p>接下来，您将不得不在本书的源代码<code>src/03-setup</code>目录中进行修改<code>Embed.toml</code>。
+在该<code>default.general</code>部分中，您将找到两个已注释掉的芯片的变量：</p>
+<pre><code class="language-toml">[default.general]
+# chip = "nrf52833_xxAA" # uncomment this line for micro:bit V2
+# chip = "nrf51822_xxAA" # uncomment this line for micro:bit V1
+</code></pre>
+<p>如果您使用的是micro:bit v2板，请取消注释第一行，对于v1，请取消注释第二行。</p>
+<p>接下来运行以下命令之一：</p>
+<pre><code>$ # make sure you are in src/03-setup of the books source code
+$ # If you are working with micro:bit v2
+$ rustup target add thumbv7em-none-eabihf
+$ cargo embed --target thumbv7em-none-eabihf
+
+$ # If you are working with micro:bit v1
+$ rustup target add thumbv6m-none-eabi
+$ cargo embed --target thumbv6m-none-eabi
+</code></pre>
+<p>如果一切正常，cargo-embed应该首先编译这个目录中的小示例程序，然后刷新它，
+最后打开一个漂亮的基于文本的用户界面，打印Hello World。</p>
+<p>(如果没有，请查看<a href="../appendix/1-general-troubleshooting/index.html">一般故障排除</a>说明。)</p>
+<p>此输出来自您刚刚嵌入micro:bit的小型Rust程序。一切正常，您可以继续下一章！</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../03-setup/macos.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../03-setup/IDE.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../03-setup/macos.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../03-setup/IDE.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

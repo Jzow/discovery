@@ -1,0 +1,312 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Hello, world! - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="hello-world"><a class="header" href="#hello-world">Hello, world!</a></h1>
+<blockquote>
+<p><strong>注意</strong>：STM32F3DISCOVERY上的"桥接"SB10 (见电路板背面)需要使用ITM和<code>iprint!</code>下面显示的宏
+在默认情况下<strong>不</strong>会焊接((参见<a href="http://www.st.com/resource/en/user_manual/dm00063382.pdf">用户手册</a>第21页)。(更准确地说：这实际上取决于电路板的版本。
+如果您有旧版的电路板，如<a href="https://docs.rs-online.com/5192/0900766b814876f9.pdf">旧用户手册</a>所述，SB10是焊接的。请检查您的电路板以决定是否需要修复它。)</p>
+</blockquote>
+<blockquote>
+<p><strong>TL;DR</strong> 您有两个选项可以解决此问题：<strong>焊接</strong>焊料桥SB10或在SWO和PB3之间连接一条母对母跳线，如下图所示。</p>
+</blockquote>
+<p>
+<img height=640 title="Manual SWD connection" src="../assets/f3-swd.png">
+</p>
+<hr />
+<p>在我们开始做低水平的事情之前，再多一些有用的魔法。</p>
+<p>LED闪烁就像嵌入式世界的"Hello, world"。</p>
+<p>但在本节中，我们将运行一个适当的"Hello, world"程序，将内容打印到计算机控制台。</p>
+<p>转到<code>06-hello-world</code>目录。里面有一些启动代码：</p>
+<pre><pre class="playground"><code class="language-rust">#![deny(unsafe_code)]
+#![no_main]
+#![no_std]
+
+#[allow(unused_imports)]
+use aux6::{entry, iprint, iprintln};
+
+#[entry]
+fn main() -&gt; ! {
+    let mut itm = aux6::init();
+
+    iprintln!(&amp;mut itm.stim[0], "Hello, world!");
+
+    loop {}
+}</code></pre></pre>
+<p><code>iprintln</code>宏将格式化消息并将其输出到微控制器的<em>ITM</em>。ITM代表Instrumentation Trace Macrocell
+它是SWD（串行线调试）之上的一种通信协议，可用于从微控制器向调试主机发送消息。
+这种通信只有<em>一种方式</em>：调试主机无法向微控制器发送数据。</p>
+<p>管理调试会话的OpenOCD可以接收通过ITM<em>通道</em>发送的数据并将其重定向到文件。</p>
+<p>ITM协议与<em>帧</em>一起工作 (您可以将它们视为以太网帧)。每个帧都有一个报头和一个可变长度的有效载荷。
+OpenOCD将接收这些帧，并将它们直接写入文件，而无需解析它们。
+所以，如果微控制器发送字符串"Hello, world!" 使用<code>iprintln</code>宏，OpenOCD的输出文件不会完全包含该字符串。</p>
+<p>要检索原始字符串，必须解析OpenOCD的输出文件。我们将使用<code>itmdump</code>程序在新数据到达时执行解析。</p>
+<p>在<a href="../03-setup/index.html#itmdump">安装章节</a>中，您应该已经安装了<code>itmdump</code>程序。</p>
+<p>在新终端中，如果您使用的是*nix OS，请在<code>/tmp</code>目录中运行此命令；如果您运行的是Windows，请在<code>%TEMP%</code>目录中运行该命令。
+这应该是运行OpenOCD的同一目录。</p>
+<blockquote>
+<p><strong>注意</strong>：<code>itmdump</code>和<code>openocd</code>都在同一目录下运行，这一点非常重要！</p>
+</blockquote>
+<pre><code class="language-console">$ # itmdump terminal
+
+$ # *nix
+$ cd /tmp &amp;&amp; touch itm.txt
+
+$ # Windows
+$ cd %TEMP% &amp;&amp; type nul &gt;&gt; itm.txt
+
+$ # both
+$ itmdump -F -f itm.txt
+</code></pre>
+<p>当<code>itmdump</code>正在监视itm时，该命令将被阻止。<code>itm.txt</code>文件保持此终端打开。</p>
+<p>确保STM32F3DISCOVER板已连接到计算机。从<code>/tmp</code>目录 (在Windows<code>%TEMP%</code>) 打开另一个终端，启动OpenOCD，如<a href="../03-setup/verify.html#first-openocd-connection">第3章</a>所述。</p>
+<p>好吧现在，让我们构建启动代码并将其闪存到微控制器中。</p>
+<p>我们现在将构建并运行应用程序，<code>cargo run</code>。然后使用<code>next</code>逐步完成。自<code>openocd.gdb</code>以来。
+<code>openocd.gdb</code>包含<code>monitor</code>命令，OpenOCD将ITM输出重定向到itm.txt和<code>itmdump</code>将其写入其终端窗口。
+此外，它还设置了断点并逐步通过trampoline，我们看到<code>fn main()</code>中的第一个可执行语句：</p>
+<pre><code class="language-console">~/embedded-discovery/src/06-hello-world
+$ cargo run
+    Finished dev [unoptimized + debuginfo] target(s) in 0.01s
+     Running `arm-none-eabi-gdb -q -x ../openocd.gdb ~/embedded-discovery/target/thumbv7em-none-eabihf/debug/hello-world`
+Reading symbols from ~/embedded-discovery/target/thumbv7em-none-eabihf/debug/hello-world...
+hello_world::__cortex_m_rt_main () at ~/embedded-discovery/src/06-hello-world/src/main.rs:14
+14          loop {}
+Loading section .vector_table, size 0x194 lma 0x8000000
+Loading section .text, size 0x2828 lma 0x8000194
+Loading section .rodata, size 0x638 lma 0x80029bc
+Start address 0x08000194, load size 12276
+Transfer rate: 18 KB/sec, 4092 bytes/write.
+Breakpoint 1 at 0x80001f0: file ~/embedded-discovery/src/06-hello-world/src/main.rs, line 8.
+Note: automatically using hardware breakpoints for read-only addresses.
+Breakpoint 2 at 0x800092a: file /home/wink/.cargo/registry/src/github.com-1ecc6299db9ec823/cortex-m-rt-0.6.13/src/lib.rs, line 570.
+Breakpoint 3 at 0x80029a8: file /home/wink/.cargo/registry/src/github.com-1ecc6299db9ec823/cortex-m-rt-0.6.13/src/lib.rs, line 560.
+
+Breakpoint 1, hello_world::__cortex_m_rt_main_trampoline () at ~/embedded-discovery/src/06-hello-world/src/main.rs:8
+8       #[entry]
+hello_world::__cortex_m_rt_main () at ~/embedded-discovery/src/06-hello-world/src/main.rs:10
+10          let mut itm = aux6::init();
+
+(gdb)
+</code></pre>
+<p>现在发出<code>next</code>命令，该命令将执行<code>aux6::init()</code>，并在<code>main.rs</code>的下一个可执行语句处停止，将我们定位在第12行：</p>
+<pre><code class="language-text">(gdb) next
+12	    iprintln!(&amp;mut itm.stim[0], "Hello, world!");
+</code></pre>
+<p>然后发出另一个<code>next</code>命令执行第12行，执行<code>iprintln</code>在第14行停止：</p>
+<pre><code class="language-text">(gdb) next
+14	    loop {}
+</code></pre>
+<p>现在，由于<code>iprintln</code>已经执行，<code>itmdump</code>终端窗口上的输出应该是<code>Hello, world!</code>字符串：</p>
+<pre><code class="language-console">$ itmdump -F -f itm.txt
+(...)
+Hello, world!
+</code></pre>
+<p>太棒了，对吧？在接下来的章节中，可以使用<code>iprintln</code>作为测试工具。</p>
+<p>下一篇：这还不是全部！<code>iprint!</code>宏不是唯一使用ITM的东西。<code>:-)</code></p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../05-led-roulette/my-solution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../06-hello-world/panic.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../05-led-roulette/my-solution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../06-hello-world/panic.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

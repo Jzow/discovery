@@ -1,0 +1,335 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>还有什么需要你去探索 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="还有什么需要你去探索"><a class="header" href="#还有什么需要你去探索">还有什么需要你去探索</a></h1>
+<p>我们仅仅触及了表面！还有很多东西留给你去探索。</p>
+<blockquote>
+<p><strong>注意：</strong> 如果您正在阅读本文，并且希望帮助在发现书中添加以下任何项目的示例或练习，或任何其他相关嵌入主题，我们很乐意得到您的帮助！</p>
+<p>如果您想提供帮助，但需要帮助或指导如何为本书提供帮助，请<a href="https://github.com/rust-embedded/discovery/issues/new">打开一个issue</a>，或者打开一个添加信息的Pull Request！</p>
+</blockquote>
+<h2 id="关于嵌入式软件的主题"><a class="header" href="#关于嵌入式软件的主题">关于嵌入式软件的主题</a></h2>
+<p>这些主题讨论了编写嵌入式软件的策略。虽然许多问题可以用不同的方式解决，但这些部分讨论了一些策略，以及它们何时有意义（或不意义）。</p>
+<h3 id="多任务处理"><a class="header" href="#多任务处理">多任务处理</a></h3>
+<p>我们大部分的程序都执行一个任务。在一个没有操作系统，因此没有线程的系统中，我们如何实现多任务处理？
+有两种主要的多任务处理方法：抢先多任务处理和合作多任务处理。</p>
+<p>在抢占式多任务处理中，当前正在执行的任务可以在任何时间点被另一个任务抢占 (中断) 。抢占时，第一个任务将被挂起， 处理器将改为执行第二个任务。 在某个时候，第一个任务将被恢复。微控制器以中断的形式为抢占提供硬件支持。 微控制器以中断的形式，为抢占提供硬件支持。 在第11章，构建贪吃蛇游戏时，就引入过中断。</p>
+<p>在抢占式多任务处理中，当前正在执行的任务可以在任何时间点被另一个任务<em>抢占</em> (中断) 。抢占时，第一个任务将被挂起，
+处理器将改为执行第二个任务。 在某个时候，第一个任务将被恢复。微控制器以<em>中断</em>的形式为抢占提供硬件支持。</p>
+<p>在协作多任务处理中，正在执行的任务将一直运行到<em>挂起点</em>。当处理器到达该挂起点时，它将停止执行当前任务，转而执行另一个任务。
+在某个时刻，第一个任务将恢复。这两种多任务处理方法之间的主要区别在于，在协作多任务处理中，
+在<em>已知</em>暂停点<em>产生</em>执行控制，而不是在其执行的任何点被强制抢占。</p>
+<h3 id="睡眠"><a class="header" href="#睡眠">睡眠</a></h3>
+<p>我们所有的程序都在不断地轮询外围设备，看看是否有什么需要做的。然而，有时什么也做不了！在这些时候，微控制器应该"睡眠"。</p>
+<p>当处理器休眠时，它停止执行指令，这节省了电源。节省电源几乎总是一个好主意，因此您的微控制器应该尽可能多地睡眠。
+但是，它如何知道何时必须醒来才能执行某些操作？"中断" (见下文了解具体是什么)
+是唤醒微控制器的事件之一，但也有其他事件，<code>wfi</code>和<code>wfe</code>是使处理器"睡眠"的指令。</p>
+<h2 id="与微控制器功能相关的主题"><a class="header" href="#与微控制器功能相关的主题">与微控制器功能相关的主题</a></h2>
+<p>微控制器（如我们的nRF52/nRF51）具有许多功能。然而，许多共享类似的功能，可用于解决各种不同的问题。</p>
+<p>这些主题讨论了其中的一些功能，以及如何在嵌入式开发中有效使用这些功能。</p>
+<h3 id="直接内存访问dma"><a class="header" href="#直接内存访问dma">直接内存访问（DMA）</a></h3>
+<p>该外设是一种<em>异步</em><code>memcpy</code>。如果您正在使用micro:bit v2，您实际上已经使用了它，HAL可以通过UART和TWIM外围设备为您完成这项工作。
+DMA外围设备可用于执行数据的批量传输。从RAM到RAM，从外设（如UART）到RAM，或从RAM到外设。你可以安排DMA传输，比如
+从UART读取256字节到这个缓冲区， 让它在后台运行，然后轮询一些寄存器，看看它是否已经完成，这样你就可以在传输过程中做其他事情。
+有关如何实现的更多信息， 请参阅UART一章中的<code>serial_setup</code>模块。如果这还不够，您甚至可以尝试深入研究<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>的代码。</p>
+<h3 id="中断"><a class="header" href="#中断">中断</a></h3>
+<p>为了与现实世界进行交互，微控制器通常需要在某种事件发生时<em>立即</em>做出响应。</p>
+<p>微控制器具有被中断的能力，这意味着当某个事件发生时，它将停止当前正在执行的任何操作，以响应该事件。
+当我们想要在按下按钮时停止电机，或者在计时器完成倒计时时测量传感器时，这非常有用。</p>
+<p>虽然这些中断可能非常有用，但它们也可能有点难以正确使用。我们希望确保我们对事件做出快速反应，同时也允许其他工作继续进行。</p>
+<p>在Rust中，我们对中断进行建模，类似于桌面Rust程序中的线程概念。这意味着，在主应用程序
+和作为处理中断事件的一部分执行的代码之间共享数据时， 我们还必须考虑<code>Send</code>和<code>Sync</code>的Rust概念。</p>
+<h3 id="脉宽调制pwm"><a class="header" href="#脉宽调制pwm">脉宽调制（PWM）</a></h3>
+<p>简而言之，PWM是在"接通时间"和"断开时间"之间保持一定比例（"占空比"）的同时，周期性地接通和断开某个部件。
+当在具有足够高频率的LED上使用时， 这可用于调暗LED。低占空比，例如10%的开启时间和90%的关闭时间，将使LED非常暗淡，而高占空比
+（例如90%的开启和10%的关闭） 将使LED更亮（几乎就像它完全通电一样）。</p>
+<p>一般而言，PWM可用于控制向某些电气设备提供多少功率。通过微控制器和电机之间的适当（电力）电子
+设备，PWM可用于控制给电机的功率大小， 从而可用于控制其扭矩和速度。然后你可以添加一个角位置传
+感器，你得到了一个闭环控制器，可以控制电机在不同负载下的位置。</p>
+<p>PWM已经在<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/trait.Pwm.html"><code>embedded-hal</code> <code>Pwm</code> trait</a>中抽象出来，您将在<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>中再次找到它的实现。</p>
+<h3 id="数字输入"><a class="header" href="#数字输入">数字输入</a></h3>
+<p>我们使用微控制器引脚作为数字输出，驱动LED。
+编写贪吃蛇游戏时，我们也尝试了将这些引脚作为数字输入。
+作为数字输入，这些引脚可以读取开关（开/关）或按钮（按下/未按下）的二进制状态。</p>
+<p>同样，数字输入在<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/digital/v2/trait.InputPin.html"><code>embedded-hal</code> <code>InputPin</code> trait</a>中被抽象，当然<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>也有一个实现。</p>
+<p>(<em>阻流板</em>读取开关/按钮二进制状态并不像听起来那么简单;-) )</p>
+<h3 id="模数转换器adc"><a class="header" href="#模数转换器adc">模数转换器（ADC）</a></h3>
+<p>那里有很多数字传感器。您可以使用I2C和SPI等协议来读取它们。但模拟传感器也存在！这些传感器只输出与它们感测的幅度成比例的电压电平。</p>
+<p>ADC外围设备可用于将"模拟"电压电平（例如1.25伏）转换为"数字"数字，例如
+<code>[0, 65535]</code>范围，处理器可在其计算中使用。</p>
+<p>同样，<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/adc/index.html"><code>embedded-hal</code> <code>adc</code> module</a>以及<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>为您提供了支持。</p>
+<h3 id="数模转换器dac"><a class="header" href="#数模转换器dac">数模转换器（DAC）</a></h3>
+<p>正如您所预期的，DAC与ADC完全相反。您可以将一些数字值写入寄存器，以在某个"模拟"引脚上产生
+<code>[0, 3.3V]</code>范围内的电压（假设电源为<code>3.3V</code>）。当这个"模拟"引脚连接到一些适当的电子设备，
+并且寄存器以恒定的、快速的速率（频率）写入时，使用正确的值，您可以产生声音甚至音乐！</p>
+<h3 id="实时时钟rtc"><a class="header" href="#实时时钟rtc">实时时钟（RTC）</a></h3>
+<p>该外设可用于以"人类格式"跟踪时间。秒、分钟、小时、天、月和年。该外围设备处理从"滴答声"到这些人性化时间单位的转换。
+它甚至可以为您处理闰年和夏令时！</p>
+<h3 id="其他通信协议"><a class="header" href="#其他通信协议">其他通信协议</a></h3>
+<ul>
+<li>SPI，在<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/spi/index.html"><code>embedded-hal</code> <code>spi</code> module</a>中抽象并由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>。</li>
+<li>I2S，目前没有在<code>embedded-hal</code>中抽象，但由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+<li>在以太网中，确实存在一个名为<a href="https://github.com/smoltcp-rs/smoltcp"><code>smoltcp</code></a>的小型TCP/IP堆栈，它是为一些芯片实现的，但micro:bit上的那些芯片没有以太网外设。</li>
+<li>USB，这方面有一些实验工作，例如使用<a href="https://github.com/mvirkkunen/usb-device"><code>usb-device</code></a> crate。</li>
+<li>蓝牙，确实存在一个不完整的BLE堆栈，名为<a href="https://github.com/jonas-schievink/rubble"><code>rubble</code></a>，它支持nrf芯片。</li>
+<li>SMBUS，目前既不是在嵌入式<code>embedded-hal</code>也不是由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+<li>CAN，目前既不是在嵌入式<code>embedded-hal</code>也不是由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+<li>IrDA，目前既不是在嵌入式<code>embedded-hal</code>也不是由<a href="https://github.com/nrf-rs/nrf-hal"><code>nrf52-hal</code></a>实现。</li>
+</ul>
+<p>不同的应用程序使用不同的通信协议。面向用户的应用程序通常具有USB连接器，因为USB是PC和智能手机中普遍存在的协议。
+而在汽车里，你会发现很多CAN"总线"。一些数字传感器使用SPI，其他使用I2C，其他则使用SMBUS。</p>
+<p>如果您碰巧对开发<code>embedded-hal</code>的抽象或外围设备的实现感兴趣，请不要害羞地在HAL存储库中打开问题。
+或者， 您也可以加入<a href="https://matrix.to/#/#rust-embedded:matrix.org">Rust Embedded matrix channel</a>，并与大多数从上面构建这些东西的人联系。</p>
+<h2 id="一般嵌入式相关主题"><a class="header" href="#一般嵌入式相关主题">一般嵌入式相关主题</a></h2>
+<p>这些主题涵盖并非特定于我们的设备或设备上的硬件的项目。相反，他们讨论了可用于嵌入式系统的有用技术。</p>
+<h3 id="陀螺仪"><a class="header" href="#陀螺仪">陀螺仪</a></h3>
+<p>作为我们的Punch-o-meter练习的一部分，我们使用加速度计测量三个维度的加速度变化。
+但是还有其他的运动传感器，比如陀螺仪，它可以让我们测量三个维度上"自旋"的变化。</p>
+<p>这在尝试构建某些系统时非常有用，例如想要避免翻倒的机器人。
+此外，来自陀螺仪等传感器的数据也可以使用一种称为传感器融合的技术与来自加速度计的数据相结合（有关更多信息，请参见下文）。</p>
+<h3 id="伺服电机和步进电机"><a class="header" href="#伺服电机和步进电机">伺服电机和步进电机</a></h3>
+<p>虽然一些电机主要用于向一个方向或另一个方向旋转，例如向前或向后驾驶遥控汽车，但有时更精确地测量电机如何旋转是有用的。</p>
+<p>我们的微控制器可用于驱动伺服或步进电机，从而可以更精确地控制电机转动的圈数，甚至可以将
+电机定位在一个特定的位置，例如，如果我们想移动指向特定方向的时钟。</p>
+<h3 id="传感器融合"><a class="header" href="#传感器融合">传感器融合</a></h3>
+<p>micro:bit含两个运动传感器：加速度计和磁力计。靠它们自己测量：（适当的）加速度和（地球的）磁场。
+但是这些量级可以"融合"成更有用的东西：对电路板方向的"稳健"测量。鲁棒意味着比单个传感器具有更少的测量误差。</p>
+<p>这种从不同来源获得更可靠数据的想法被称为传感器融合。</p>
+<hr />
+<p>那么下一步该去哪里呢？有几种选择：</p>
+<ul>
+<li>您可以查看<a href="https://github.com/nrf-rs/microbit/"><code>microbit</code></a>板支持箱中的示例。所有这些示例都适用于您拥有的micro:bit板。</li>
+</ul>
+<ul>
+<li>你可以加入<a href="https://matrix.to/#/#rust-embedded:matrix.org">Rust Embedded matrix channel</a>，那里有很多为嵌入式软件做出贡献或工作的人。
+包括例如编写<code>microbit</code> BSP，<code>nrf52-hal</code>，<code>embedded-hal</code>等的人。</li>
+</ul>
+<ul>
+<li>如果您正在寻找 Rust Embedded 中可用内容的一般概述，请查看<a href="https://github.com/rust-embedded/awesome-embedded-rust/">Awesome Rust Embedded</a>列表</li>
+</ul>
+<ul>
+<li>您可以查看<a href="https://rtic.rs">Real-Time Interrupt-driven Concurrency</a>。一个非常高效的抢占式多任务框架，支持任务优先级和无死锁执行。</li>
+</ul>
+<ul>
+<li>您可以查看该<a href="https://github.com/rust-embedded/embedded-hal"><code>embedded-hal</code></a>项目的更多抽象，甚至可以尝试基于它编写自己的平台无关驱动程序。</li>
+</ul>
+<ul>
+<li>您可以尝试在不同的开发板上运行Rust。最简单的入门方法是使用<a href="https://docs.rs/cortex-m-quickstart/0.3.1/cortex_m_quickstart/"><code>cortex-m-quickstart</code></a>Cargo项目模板。</li>
+</ul>
+<ul>
+<li>你可以试试这个<a href="https://mobile.twitter.com/japaricious/status/962770003325005824">运动传感器演示</a>。有关实现和源代码的详细信息，请参阅<a href="http://blog.japaric.io/wd-1-2-l3gd20-lsm303dlhc-madgwick/">博客文章</a>。</li>
+</ul>
+<ul>
+<li>您可以查看这篇<a href="http://blog.japaric.io/brave-new-io/">博客文章</a>，它描述了Rust-type系统如何防止I/O配置中的错误。</li>
+</ul>
+<ul>
+<li>您可以查看<a href="http://blog.japaric.io">japaric's blog</a>，了解有关使用Rust进行嵌入式开发的各种主题。</li>
+</ul>
+<ul>
+<li>您可以加入<a href="https://github.com/rust-lang-nursery/embedded-wg/issues/39">Weekly driver initiative</a> ，帮助我们在<code>embedded-hal</code>特性的基础上编写通用驱动程序，适用于各种平台（ARM Cortex-M、AVR、MSP430、RISCV等）</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="11-snake-game/nonblocking-display.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="appendix/1-general-troubleshooting/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="11-snake-game/nonblocking-display.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="appendix/1-general-troubleshooting/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

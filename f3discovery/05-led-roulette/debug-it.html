@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>调试 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="调试"><a class="header" href="#调试">调试</a></h1>
+<p>我们已经在调试会话中，所以让我们调试程序。</p>
+<p>在<code>load</code>命令之后，我们的程序在入口点停止。这由GDB输出的"起始地址 0x8000XXX"部分表示。
+入口点是处理器/CPU将首先执行的程序的一部分。</p>
+<p>我向您提供的starter项目有一些在<code>main</code>函数<em>之前</em>运行的额外代码。此时 我们对"pre-main"部分不感兴趣，所以
+让我们直接跳到<code>main</code>函数的开头。我们将使用断点来实现这一点。在<code>(gdb)</code>提示符下发出<code>break main</code>：</p>
+<blockquote>
+<p><strong>注意</strong>：对于这些GDB命令，我通常不会提供可复制的代码块，因为这些代码块很短，而且自己输入会更快。
+此外，大多数可以缩短。例如，<code>b</code>表示<code>break</code>或<code>s</code>表示<code>step</code>，请参阅<a href="https://users.ece.utexas.edu/~adnan/gdb-refcard.pdf">GDB快速参考</a>以获取更多信息或使用谷歌查找其他。
+此外，您可以使用制表符完成，方法是输入一个制表符以外的前几个字母来完成，或者输入两个制表符来查看所有可能的命令。</p>
+<blockquote>
+<p>最后，<code>help xxxx</code>其中xxxx是命令将提供短名称和其他信息：</p>
+<pre><code>(gdb) help s
+step, s
+Step program until it reaches a different source line.
+Usage: step [N]
+Argument N means step N times (or till program stops for another reason).
+</code></pre>
+</blockquote>
+</blockquote>
+<pre><code>(gdb) break main
+Breakpoint 1 at 0x80001f0: file src/05-led-roulette/src/main.rs, line 7.
+Note: automatically using hardware breakpoints for read-only addresses.
+</code></pre>
+<p>下一步发出<code>continue</code>命令：</p>
+<pre><code>(gdb) continue
+Continuing.
+
+Breakpoint 1, led_roulette::__cortex_m_rt_main_trampoline () at src/05-led-roulette/src/main.rs:7
+7       #[entry]
+</code></pre>
+<p>断点可用于停止程序的正常流程。<code>continue</code>命令将允许程序自由运行<em>直到</em>到达断点。在这种情况下，
+直到它到达<code>#[entry]</code>，这是主函数的跳点，其中<code>break main</code>设置断点。</p>
+<blockquote>
+<p><strong>注意</strong>：GDB输出显示"Breakpoint 1"。请记住，我们的处理器只能使用这些断点中的六个，所以最好注意这些消息。</p>
+</blockquote>
+<p>好的。由于我们停在<code>#[entry]</code>使用<code>disassemble /m</code>我们看到了entry的代码，这是一个主要点跳点。
+这意味着它建立堆栈，然后使用ARM分支和链接指令<code>bl</code>调用<code>main</code>函数的子例程调用。</p>
+<pre><code>(gdb) disassemble /m
+Dump of assembler code for function main:
+7       #[entry]
+   0x080001ec &lt;+0&gt;:     push    {r7, lr}
+   0x080001ee &lt;+2&gt;:     mov     r7, sp
+=&gt; 0x080001f0 &lt;+4&gt;:     bl      0x80001f6 &lt;_ZN12led_roulette18__cortex_m_rt_main17he61ef18c060014a5E&gt;
+   0x080001f4 &lt;+8&gt;:     udf     #254    ; 0xfe
+
+End of assembler dump.
+</code></pre>
+<p>接下来，我们需要发出一个<code>step</code>GDB命令，该命令将逐步将程序语句推进到函数/过程中。
+因此，在这个第一步命令之后，我们进入<code>main</code>，位于第一个可执行的<code>rust</code>语句第10行，但它<strong>没有</strong>被执行：</p>
+<pre><code>(gdb) step
+led_roulette::__cortex_m_rt_main () at src/05-led-roulette/src/main.rs:10
+10          let x = 42;
+</code></pre>
+<p>接下来，我们将发出第二个<code>step</code>, 该步骤执行第10行并停止在第11行<code>11    _y = x;</code>，再次<strong>不</strong>执行第11行</p>
+<blockquote>
+<p><strong>注意</strong>：我们可以在第二个<code>(gdb) </code>提示符处按enter，它会重新发出前面的语句<code>step</code>，
+但为了清楚起见，在本教程中，我们通常会重新输入命令。</p>
+</blockquote>
+<pre><code>(gdb) step
+11          _y = x;
+</code></pre>
+<p>如您所见，在这种模式下，在每个<code>step</code>中，GDB都会打印当前语句及其行号。正如您稍后在TUI模式中看到的，您将在命令区域中看不到该语句。</p>
+<p>我们现在开始"在"<code>_y = x</code>语句；该声明尚未执行。这意味着<code>x</code>已初始化，但<code>_y</code>未初始化。
+让我们使用<code>print</code>命令检查这些堆栈/局部变量，简称<code>p</code>：</p>
+<pre><code>(gdb) print x
+$1 = 42
+(gdb) p &amp;x
+$2 = (*mut i32) 0x20009fe0
+(gdb) p _y
+$3 = 536870912
+(gdb) p &amp;_y
+$4 = (*mut i32) 0x20009fe4
+</code></pre>
+<p>正如预期的那样，<code>x</code>包含值<code>42</code>。但<code>_y</code>包含值<code>536870912</code> (?)。这是因为<code>_y</code>尚未初始化，它包含一些垃圾值。</p>
+<p>命令<code>print &amp;x</code>打印变量<code>x</code>的地址。这里有趣的是，GDB输出显示了引用的类型：<code>*mut i32</code>，一个指向<code>i32</code>值的可变指针。
+另一个有趣的事情是，<code>x</code>和<code>_y</code>的地址彼此非常接近：们的地址仅相隔<code>4</code>个字节。</p>
+<p>您也可以使用<code>info locals</code>命令，而不是逐个打印局部变量：</p>
+<pre><code>(gdb) info locals
+x = 42
+_y = 536870912
+</code></pre>
+<p>好的。下一个<code>step</code>命令我们将在<code>loop {}</code>语句的顶部：</p>
+<pre><code>(gdb) step
+14          loop {}
+</code></pre>
+<p>现在应该初始化<code>_y</code>。</p>
+<pre><code>(gdb) print _y
+$5 = 42
+</code></pre>
+<p>如果我们在<code>loop {}</code>语句的顶部再次使用<code>step</code>，我们将陷入困境，因为程序永远不会传递该语句。</p>
+<blockquote>
+<p><strong>注意</strong>：如果您错误地使用了<code>step</code>或任何其他命令，并且GDB卡住了，您可以按<code>Ctrl+C</code>将其松开。</p>
+</blockquote>
+<p>如上所述，<code>disassemble /m</code>命令可用反汇编当前所在行的程序。您可能还希望将<code>set print asm-demangle on</code>设置为打开，
+以便对名称进行解映射，这只需要在调试会话中执行一次。稍后，此命令和其他命令将放置在初始化文件中，这将简化调试会话的启动。</p>
+<pre><code>(gdb) set print asm-demangle on
+(gdb) disassemble /m
+Dump of assembler code for function _ZN12led_roulette18__cortex_m_rt_main17h51e7c3daad2af251E:
+8       fn main() -&gt; ! {
+   0x080001f6 &lt;+0&gt;:     sub     sp, #8
+   0x080001f8 &lt;+2&gt;:     movs    r0, #42 ; 0x2a
+
+9           let _y;
+10          let x = 42;
+   0x080001fa &lt;+4&gt;:     str     r0, [sp, #0]
+
+11          _y = x;
+   0x080001fc &lt;+6&gt;:     str     r0, [sp, #4]
+
+12
+13          // infinite loop; just so we don't leave this stack frame
+14          loop {}
+=&gt; 0x080001fe &lt;+8&gt;:     b.n     0x8000200 &lt;led_roulette::__cortex_m_rt_main+10&gt;
+   0x08000200 &lt;+10&gt;:    b.n     0x8000200 &lt;led_roulette::__cortex_m_rt_main+10&gt;
+
+End of assembler dump.
+</code></pre>
+<p>看到左侧的<code>=&gt;</code>胖箭头了吗? 它显示处理器接下来要执行的指令。</p>
+<p>此外，如上所述，如果您要执行<code>step</code>命令，GDB会卡住，因为它正在执行一条到自身的分支指令，并且永远无法通过它。
+因此，您需要使用<code>Ctrl+C</code>重新获得控制权。另一种方法是使用<code>stepi</code>(<code>si</code>)GDB命令，它执行一条asm指令，
+GDB将打印处理器下一步将执行的语句的地址<strong>和</strong>行号，并且不会卡住。</p>
+<pre><code>(gdb) stepi
+0x08000194      14          loop {}
+
+(gdb) si
+0x08000194      14          loop {}
+</code></pre>
+<p>在我们转向更有趣的事情之前，最后一个技巧。在GDB中输入以下命令：</p>
+<pre><code>(gdb) monitor reset halt
+Unable to match requested speed 1000 kHz, using 950 kHz
+Unable to match requested speed 1000 kHz, using 950 kHz
+adapter speed: 950 kHz
+target halted due to debug-request, current mode: Thread
+xPSR: 0x01000000 pc: 0x08000194 msp: 0x2000a000
+
+(gdb) continue
+Continuing.
+
+Breakpoint 1, led_roulette::__cortex_m_rt_main_trampoline () at src/05-led-roulette/src/main.rs:7
+7       #[entry]
+
+(gdb) disassemble /m
+Dump of assembler code for function main:
+7       #[entry]
+   0x080001ec &lt;+0&gt;:     push    {r7, lr}
+   0x080001ee &lt;+2&gt;:     mov     r7, sp
+=&gt; 0x080001f0 &lt;+4&gt;:     bl      0x80001f6 &lt;led_roulette::__cortex_m_rt_main&gt;
+   0x080001f4 &lt;+8&gt;:     udf     #254    ; 0xfe
+
+End of assembler dump.
+</code></pre>
+<p>我们现在又回到了<code>#[entry]</code>开头！</p>
+<p><code>monitor reset halt</code>将重置微控制器，并在程序开始时立即停止。然后<code>continue</code>命令将允许程序自由运行，
+直到到达断点，在本例中，它是<code>#[entry]</code>处的断点。</p>
+<p>当您错误地跳过了您感兴趣检查的程序的一部分时，此组合非常方便。您可以轻松地将程序的状态回滚到最开始。</p>
+<blockquote>
+<p><strong>细节</strong>：此<code>reset</code>命令不会清除或触及RAM。该内存将保留上次运行时的值。这应该不是问题，除非
+程序的行为取决于<em>未初始化</em>变量的值，但这是未定义行为（UB）的定义。</p>
+</blockquote>
+<p>我们已完成此调试会话。你可以用<code>quit</code>命令结束它。</p>
+<pre><code>(gdb) quit
+A debugging session is active.
+
+        Inferior 1 [Remote target] will be detached.
+
+Quit anyway? (y or n) y
+Detaching from program: $PWD/target/thumbv7em-none-eabihf/debug/led-roulette, Remote target
+Ending remote debugging.
+</code></pre>
+<p>为了获得更好的调试体验，您可以使用GDB的文本用户界面(TUI)。要进入该模式，请在GDB shell中输入以下命令之一：</p>
+<pre><code>(gdb) layout src
+(gdb) layout asm
+(gdb) layout split
+</code></pre>
+<blockquote>
+<p><strong>注意</strong>：向Windows用户道歉，GNU ARM嵌入式工具链附带的GDB可能不支持此TUI模式<code>:-(</code>。</p>
+</blockquote>
+<p>下面是通过执行以下命令设置<code>layout split</code>的示例。如您所见，我们已经放弃传递<code>--target</code>参数：</p>
+<pre><code class="language-console">$ cargo run
+(gdb) target remote :3333
+(gdb) load
+(gdb) set print asm-demangle on
+(gdb) set style sources off
+(gdb) break main
+(gdb) continue
+</code></pre>
+<p>这里有一个命令行，将上述命令作为<code>-ex</code>参数，以节省您的键入时间，不久我们将提供一种更简单的方法来执行初始命令集：</p>
+<pre><code>cargo run -- -q -ex 'target remote :3333' -ex 'load' -ex 'set print asm-demangle on' -ex 'set style sources off' -ex 'b main' -ex 'c' target/thumbv7em-none-eabihf/debug/led-roulette
+</code></pre>
+<p>结果如下：</p>
+<p><img src="../assets/gdb-layout-split-1.png" alt="GDB session layout split" title="GDB TUI layout split 1" /></p>
+<p>现在，我们将向下滚动顶部源窗口，以便查看整个文件并执行<code>layout split</code>，然后执行以下<code>step</code>：</p>
+<p><img src="../assets/gdb-layout-split-2.png" alt="GDB session layout split" title="GDB TUI layout split 2" /></p>
+<p>然后我们将执行一些<code>info locals</code>和<code>step</code>'s：</p>
+<pre><code class="language-console">(gdb) info locals
+(gdb) step
+(gdb) info locals
+(gdb) step
+(gdb) info locals
+</code></pre>
+<p><img src="../assets/gdb-layout-split-3.png" alt="GDB session layout split" title="GDB TUI layout split 3" /></p>
+<p>在任何时候，您都可以使用以下命令离开TUI模式：</p>
+<pre><code>(gdb) tui disable
+</code></pre>
+<p><img src="../assets/gdb-layout-split-4.png" alt="GDB session layout split" title="GDB TUI layout split 4" /></p>
+<blockquote>
+<p><strong>注意</strong>：如果您不喜欢默认的GDB CLI，请查看<a href="https://github.com/cyrus-and/gdb-dashboard#gdb-dashboard">gdb仪表板</a>。
+它使用Python将默认GDB CLI转换为显示寄存器、源代码视图、程序集视图和其他内容的仪表板。</p>
+</blockquote>
+<p>但不要关闭OpenOCD！稍后我们会反复使用它。最好让它继续运行。
+如果您想了解更多有关GDB功能的信息，请查看<a href="../appendix/2-how-to-use-gdb/">何使用GDB</a>一节。</p>
+<p>接下来是什么？我承诺的高级API。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../05-led-roulette/flash-it.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../05-led-roulette/the-led-and-delay-abstractions.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../05-led-roulette/flash-it.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../05-led-roulette/the-led-and-delay-abstractions.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

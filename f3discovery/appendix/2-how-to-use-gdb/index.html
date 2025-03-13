@@ -1,0 +1,343 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>如何使用GDB - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="如何使用gdb"><a class="header" href="#如何使用gdb">如何使用GDB</a></h1>
+<p>下面是一些有用的GDB命令，可以帮助我们调试程序。这假设您已将<a href="../../05-led-roulette/flash-it.html">程序闪存</a>
+到微控制器上，并将GDB连接到<code>cargo-embed</code>会话。</p>
+<h2 id="常规调试"><a class="header" href="#常规调试">常规调试</a></h2>
+<blockquote>
+<p><strong>注意</strong>：您在下面看到的许多命令可以使用简短的形式执行。例如，<code>continue</code>可以简单地用作<code>c</code>，
+或<code>break $location</code>可以用作<code>b $location</code>。一旦你对下面的命令有了经验，试着看看在GDB无法识别它们之前你可以让这些命令运行多短！</p>
+</blockquote>
+<h3 id="处理断点"><a class="header" href="#处理断点">处理断点</a></h3>
+<ul>
+<li><code>break $location</code>：在代码中的某个位置设置断点。<code>$location</code>的值可以包括：
+<ul>
+<li><code>break *main</code> - 函数<code>main</code>的确切地址上的break</li>
+<li><code>break *0x080012f2</code> - 在准确的内存位置<code>0x080012f2</code>上中断</li>
+<li><code>break 123</code> - 在当前显示文件的第123行中断</li>
+<li><code>break main.rs:123</code> - 在文件<code>main.rs</code>的第123行中断</li>
+</ul>
+</li>
+<li><code>info break</code>: 显示当前断点</li>
+<li><code>delete</code>: 删除所有断点
+<ul>
+<li><code>delete $n</code>:  删除断点<code>$n</code> (<code>n</code>是一个数字。例如：<code>delete $2</code>)</li>
+</ul>
+</li>
+<li><code>clear</code>: 删除下一条指令的断点
+<ul>
+<li><code>clear main.rs:$function</code>: 删除<code>main.rs</code>中<code>$function</code>条目处的断点</li>
+<li><code>clear main.rs:123</code>:  删除<code>main.rs</code>第123行上的断点</li>
+</ul>
+</li>
+<li><code>enable</code>: 启用所有设置的断点
+<ul>
+<li><code>enable $n</code>: 启用断点<code>$n</code></li>
+</ul>
+</li>
+<li><code>disable</code>: 禁用所有设置的断点
+<ul>
+<li><code>disable $n</code>: 禁用断点<code>$n</code></li>
+</ul>
+</li>
+</ul>
+<h3 id="控制执行"><a class="header" href="#控制执行">控制执行</a></h3>
+<ul>
+<li><code>continue</code>: 开始或继续执行程序</li>
+<li><code>next</code>: 执行程序的下一行
+<ul>
+<li><code>next $n</code>: 重复<code>next</code> <code>$n</code>多次</li>
+</ul>
+</li>
+<li><code>nexti</code>: 与<code>next</code>相同，但使用机器指令</li>
+<li><code>step</code>: 执行下一行，如果下一行包含对另一个函数的调用，则进入该代码
+<ul>
+<li><code>step $n</code>: 重复<code>step</code> <code>$n</code>多次</li>
+</ul>
+</li>
+<li><code>stepi</code>:  与<code>step</code>相同，但使用机器指令</li>
+<li><code>jump $location</code>: 在指定位置继续执行：
+<ul>
+<li><code>jump 123</code>: 在第123行继续执行</li>
+<li><code>jump 0x080012f2</code>: 在地址0x08001f2恢复执行</li>
+</ul>
+</li>
+</ul>
+<h3 id="打印信息"><a class="header" href="#打印信息">打印信息</a></h3>
+<ul>
+<li><code>print /$f $data</code> - 打印变量<code>$data</code>包含的值。可选地，使用<code>$f</code>格式化输出，包括：
+<pre><code class="language-txt">x: 十六进制
+d: 有符号十进制
+u: 无符号十进制
+o: 八进制
+t: 二进制
+a: 地址
+c: 字符
+f: 浮点
+</code></pre>
+<ul>
+<li><code>print /t 0xA</code>: 将十六进制值<code>0xA</code>打印为二进制(0b1010)</li>
+</ul>
+</li>
+<li><code>x /$n$u$f $address</code>: 检查<code>$address</code>处的内存。可选，<code>$n</code>定义要显示的单位数，
+<code>$u</code> 单位大小(字节、半字、字等), <code>$f</code>以上定义任何的<code>print</code>格式
+<ul>
+<li><code>x /5i 0x080012c4</code>: 打印5条机器指令，起始地址为<code>0x080012c4</code></li>
+<li><code>x/4xb $pc</code>: 从<code>$pc</code>当前指向的位置开始打印4字节内存</li>
+</ul>
+</li>
+<li><code>disassemble $location</code>
+<ul>
+<li><code>disassemble /r main</code>: 反汇编函数<code>main</code>，使用<code>/r</code>显示组成每个指令的字节</li>
+</ul>
+</li>
+</ul>
+<h3 id="查看符号表"><a class="header" href="#查看符号表">查看符号表</a></h3>
+<ul>
+<li><code>info functions $regex</code>: 打印与<code>$regex</code>匹配的函数的名称和数据类型，省略<code>$regex</code>以打印所有函数
+<ul>
+<li><code>info functions main</code>: 打印包含单词<code>main</code>的已定义函数的名称和类型</li>
+</ul>
+</li>
+<li><code>info address $symbol</code>: 打印<code>$symbol</code>存储在内存中的位置
+<ul>
+<li><code>info address GPIOC</code>: 打印变量<code>GPIOC</code>的内存地址</li>
+</ul>
+</li>
+<li><code>info variables $regex</code>: 打印与<code>$regex</code>匹配的全局变量的名称和类型，省略<code>$regex</code>打印所有全局变量</li>
+<li><code>ptype $data</code>:  打印有关<code>$data</code>的更多详细信息
+<ul>
+<li><code>ptype cp</code>: 打印变量<code>cp</code>的详细类型信息</li>
+</ul>
+</li>
+</ul>
+<h3 id="浏览程序堆栈"><a class="header" href="#浏览程序堆栈">浏览程序堆栈</a></h3>
+<ul>
+<li><code>backtrace $n</code>: 打印<code>$n</code>帧的跟踪，或省略<code>$n</code>以打印所有帧
+<ul>
+<li><code>backtrace 2</code>: 前2帧的打印跟踪</li>
+</ul>
+</li>
+<li><code>frame $n</code>: 选择编号或地址为<code>$n</code>的帧，忽略<code>$n</code>以显示当前帧</li>
+<li><code>up $n</code>: 选择帧<code>$n</code>帧向上</li>
+<li><code>down $n</code>: S选择帧<code>$n</code>帧向下</li>
+<li><code>info frame $address</code>: 在<code>$address</code>处描述帧，忽略当前选定帧的<code>$address</code></li>
+<li><code>info args</code>: 打印所选帧的参数</li>
+<li><code>info registers $r</code>: 打印选定帧中寄存器<code>$r</code>的值，忽略所有寄存器<code>$r</code>
+<ul>
+<li><code>info registers $sp</code>: 打印当前帧中堆栈指针寄存器<code>$sp</code>的值</li>
+</ul>
+</li>
+</ul>
+<h3 id="远程控制openocd"><a class="header" href="#远程控制openocd">远程控制OpenOCD</a></h3>
+<ul>
+<li><code>monitor reset run</code>: 重置CPU，重新开始执行
+<ul>
+<li><code>monitor reset</code>: 同上</li>
+</ul>
+</li>
+<li><code>monitor reset init</code>: 重置CPU，开始时停止执行</li>
+<li><code>monitor targets</code>: 显示当前目标的信息和状态</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../appendix/1-general-troubleshooting/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../appendix/1-general-troubleshooting/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

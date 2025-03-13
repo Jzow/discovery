@@ -1,0 +1,304 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>发送单个字节 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="发送单个字节"><a class="header" href="#发送单个字节">发送单个字节</a></h1>
+<p>我们的第一个任务是通过串行连接从微控制器向计算机发送一个字节。</p>
+<p>为了做到这一点，我们将使用以下代码段（这个代码段已经在<code>07-uart/src/main.rs</code>中）：</p>
+<pre><pre class="playground"><code class="language-rust">#![no_main]
+#![no_std]
+
+use cortex_m_rt::entry;
+use rtt_target::rtt_init_print;
+use panic_rtt_target as _;
+
+#[cfg(feature = "v1")]
+use microbit::{
+    hal::prelude::*,
+    hal::uart,
+    hal::uart::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+use microbit::{
+    hal::prelude::*,
+    hal::uarte,
+    hal::uarte::{Baudrate, Parity},
+};
+
+#[cfg(feature = "v2")]
+mod serial_setup;
+#[cfg(feature = "v2")]
+use serial_setup::UartePort;
+
+#[entry]
+fn main() -&gt; ! {
+    rtt_init_print!();
+    let board = microbit::Board::take().unwrap();
+
+    #[cfg(feature = "v1")]
+    let mut serial = {
+        uart::Uart::new(
+            board.UART0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        )
+    };
+
+    #[cfg(feature = "v2")]
+    let mut serial = {
+        let serial = uarte::Uarte::new(
+            board.UARTE0,
+            board.uart.into(),
+            Parity::EXCLUDED,
+            Baudrate::BAUD115200,
+        );
+        UartePort::new(serial)
+    };
+
+    nb::block!(serial.write(b'X')).unwrap();
+    nb::block!(serial.flush()).unwrap();
+
+    loop {}
+}</code></pre></pre>
+<p>这里最流行的新事物显然是<code>cfg</code>指令，它有条件地包含/排除部分代码。这主要是因为我们希望使用常规
+UART处理micro:bit v1和micro:bit v2。</p>
+<p>您还将注意到，这是我们第一次包含一些不是来自库的代码，即<code>serial_setup</code>模块。它的唯一目的是为
+UARTE提供一个很好的包装器，因此我们可以通过<a href="https://docs.rs/embedded-hal/0.2.6/embedded_hal/serial/index.html"><code>embedded_hal::serial</code></a> traits。以与UART完全相同的
+方式使用它。 如果您愿意，您可以查看模块的具体功能，但通常不需要理解本章。</p>
+<p>除了这些区别之外，UART和UARTE的初始化过程非常相似，所以我们将只讨论UARTE初始化。UARTE使用以下代码进行初始化：</p>
+<pre><code class="language-rs">uarte::Uarte::new(
+    board.UARTE0,
+    board.uart.into(),
+    Parity::EXCLUDED,
+    Baudrate::BAUD115200,
+);
+</code></pre>
+<p>该函数拥有Rust中的UARTE外设表示(<code>board.UARTE0</code>)和板上的TX/RX引脚(<code>board.uart.into()</code>)，因此，
+在使用它们时，其他人不能干扰外置设备或我们的引脚。之后，我们将两个配置选项传递给构造函数：波特率（您应该熟悉）
+以及一个名为"对等"的选项。对等校验是一种允许串行通信线路检查其接收的数据在传输过程中是否损坏的方法。
+我们不想在这里使用它，所以我们只是排除它。然后我们将其封装在<code>UartePort</code>类型中这样我们就可以以与
+micro:bit v1的<code>serial</code>相同的方式使用它。</p>
+<p>初始化之后，我们通过新创建的uart实例发送<code>X</code>。这里的<code>block!</code>宏就是<code>nb::block!</code>宏。
+<code>nb</code>是是一个（引用其描述）"最小且可重用的非阻塞I/O层"。它允许我们编写可以在后台执行硬件操作的代码，
+同时我们可以进行其他工作（非阻塞）。然而，在这种情况下和其他许多情况下，我们对做其他工作没有兴趣，所以
+我们只是调用<code>block!</code>其将等待直到I/O操作完成并且已经成功或失败，然后正常继续执行。</p>
+<p>最后但并非最不重要的是，我们<code>flush()</code>串行端口。这是因为<code>embedded-hal::serial</code> traits的实现者可能决定缓冲输出，
+直到它接收到一定数量的要发送的字节（UARTE 实现就是这种情况）。调用<code>flush()</code>强制它写入当前拥有的字节，而不是等待更多。</p>
+<h2 id="测试"><a class="header" href="#测试">测试</a></h2>
+<p>在闪烁之前，您应该确保启动minicom/PuTTY，因为我们通过串行通信接收的数据没有备份或任何东西，
+我们必须实时查看。一旦您的串行监视器启动， 您可以像第5章中所述那样闪存程序：</p>
+<pre><code># For micro:bit v2
+$ cargo embed --features v2 --target thumbv7em-none-eabihf
+  (...)
+
+# For micro:bit v1
+$ cargo embed --features v1 --target thumbv6m-none-eabi
+</code></pre>
+<p>闪烁结束后，您应该会看到minicom/PuTTY终端上出现字符<code>X</code>，恭喜！</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../07-uart/index.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../07-uart/send-a-string.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../07-uart/index.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../07-uart/send-a-string.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

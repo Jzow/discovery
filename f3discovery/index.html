@@ -1,0 +1,264 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>介绍 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="favicon.svg">
+        <link rel="shortcut icon" href="favicon.png">
+        <link rel="stylesheet" href="css/variables.css">
+        <link rel="stylesheet" href="css/general.css">
+        <link rel="stylesheet" href="css/chrome.css">
+        <link rel="stylesheet" href="css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="discovery"><a class="header" href="#discovery">Discovery</a></h1>
+<blockquote>
+<p>通过<a href="https://www.rust-lang.org/">Rust</a>探索微控制器的世界！</p>
+</blockquote>
+<p>这本书是关于基于微控制器的嵌入式系统的入门课程，它使用Rust作为教学语言，而不是通常的C/C++。</p>
+<h2 id="范围"><a class="header" href="#范围">范围</a></h2>
+<p>将涵盖以下主题（最终，我希望）：</p>
+<ul>
+<li>
+<p>如何编写、构建、刷新和调试"嵌入式"(Rust)程序。</p>
+</li>
+<li>
+<p>微控制器中常见的功能（"外部设备"）：数字输入和输出、脉冲宽度调制 (PWM)、模数转换器 (ADC)、串行、I2C和SPI等常见通信协议。</p>
+</li>
+<li>
+<p>多任务处理概念：协作与抢占式多任务处理、中断、调度程序等。</p>
+</li>
+<li>
+<p>控制系统概念：传感器、校准、数字滤波器、执行器、开环控制、闭环控制等。</p>
+</li>
+</ul>
+<h2 id="方法"><a class="header" href="#方法">方法</a></h2>
+<ul>
+<li>
+<p>初学者友好。无需具备微控制器或嵌入式系统方面的经验。</p>
+</li>
+<li>
+<p>动手。大量的练习将理论付诸实践。您将在这里完成大部分工作。 您将在这里完成大部分工作。</p>
+</li>
+<li>
+<p>工具居中。我们将大量使用工具来简化开发。"真正的"调试、使用GDB和日志记录将在早期引入。在这里使用LED作为调试机制是不合适的。</p>
+</li>
+</ul>
+<h2 id="非目标"><a class="header" href="#非目标">非目标</a></h2>
+<p>本书范围之外的内容：</p>
+<ul>
+<li>
+<p>教Rust。已经有很多关于该主题的材料。我们将专注于微控制器和嵌入式系统。</p>
+</li>
+<li>
+<p>是一本关于电路理论或电子学的综合性书籍。我们将仅介绍了解某些设备如何工作所需的最低要求。</p>
+</li>
+<li>
+<p>涵盖链接描述文件和引导过程等细节。例如，我们将使用现有工具帮助您将代码放到板上，但不会详细介绍这些工具的工作原理。</p>
+</li>
+</ul>
+<p>另外我不打算将这个材料移植到其他开发板上；本书将独家使用STM32F3DISCOVERY开发板。</p>
+<h2 id="报告问题"><a class="header" href="#报告问题">报告问题</a></h2>
+<p>这本书的源代码在<a href="https://github.com/rust-embedded/discovery">这个存储库</a>。如果您遇到任何错字或代码问题，请在<a href="https://github.com/rust-embedded/discovery/issues">问题跟踪器</a>上报告。</p>
+<h2 id="其他嵌入式rust资源"><a class="header" href="#其他嵌入式rust资源">其他嵌入式Rust资源</a></h2>
+<p>这本Discovery书只是<a href="https://github.com/rust-embedded/wg">嵌入式工作组</a>提供的几个嵌入式Rust资源之一。 完整的选择可以在<a href="https://docs.rust-embedded.org">The Embedded Rust Bookshelf</a>中找到。
+这包括<a href="https://docs.rust-embedded.org/faq.html">常见问题</a>列表。</p>
+<h2 id="赞助"><a class="header" href="#赞助">赞助</a></h2>
+<p>
+<a href="http://integer32.com/">
+<img style="width: 50%" title="integer 32" src="assets/integer32.svg">
+</a>
+</p>
+<p>非常感谢<a href="http://integer32.com/">integer 32</a>赞助我写这本书！请给他们很多工作（他们做Rust咨询！）
+所以他们别无选择，只能雇佣更多Rustaceans &lt;3。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+
+                            <a rel="next prefetch" href="01-background/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+
+                    <a rel="next prefetch" href="01-background/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="elasticlunr.min.js"></script>
+        <script src="mark.min.js"></script>
+        <script src="searcher.js"></script>
+
+        <script src="clipboard.min.js"></script>
+        <script src="highlight.js"></script>
+        <script src="book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

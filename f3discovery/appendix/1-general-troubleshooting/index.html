@@ -1,0 +1,358 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>一般故障排除 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../../favicon.svg">
+        <link rel="shortcut icon" href="../../favicon.png">
+        <link rel="stylesheet" href="../../css/variables.css">
+        <link rel="stylesheet" href="../../css/general.css">
+        <link rel="stylesheet" href="../../css/chrome.css">
+        <link rel="stylesheet" href="../../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../../custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="一般故障排除"><a class="header" href="#一般故障排除">一般故障排除</a></h1>
+<h2 id="openocd-问题"><a class="header" href="#openocd-问题">OpenOCD 问题</a></h2>
+<h3 id="无法连接到openocd---error-open-failed"><a class="header" href="#无法连接到openocd---error-open-failed">无法连接到OpenOCD - "Error: open failed"</a></h3>
+<h4 id="症状"><a class="header" href="#症状">症状</a></h4>
+<p>尝试与设备建立<em>新连接</em>时，会出现如下错误：</p>
+<pre><code>$ openocd -f (..)
+(..)
+Error: open failed
+in procedure 'init'
+in procedure 'ocd_bouncer'
+</code></pre>
+<h4 id="原因"><a class="header" href="#原因">原因</a></h4>
+<p>设备未（正确）连接或未使用正确的ST-LINK接口配置。</p>
+<h4 id="修复"><a class="header" href="#修复">修复</a></h4>
+<p>Linux:</p>
+<ul>
+<li>使用<code>lsusb</code>检查USB连接。</li>
+<li>您可能没有足够的权限打开设备。请使用<code>sudo</code>重试。如果这有效，您可以使用<a href="../../03-setup/linux.html#udev-rules">这些指令</a>使OpenOCD在没有root权限的情况下工作。</li>
+<li>您可能使用了错误的ST-LINK接口配置。尝试使用<code>interface/stlink-v2.cfg</code>而不是<code>interface/stlink-v2-1.cfg</code>。</li>
+</ul>
+<p>Windows:</p>
+<ul>
+<li>您可能缺少ST-LINK USB驱动程序。<a href="../../03-setup/windows.html#st-link-usb-driver">此处</a>的安装说明。</li>
+</ul>
+<h3 id="无法连接到openocd---polling-again-in-x00ms"><a class="header" href="#无法连接到openocd---polling-again-in-x00ms">无法连接到OpenOCD - "Polling again in X00ms"</a></h3>
+<h4 id="症状-1"><a class="header" href="#症状-1">症状</a></h4>
+<p>尝试与设备建立<em>新连接</em>时，会出现如下错误：</p>
+<pre><code>$ openocd -f (..)
+(..)
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f3x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 100ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f3x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 300ms
+Info : Previous state query failed, trying to reconnect
+</code></pre>
+<h4 id="原因-1"><a class="header" href="#原因-1">原因</a></h4>
+<p>微控制器可能卡在某个紧密的无限循环中，或者持续引发异常，例如异常处理程序正在引发异常。</p>
+<h4 id="修复-1"><a class="header" href="#修复-1">修复</a></h4>
+<ul>
+<li>关闭OpenOCD（如果正在运行）</li>
+<li>按住重置（黑色）按钮</li>
+<li>启动OpenOCD命令</li>
+<li>现在，松开复位按钮</li>
+</ul>
+<h3 id="openocd连接丢失---polling-again-in-x00ms"><a class="header" href="#openocd连接丢失---polling-again-in-x00ms">OpenOCD连接丢失 - "Polling again in X00ms"</a></h3>
+<h4 id="症状-2"><a class="header" href="#症状-2">症状</a></h4>
+<p><em>正在运行</em>OpenOCD会话突然出现错误：</p>
+<pre><code># openocd -f (..)
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f3x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 100ms
+Info : Previous state query failed, trying to reconnect
+Error: jtag status contains invalid mode value - communication failure
+Polling target stm32f3x.cpu failed, trying to reexamine
+Examination failed, GDB will be halted. Polling again in 300ms
+Info : Previous state query failed, trying to reconnect
+</code></pre>
+<h4 id="原因-2"><a class="header" href="#原因-2">原因</a></h4>
+<p>USB连接丢失。</p>
+<h4 id="修复-2"><a class="header" href="#修复-2">修复</a></h4>
+<ul>
+<li>关闭OpenOCD</li>
+<li>断开并重新连接USB电缆。</li>
+<li>重新启动OpenOCD</li>
+</ul>
+<h3 id="无法刷新设备---ignoring-packet-error-continuing"><a class="header" href="#无法刷新设备---ignoring-packet-error-continuing">无法刷新设备 - "Ignoring packet error, continuing..."</a></h3>
+<h4 id="症状-3"><a class="header" href="#症状-3">症状</a></h4>
+<p>在刷新设备时，您可以：</p>
+<pre><code>$ arm-none-eabi-gdb $file
+Start address 0x8000194, load size 31588
+Transfer rate: 22 KB/sec, 5264 bytes/write.
+Ignoring packet error, continuing...
+Ignoring packet error, continuing...
+</code></pre>
+<h4 id="原因-3"><a class="header" href="#原因-3">原因</a></h4>
+<p>在运行"打印"到ITM的程序时关闭<code>itmdump</code>。当前GDB会话看起来正常工作，只是没有ITM输出，
+但下一个GDB会话将出现上一节中显示的消息错误。</p>
+<p>或者，在发出<code>monitor tpiu</code>之后调用<code>itmdump</code>，从而使<code>itmdump</code>删除OpenOCD正在写入的文件/命名管道。</p>
+<h4 id="修复-3"><a class="header" href="#修复-3">修复</a></h4>
+<ul>
+<li>关闭/杀死GDB，OpenOCD和<code>itmdump</code>。</li>
+<li>删除<code>itmdump</code>正在使用的文件/命名管道 (例如，<code>itm.txt</code>)。</li>
+<li>启动OpenOCD。</li>
+<li>然后，启动<code>itmdump</code>。</li>
+<li>然后，启动执行<code>monitor tpiu</code>命令的GDB会话。</li>
+</ul>
+<h3 id="无法连接到openocd---error-couldnt-bind-telnet-to-socket-address-already-in-use"><a class="header" href="#无法连接到openocd---error-couldnt-bind-telnet-to-socket-address-already-in-use">无法连接到OpenOCD - "Error: couldn't bind [telnet] to socket: Address already in use"</a></h3>
+<h4 id="症状-4"><a class="header" href="#症状-4">症状</a></h4>
+<p>尝试与设备建立<em>新连接</em>时，会出现如下错误：</p>
+<pre><code>$ openocd -f (..)
+(..)
+Error: couldn't bind telnet to socket: Address already in use
+</code></pre>
+<h4 id="原因-4"><a class="header" href="#原因-4">原因</a></h4>
+<p>OpenOCD需要访问的一个或多个端口3333、4444或6666正在被另一个进程使用。
+每个端口用于另一个方面：3333用于gdb，4444用于telnet，6666用于TCL的远程过程调用（RPC）命令</p>
+<h4 id="修复-4"><a class="header" href="#修复-4">修复</a></h4>
+<p>你可以两种方法来解决这个问题
+A）杀死使用这些端口之一的任何进程。
+B) 指定OpenOCD可以免费使用的不同端口。</p>
+<p>解决方案 A</p>
+<p>Mac:</p>
+<ul>
+<li>通过运行<code>sudo lsof -PiTCP -sTCP:LISTEN</code>获取使用端口的进程列表</li>
+<li>通过记录进程的pid并为每个进程运行<code>kill [pid]</code>来终止阻塞关键端口的进程。（假设您可以确认他们没有在您的机器上运行任何关键任务！）</li>
+</ul>
+<p>解决方案 B</p>
+<p>All:</p>
+<ul>
+<li>启动OpenOCD时，将配置详细信息发送给OpenOCD，以便它使用与任何进程默认端口不同的端口。</li>
+<li>例如，要在4441而不是默认的4444上执行其telnet功能，需要运行<code>openocd -f interface/stlink-v2-1.cfg -f target/stm32f3x.cfg -c "telnet_port 4441"</code></li>
+<li>有关OpenOCD配置阶段的更多详细信息，请参见他们的<a href="http://openocd.org/doc/html/Server-Configuration.html">在线官方文档</a>。</li>
+</ul>
+<h2 id="cargo-问题"><a class="header" href="#cargo-问题">Cargo 问题</a></h2>
+<h3 id="找不到core-crate"><a class="header" href="#找不到core-crate">"找不到<code>core</code> crate"</a></h3>
+<h4 id="症状-5"><a class="header" href="#症状-5">症状</a></h4>
+<pre><code>   Compiling volatile-register v0.1.2
+   Compiling rlibc v1.0.0
+   Compiling r0 v0.1.0
+error[E0463]: can't find crate for `core`
+
+error: aborting due to previous error
+
+error[E0463]: can't find crate for `core`
+
+error: aborting due to previous error
+
+error[E0463]: can't find crate for `core`
+
+error: aborting due to previous error
+
+Build failed, waiting for other jobs to finish...
+Build failed, waiting for other jobs to finish...
+error: Could not compile `r0`.
+
+To learn more, run the command again with --verbose.
+</code></pre>
+<h4 id="原因-5"><a class="header" href="#原因-5">原因</a></h4>
+<p>您使用的工具链早于<code>nightly-2018-04-08</code>并忘记调用<code>rustup target add thumbv7em-none-eabihf</code>。</p>
+<h4 id="修复-5"><a class="header" href="#修复-5">修复</a></h4>
+<p>更新并安装<code>thumbv7em-none-eabihf</code> target。</p>
+<pre><code class="language-console">$ rustup update nightly
+
+$ rustup target add thumbv7em-none-eabihf
+</code></pre>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../../explore.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../../appendix/2-how-to-use-gdb/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../../explore.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../../appendix/2-how-to-use-gdb/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../../elasticlunr.min.js"></script>
+        <script src="../../mark.min.js"></script>
+        <script src="../../searcher.js"></script>
+
+        <script src="../../clipboard.min.js"></script>
+        <script src="../../highlight.js"></script>
+        <script src="../../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>

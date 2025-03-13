@@ -1,0 +1,266 @@
+<!DOCTYPE HTML>
+<html lang="en" class="light sidebar-visible" dir="ltr">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>满足您的硬件 - Discovery</title>
+
+
+        <!-- Custom HTML head -->
+
+        <meta name="description" content="Discover the world of microcontrollers through Rust">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff">
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+        <link rel="stylesheet" href="../css/print.css" media="print">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" id="highlight-css" href="../highlight.css">
+        <link rel="stylesheet" id="tomorrow-night-css" href="../tomorrow-night.css">
+        <link rel="stylesheet" id="ayu-highlight-css" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+        <link rel="stylesheet" href="../custom.css">
+
+
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+        <!-- Start loading toc.js asap -->
+        <script src="../toc.js"></script>
+    </head>
+    <body>
+    <div id="body-container">
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            const html = document.documentElement;
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add("js");
+        </script>
+
+        <input type="checkbox" id="sidebar-toggle-anchor" class="hidden">
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var sidebar = null;
+            var sidebar_toggle = document.getElementById("sidebar-toggle-anchor");
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            } else {
+                sidebar = 'hidden';
+            }
+            sidebar_toggle.checked = sidebar === 'visible';
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <!-- populated by js -->
+            <mdbook-sidebar-scrollbox class="sidebar-scrollbox"></mdbook-sidebar-scrollbox>
+            <noscript>
+                <iframe class="sidebar-iframe-outer" src="../toc.html"></iframe>
+            </noscript>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle">
+                <div class="sidebar-resize-indicator"></div>
+            </div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky">
+                    <div class="left-buttons">
+                        <label id="sidebar-toggle" class="icon-button" for="sidebar-toggle-anchor" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </label>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">Discovery</h1>
+
+                    <div class="right-buttons">
+                        <a href="../print.html" title="Print this book" aria-label="Print this book">
+                            <i id="print-button" class="fa fa-print"></i>
+                        </a>
+                        <a href="https://github.com/rust-embedded/discovery/" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="满足您的硬件"><a class="header" href="#满足您的硬件">满足您的硬件</a></h1>
+<p>让我们熟悉一下将要使用的硬件。</p>
+<h2 id="stm32f3discovery-the-f3"><a class="header" href="#stm32f3discovery-the-f3">STM32F3DISCOVERY (the "F3")</a></h2>
+<p>
+<img title="F3" src="../assets/f3.jpg">
+</p>
+<p>在本书中，我们将此板称为"F3"。以下是电路板上的一些组件：</p>
+<ul>
+<li>一个<a href="https://en.wikipedia.org/wiki/Microcontroller">微控制器</a>。</li>
+<li>许多LED，包括排列成"指南针"的八个LED。</li>
+<li>两个按钮。</li>
+<li>两个USB端口。</li>
+<li>一个<a href="https://en.wikipedia.org/wiki/Accelerometer">加速计</a>。</li>
+<li>一个<a href="https://en.wikipedia.org/wiki/Magnetometer">磁力计</a>。</li>
+<li>一个<a href="https://en.wikipedia.org/wiki/Gyroscope">陀螺仪</a>。</li>
+</ul>
+<p>在这些组件中，最重要的是微控制器(有时简称为"MCU" 或 "microcontroller unit")，它是位于板中央的黑色大正方形。
+MCU是运行代码的工具。有时你可能会读到"编程开发板"，而实际上我们所做的是对安装在板上的MCU进行编程。</p>
+<h2 id="stm32f303vct6-stm32f3"><a class="header" href="#stm32f303vct6-stm32f3">STM32F303VCT6 ("STM32F3")</a></h2>
+<p>既然MCU如此重要，让我们仔细看看我们开发板上的那个。</p>
+<p>我们的MCU周围有100个微型金属<strong>引脚</strong>。这些引脚连接到<strong>迹线</strong>上，这些迹线是将"电路"板上的组件连接在
+一起的电线。MCU可以动态地改变引脚的电特性。这类似于光开关改变电流流过电路的方式。 通过启用或
+禁用流经特定引脚的电流，连接到该引脚的LED（通过迹线）可以打开和关闭。</p>
+<p>每个制造商使用不同的零件编号方案，但许多制造商允许您通过查看零件编号来确定有关零部件的信息。
+查看MCU的部件号(<code>STM32F303VCT6</code>)，前面的<code>ST</code>提示我们这是<a href="https://st.com/">ST Microelectronics</a>制造的部件。
+通过搜索<a href="https://www.st.com/en/microcontrollers-microprocessors/stm32-mainstream-mcus.html">ST's 营销材料</a>，我们还可以了解以下内容：</p>
+<ul>
+<li><code>M32</code>代表这是一个基于 Arm®-based 32位微控制器。</li>
+<li><code>F3</code>表示MCU来自ST's "STM32F3"系列。这是一系列基于Cortex®-M4 处理器设计的MCU。</li>
+<li>零件号的其余部分将涉及更多细节，如额外功能和RAM大小，而这一点我们不太关心。</li>
+</ul>
+<blockquote>
+<h3 id="arm-cortex-m4"><a class="header" href="#arm-cortex-m4">Arm? Cortex-M4?</a></h3>
+<p>如果我们的芯片由ST制造，那么Arm是谁？如果我们的芯片是STM32F3，什么是Cortex-M4？</p>
+<p>Y你可能会惊讶地听到，虽然"基于Arm"的芯片非常流行，但"Arm"商标背后的公司(<a href="https://www.arm.com/">Arm Holdings</a>)实际上并没有生产用于购买的芯片。
+相反，他们的主要商业模式只是<em>设计</em>芯片的一部分。然后，他们会将这些设计许可给制造商，然后制造商会以物理硬件的
+形式实施这些设计（可能会有一些自己的调整），然后可以销售。Arm's在这方面的策略不同于Intel这样的公司，后者同时设计
+<em>并</em>制造自己的芯片。</p>
+<p>Arm许可了一系列不同的设计。他们的"Cortex-M"系列设计主要用作微控制器的核心。例如，Cortex-M0设计用于低成本和低功耗。
+Cortex-M7的成本更高，但具有更多功能和性能。我们STM32F3的核心是基于Cortex-M4，它位于中间：
+比Cortex-M0具有更多的功能和性能，但比Cortex-M7便宜。</p>
+<p>幸运的是，为了这本书，你不需要太了解不同类型的处理器或Cortex设计。然而，希望您现在对设备的术语有更多的了解。
+当您专门使用STM32F3时，您可能会发现自己正在阅读文档并使用基于Cortex-M的芯片的工具，因为STM32F3基于Cortex-M设计。</p>
+</blockquote>
+<h2 id="串行模块"><a class="header" href="#串行模块">串行模块</a></h2>
+<p>
+<img title="Serial module" src="../assets/serial.jpg">
+</p>
+<p>如果您有较旧版本的发现板，您可以使用此模块在F3中的微控制器与计算机之间交换数据。此模块将使用USB电缆连接到您的计算机。
+在这一点上，我不再多说了。</p>
+<p>如果您有较新版本的主板，则不需要此模块。ST-LINK将作为USB&lt;-&gt;串行转换器，在引脚PC4和PC5处连接到微控制器USART1。</p>
+<h2 id="蓝牙模块"><a class="header" href="#蓝牙模块">蓝牙模块</a></h2>
+<p>
+<img title="The HC-05 Bluetooth module" src="../assets/bluetooth.jpg">
+</p>
+<p>该模块的用途与串行模块完全相同，但它通过蓝牙发送数据而不是通过USB。</p>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../03-setup/verify.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next prefetch" href="../05-led-roulette/index.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../03-setup/verify.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next prefetch" href="../05-led-roulette/index.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </div>
+    </body>
+</html>
